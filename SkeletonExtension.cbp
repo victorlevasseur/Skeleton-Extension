@@ -554,8 +554,6 @@
 			<Add directory="../../ExtLibs/SFML/build-mingw-debug/lib" />
 			<Add directory="../../ExtLibs/SFML/build-mingw-release/lib" />
 		</Linker>
-		<Unit filename="Animator.cpp" />
-		<Unit filename="Animator.h" />
 		<Unit filename="Bone.cpp" />
 		<Unit filename="Bone.h" />
 		<Unit filename="Extension.cpp" />
