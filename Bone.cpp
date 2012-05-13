@@ -337,6 +337,8 @@ void Bone::SaveBone(TiXmlElement &saveIn)
     boneElement->SetDoubleAttribute("offsetX", GetOffset().x);
     boneElement->SetDoubleAttribute("offsetY", GetOffset().y);
 
+    boneElement->SetDoubleAttribute("zOrder", GetZOrder());
+
     for(unsigned int a = 0; a < m_childBones.size(); a++)
     {
         m_childBones.at(a)->SaveBone(*boneElement);
@@ -356,10 +358,12 @@ void Bone::LoadBone(TiXmlElement &boneElement)
     boneElement.QueryFloatAttribute("angle", &angle);
     SetRotation(angle);
 
-    float offsetX(0), offsetY(0);
+    float offsetX(0), offsetY(0), zorder(0);
     boneElement.QueryFloatAttribute("offsetX", &offsetX);
     boneElement.QueryFloatAttribute("offsetY", &offsetY);
+    boneElement.QueryFloatAttribute("zOrder", &zorder);
     SetOffset(offsetX, offsetY);
+    SetZOrder(zorder);
 
     TiXmlNode *child;
     for( child = boneElement.FirstChild(); child; child = child->NextSibling() )
