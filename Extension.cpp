@@ -39,7 +39,7 @@ class Extension : public ExtensionBase
                                   _("Objet Squelette"),
                                   _("Extension permettant de gérer les animations sous forme d'une squelette."),
                                   "Victor Levasseur",
-                                  "Freeware")
+                                  "zlib")
 
 
             //Declaration of all objects available

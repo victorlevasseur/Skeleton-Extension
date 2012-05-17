@@ -556,6 +556,8 @@
 		</Linker>
 		<Unit filename="Bone.cpp" />
 		<Unit filename="Bone.h" />
+		<Unit filename="BoneAnimator.cpp" />
+		<Unit filename="BoneAnimator.h" />
 		<Unit filename="Extension.cpp" />
 		<Unit filename="Skeleton.cpp" />
 		<Unit filename="Skeleton.h" />

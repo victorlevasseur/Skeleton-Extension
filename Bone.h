@@ -23,6 +23,7 @@ Copyright (C) 2012 Victor Levasseur
 
 #include <cmath>
 #include <vector>
+#include <map>
 #include <boost/shared_ptr.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -40,6 +41,8 @@ class Bone
 {
     friend struct ZOrderFunctor;
     friend class Skeleton;
+    friend class BoneAnimator;
+    friend class Animation;
 
     public:
 
@@ -90,6 +93,12 @@ class Bone
         void LoadTexture(const ImageManager & imageMgr);
 
         std::vector<Bone*> const & GetChildrenBones() const;
+
+        //Animation
+        void SetAnimation(const std::string &animation);
+        void RestartAnimation();
+        void Update(float timeToAdd);
+        void Seek(float time);
 
     protected:
         Bone(std::string name, Skeleton *owner = 0);
