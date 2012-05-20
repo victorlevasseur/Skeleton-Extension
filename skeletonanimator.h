@@ -10,9 +10,12 @@ struct TimeFloat
     float value;
 };
 
-struct Timeline
+struct BoneAnimation
 {
-    float period;
+    unsigned int currentIndex;
+    unsigned int nextIndex;
+    float progress;
+
     std::vector<TimeFloat> keyFrames;
 };
 
@@ -24,8 +27,17 @@ class Animation
         Animation();
         virtual ~Animation();
 
+        void UpdateTime(float timeToAdd);
+        void Seek(float time);
+
+        std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
+
+        void ApplyToSkeleton(std::vector<Bone*> &boneVec);
+
     private:
-        std::map<std::string, TimeLine> m_keyFrames;
+        float m_time;
+        float m_period;
+        std::map<std::string, BoneAnimation> m_keyFrames;
 };
 
 class SkeletonAnimator
