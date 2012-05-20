@@ -39,7 +39,6 @@ class Bone
 {
     friend struct ZOrderFunctor;
     friend class Skeleton;
-    friend class BoneAnimator;
     friend class Animation;
 
     public:
