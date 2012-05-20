@@ -20,6 +20,10 @@ Copyright (C) 2012 Victor Levasseur
 
 #include "Skeleton.h"
 
+#ifdef GD_IDE_ONLY
+#include <wx/dcbuffer.h>
+#endif
+
 Skeleton::Skeleton() : m_root(new Bone("root", this))
 {
     RegisterBone(m_root);

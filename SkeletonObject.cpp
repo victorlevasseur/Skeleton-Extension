@@ -117,7 +117,7 @@ wxPanel * SkeletonObject::CreateInitialPositionPanel( wxWindow* parent, const Ga
     return NULL;
 }
 
-void SkeletonObject::ExposeResources(ArbitraryResourceWorker & worker)
+void SkeletonObject::ExposeResources(gd::ArbitraryResourceWorker & worker)
 {
 
 }

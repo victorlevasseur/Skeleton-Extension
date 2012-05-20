@@ -30,7 +30,6 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/checkbox.h>
 #include <wx/tglbtn.h>
 #include <wx/panel.h>
 #include <wx/bmpbuttn.h>
@@ -68,7 +67,6 @@ class SkeletonObjectEditor: public wxDialog
 		wxStaticText* StaticText3;
 		wxBitmapButton* BitmapButton1;
 		wxButton* Button2;
-		wxCheckBox* CheckBox1;
 		wxTextCtrl* nameTextCtrl;
 		wxTextCtrl* angleTextCtrl;
 		wxTextCtrl* imageTextCtrl;
@@ -103,7 +101,6 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_BITMAPBUTTON1;
 		static const long ID_STATICTEXT8;
 		static const long ID_TEXTCTRL6;
-		static const long ID_CHECKBOX1;
 		static const long ID_BUTTON5;
 		static const long ID_BUTTON2;
 		static const long ID_BUTTON4;
@@ -131,6 +128,7 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel1RightDown(wxMouseEvent& event);
 		void OnPanel1MouseMove(wxMouseEvent& event);
 		void OnPanel1RightUp(wxMouseEvent& event);
+		void OnPanel1EraseBackground(wxEraseEvent& event);
 		//*)
 
 		Game & game;

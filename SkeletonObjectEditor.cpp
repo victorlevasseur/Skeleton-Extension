@@ -36,7 +36,7 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/Game.h"
 #include "SkeletonObject.h"
 #include "GDL/IDE/MainEditorCommand.h"
-#include "GDL/IDE/Dialogs/BitmapGUIManager.h"
+#include "GDCore/IDE/CommonBitmapManager.h"
 #include "GDL/CommonTools.h"
 #include "GDL/IDE/Dialogs/ResourcesEditor.h"
 
@@ -60,7 +60,6 @@ const long SkeletonObjectEditor::ID_TEXTCTRL4 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON1 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT8 = wxNewId();
 const long SkeletonObjectEditor::ID_TEXTCTRL6 = wxNewId();
-const long SkeletonObjectEditor::ID_CHECKBOX1 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON5 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON4 = wxNewId();
@@ -159,11 +158,9 @@ mode(0)
 	StaticText8 = new wxStaticText(Core, ID_STATICTEXT8, _("Plan :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
 	FlexGridSizer4->Add(StaticText8, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer10 = new wxFlexGridSizer(0, 2, 0, 0);
+	FlexGridSizer10->AddGrowableCol(0);
 	zOrderTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL6, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL6"));
 	FlexGridSizer10->Add(zOrderTextCtrl, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	CheckBox1 = new wxCheckBox(Core, ID_CHECKBOX1, _("derrière le parent"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
-	CheckBox1->SetValue(false);
-	FlexGridSizer10->Add(CheckBox1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer4->Add(FlexGridSizer10, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer4->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button1 = new wxButton(Core, ID_BUTTON5, _("Appliquer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON5"));
@@ -195,6 +192,7 @@ mode(0)
 	Connect(ID_TOGGLEBUTTON1,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton1Toggle);
 	Connect(ID_TOGGLEBUTTON2,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton2Toggle);
 	Panel1->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1Paint,0,this);
+	Panel1->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1EraseBackground,0,this);
 	Panel1->Connect(wxEVT_LEFT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1LeftDown,0,this);
 	Panel1->Connect(wxEVT_RIGHT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1RightDown,0,this);
 	Panel1->Connect(wxEVT_RIGHT_UP,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1RightUp,0,this);
@@ -254,7 +252,7 @@ void SkeletonObjectEditor::OnPanel1Paint(wxPaintEvent& event)
     wxSize panelSize = Panel1->GetSize();
 
     //Draw background
-    dc.SetBrush(BitmapGUIManager::GetInstance()->transparentBg);
+    dc.SetBrush(gd::CommonBitmapManager::GetInstance()->transparentBg);
     dc.DrawRectangle(0,0, panelSize.GetWidth(), panelSize.GetHeight());
 
     skeleton.DrawWx(dc, offset);
@@ -448,6 +446,9 @@ void SkeletonObjectEditor::OnButton3Click(wxCommandEvent& event)
     m_mgr.Update();
 }
 
-#endif
+void SkeletonObjectEditor::OnPanel1EraseBackground(wxEraseEvent& event)
+{
+}
 
+#endif
 

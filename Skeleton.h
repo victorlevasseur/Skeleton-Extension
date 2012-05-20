@@ -26,11 +26,8 @@ Copyright (C) 2012 Victor Levasseur
 
 #include "Bone.h"
 
-#ifdef GD_IDE_ONLY
-#include <wx/dcbuffer.h>
-#endif
-
 class Bone;
+class wxBufferedPaintDC;
 
 class Skeleton
 {

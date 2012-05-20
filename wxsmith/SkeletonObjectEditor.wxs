@@ -55,6 +55,7 @@
 											<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
 												<size>453,373</size>
 												<handler function="OnPanel1Paint" entry="EVT_PAINT" />
+												<handler function="OnPanel1EraseBackground" entry="EVT_ERASE_BACKGROUND" />
 												<handler function="OnPanel1LeftDown" entry="EVT_LEFT_DOWN" />
 												<handler function="OnPanel1RightDown" entry="EVT_RIGHT_DOWN" />
 												<handler function="OnPanel1RightUp" entry="EVT_RIGHT_UP" />
@@ -221,17 +222,10 @@
 														<object class="sizeritem">
 															<object class="wxFlexGridSizer" variable="FlexGridSizer10" member="no">
 																<cols>2</cols>
+																<growablecols>0</growablecols>
 																<object class="sizeritem">
 																	<object class="wxTextCtrl" name="ID_TEXTCTRL6" variable="zOrderTextCtrl" member="yes" />
 																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxCheckBox" name="ID_CHECKBOX1" variable="CheckBox1" member="yes">
-																		<label>derrière le parent</label>
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<border>5</border>
 																	<option>1</option>
 																</object>

@@ -30,12 +30,10 @@ Copyright (C) 2012 Victor Levasseur
 #include <SFML/Graphics/Texture.hpp>
 #include "GDL/ImageManager.h"
 #include "GDL/tinyxml/tinyxml.h"
-#ifdef GD_IDE_ONLY
-#include <wx/dcbuffer.h>
-#endif
 
 class ImageManager;
 class Skeleton;
+class wxBufferedPaintDC;
 
 class Bone
 {
@@ -93,12 +91,6 @@ class Bone
         void LoadTexture(const ImageManager & imageMgr);
 
         std::vector<Bone*> const & GetChildrenBones() const;
-
-        //Animation
-        void SetAnimation(const std::string &animation);
-        void RestartAnimation();
-        void Update(float timeToAdd);
-        void Seek(float time);
 
     protected:
         Bone(std::string name, Skeleton *owner = 0);

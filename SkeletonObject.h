@@ -26,6 +26,10 @@ Copyright (C) 2012 Victor Levasseur
 #include "Skeleton.h"
 #include "Bone.h"
 
+#if defined(GD_IDE_ONLY)
+#include "GDCore/IDE/ArbitraryResourceWorker.h"
+#endif
+
 
 class ImageManager;
 class RuntimeScene;
@@ -56,7 +60,7 @@ class GD_EXTENSION_API SkeletonObject : public Object
         SkeletonObject(const SkeletonObject &other);
         SkeletonObject& operator=(const SkeletonObject &other);
 
-        virtual ObjSPtr Clone() { return boost::shared_ptr<Object>(new SkeletonObject(*this));}
+        virtual Object* Clone() { return new SkeletonObject(*this);}
 
         virtual bool LoadResources(const RuntimeScene & scene, const ImageManager & imageMgr );
         virtual bool LoadRuntimeResources(const RuntimeScene & scene, const ImageManager & imageMgr );
@@ -65,7 +69,7 @@ class GD_EXTENSION_API SkeletonObject : public Object
 
         #if defined(GD_IDE_ONLY)
         virtual bool DrawEdittime(sf::RenderTarget & renderTarget);
-        virtual void ExposeResources(ArbitraryResourceWorker & worker);
+        virtual void ExposeResources(gd::ArbitraryResourceWorker & worker);
         virtual bool GenerateThumbnail(const Game & game, wxBitmap & thumbnail);
 
         virtual wxPanel * CreateInitialPositionPanel( wxWindow* parent, const Game & game_, const Scene & scene_, const InitialPosition & position );
