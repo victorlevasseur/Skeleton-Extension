@@ -68,14 +68,19 @@ void Animation::Seek(float time)
     }
 }
 
-std::vector<TimeFloat>& Animation::GetBoneKeyFrames(const std::string &boneName)
+inline std::vector<TimeFloat>& Animation::GetBoneKeyFrames(const std::string &boneName)
 {
-
+    return m_keyFrames[boneName].keyFrames;
 }
 
 void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)
 {
-
+    for(unsigned int a = 0; a < boneVec.size(); a++)
+    {
+        float angleValue;
+        angleValue = GetBoneKeyFrames(boneVec.at(a)->GetName()).at(it->second.currentIndex).value + m_keyFrames[boneVec.at(a)->GetName()].progress * (GetBoneKeyFrames(boneVec.at(a)->GetName()).at(it->second.nextIndex).value - GetBoneKeyFrames(boneVec.at(a)->GetName()).at(it->second.currentIndex).value);
+        boneVec.at(a).m_relativeRotation = angleValue;
+    }
 }
 
 SkeletonAnimator::SkeletonAnimator()
@@ -86,4 +91,19 @@ SkeletonAnimator::SkeletonAnimator()
 SkeletonAnimator::~SkeletonAnimator()
 {
     //dtor
+}
+
+void SkeletonAnimator::UpdateTime(float timeToAdd)
+{
+
+}
+
+void SkeletonAnimator::Seek(float time)
+{
+
+}
+
+void SkeletonAnimator::ApplyToSkeleton(std::vector<Bone*> &boneVec)
+{
+
 }

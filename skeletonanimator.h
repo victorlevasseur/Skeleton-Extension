@@ -33,7 +33,7 @@ class Animation
         void UpdateTime(float timeToAdd);
         void Seek(float time);
 
-        std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
+        inline std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
 
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 
@@ -55,6 +55,10 @@ class SkeletonAnimator
         void CreateAnimation(const std::string &name);
         void RenameAnimation(const std::string &name, const std::string &newName);
         void DeleteAnimation(const std::string &name);
+
+        void UpdateTime(float timeToAdd);
+        void Seek(float time);
+        void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 
     protected:
     private:
