@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <map>
+#include <string>
+
+class Bone;
 
 struct TimeFloat
 {
@@ -37,6 +40,7 @@ class Animation
     private:
         float m_time;
         float m_period;
+        bool m_autoRepeat;
         std::map<std::string, BoneAnimation> m_keyFrames;
 };
 
