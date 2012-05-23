@@ -82,6 +82,7 @@ void SkeletonObject::SaveToXml(TiXmlElement * elem)
 bool SkeletonObject::LoadResources(const RuntimeScene & scene, const ImageManager & imageMgr )
 {
     skeleton.GetRoot()->LoadTexture(imageMgr);
+    skeleton.GetAnimator().Reset();
 
     return true;
 }
@@ -89,6 +90,7 @@ bool SkeletonObject::LoadResources(const RuntimeScene & scene, const ImageManage
 bool SkeletonObject::LoadRuntimeResources(const RuntimeScene & scene, const ImageManager & imageMgr )
 {
     skeleton.GetRoot()->LoadTexture(imageMgr);
+    skeleton.GetAnimator().Reset();
 
     return true;
 }
@@ -152,6 +154,11 @@ unsigned int SkeletonObject::GetNumberOfProperties() const
 void SkeletonObject::OnPositionChanged()
 {
 
+}
+
+void SkeletonObject::UpdateTime(float time)
+{
+    skeleton.GetAnimator().UpdateTime(time);
 }
 
 float SkeletonObject::GetDrawableX() const

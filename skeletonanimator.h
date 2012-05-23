@@ -32,6 +32,9 @@ class Animation
 
         void UpdateTime(float timeToAdd);
         void Seek(float time);
+        void Reset();
+
+        float GetPeriod() const {return m_period;};
 
         inline std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
 
@@ -50,7 +53,10 @@ class SkeletonAnimator
         SkeletonAnimator();
         virtual ~SkeletonAnimator();
 
-        Animation& GetAnimation(const std::string &name);
+        inline Animation& GetAnimation(const std::string &name);
+
+        const std::string& GetCurrentAnimation() const;
+        void SetCurrentAnimation(const std::string &animName);
 
         void CreateAnimation(const std::string &name);
         void RenameAnimation(const std::string &name, const std::string &newName);
@@ -58,11 +64,24 @@ class SkeletonAnimator
 
         void UpdateTime(float timeToAdd);
         void Seek(float time);
+        void Reset();
+
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 
     protected:
     private:
         std::map<std::string, Animation> m_animations;
+        std::string m_currentAnimation;
 };
+
+inline Animation& SkeletonAnimator::GetAnimation(const std::string &name)
+{
+    return m_animations[name];
+}
+
+inline std::vector<TimeFloat>& Animation::GetBoneKeyFrames(const std::string &boneName)
+{
+    return m_keyFrames[boneName].keyFrames;
+}
 
 #endif // SKELETONANIMATOR_H

@@ -36,6 +36,8 @@ Skeleton::Skeleton(const Skeleton &other)
     m_root = new Bone(*other.m_root);
     m_root->ResetOwner(this);
 
+    m_skeAnim = other.m_skeAnim;
+
     //m_root->Update();
 }
 

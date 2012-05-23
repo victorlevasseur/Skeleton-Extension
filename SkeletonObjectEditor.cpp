@@ -397,6 +397,12 @@ void SkeletonObjectEditor::OnnameTextCtrlText(wxCommandEvent& event)
             selectedBone->SetZOrder(ToFloat(ToString(zOrderTextCtrl->GetValue())));
 
             selectedBone->Update();
+
+            if(skeleton.GetAnimator().GetAnimation("").GetBoneKeyFrames(selectedBone->GetName()).size() == 0)
+                skeleton.GetAnimator().GetAnimation("").GetBoneKeyFrames(selectedBone->GetName()).push_back(TimeFloat());
+
+            skeleton.GetAnimator().GetAnimation("").GetBoneKeyFrames(selectedBone->GetName()).at(0).time = 0;
+            skeleton.GetAnimator().GetAnimation("").GetBoneKeyFrames(selectedBone->GetName()).at(0).value = ToFloat(ToString(angleTextCtrl->GetValue()));
         }
 
         Panel1->Refresh(); //Refresh

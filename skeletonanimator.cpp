@@ -4,7 +4,7 @@
 
 Animation::Animation() : m_period(10), m_autoRepeat(true)
 {
-
+    Reset();
 }
 
 Animation::~Animation()
@@ -56,6 +56,11 @@ void Animation::UpdateTime(float timeToAdd)
     }
 }
 
+void Animation::Reset()
+{
+    Seek(m_period - m_time);
+}
+
 void Animation::Seek(float time)
 {
     if(time >= m_time)
@@ -68,24 +73,20 @@ void Animation::Seek(float time)
     }
 }
 
-inline std::vector<TimeFloat>& Animation::GetBoneKeyFrames(const std::string &boneName)
-{
-    return m_keyFrames[boneName].keyFrames;
-}
-
 void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)
 {
     for(unsigned int a = 0; a < boneVec.size(); a++)
     {
         float angleValue;
-        angleValue = GetBoneKeyFrames(boneVec.at(a)->GetName()).at(it->second.currentIndex).value + m_keyFrames[boneVec.at(a)->GetName()].progress * (GetBoneKeyFrames(boneVec.at(a)->GetName()).at(it->second.nextIndex).value - GetBoneKeyFrames(boneVec.at(a)->GetName()).at(it->second.currentIndex).value);
-        boneVec.at(a).m_relativeRotation = angleValue;
+        angleValue = GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].currentIndex).value + m_keyFrames[boneVec.at(a)->GetName()].progress * (GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].nextIndex).value - GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].currentIndex).value);
+        boneVec.at(a)->m_relativeRotation = angleValue;
     }
 }
 
-SkeletonAnimator::SkeletonAnimator()
+SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("")
 {
     //ctor
+    CreateAnimation("");
 }
 
 SkeletonAnimator::~SkeletonAnimator()
@@ -93,17 +94,48 @@ SkeletonAnimator::~SkeletonAnimator()
     //dtor
 }
 
-void SkeletonAnimator::UpdateTime(float timeToAdd)
+const std::string& SkeletonAnimator::GetCurrentAnimation() const
+{
+    return m_currentAnimation;
+}
+
+void SkeletonAnimator::SetCurrentAnimation(const std::string &animName)
+{
+    m_currentAnimation = animName;
+    GetAnimation(m_currentAnimation).Reset();
+}
+
+void SkeletonAnimator::CreateAnimation(const std::string &name)
+{
+    m_animations[name] = Animation();
+}
+
+void SkeletonAnimator::RenameAnimation(const std::string &name, const std::string &newName)
 {
 
+}
+
+void SkeletonAnimator::DeleteAnimation(const std::string &name)
+{
+
+}
+
+void SkeletonAnimator::UpdateTime(float timeToAdd)
+{
+    GetAnimation(m_currentAnimation).UpdateTime(timeToAdd);
 }
 
 void SkeletonAnimator::Seek(float time)
 {
+    GetAnimation(m_currentAnimation).Seek(time);
+}
 
+void SkeletonAnimator::Reset()
+{
+    GetAnimation(m_currentAnimation).Reset();
 }
 
 void SkeletonAnimator::ApplyToSkeleton(std::vector<Bone*> &boneVec)
 {
-
+    GetAnimation(m_currentAnimation).ApplyToSkeleton(boneVec);
 }

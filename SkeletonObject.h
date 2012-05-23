@@ -104,6 +104,8 @@ class GD_EXTENSION_API SkeletonObject : public Object
         Skeleton GetSkeleton();
         void SetSkeleton(Skeleton _ske);
 
+        void UpdateTime(float time);
+
     private:
         Skeleton skeleton;
         //Bone bone;

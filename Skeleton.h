@@ -25,6 +25,7 @@ Copyright (C) 2012 Victor Levasseur
 #include <vector>
 
 #include "Bone.h"
+#include "skeletonanimator.h"
 
 class Bone;
 class wxBufferedPaintDC;
@@ -53,10 +54,13 @@ class Skeleton
 
         Bone* GetRoot();
 
+        SkeletonAnimator& GetAnimator() {return m_skeAnim;};
+
     protected:
     private:
         Bone *m_root;
         std::vector<Bone*> m_bones;
+        SkeletonAnimator m_skeAnim;
 };
 
 struct ZOrderFunctor
