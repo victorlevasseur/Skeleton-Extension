@@ -159,6 +159,7 @@ void SkeletonObject::OnPositionChanged()
 void SkeletonObject::UpdateTime(float time)
 {
     skeleton.GetAnimator().UpdateTime(time);
+    skeleton.ApplyAnimationToBones();
 }
 
 float SkeletonObject::GetDrawableX() const
@@ -189,10 +190,6 @@ float SkeletonObject::GetCenterX() const
 float SkeletonObject::GetCenterY() const
 {
     return 16;
-}
-
-void SkeletonObject::UpdateTime(float)
-{
 }
 
 Skeleton SkeletonObject::GetSkeleton()

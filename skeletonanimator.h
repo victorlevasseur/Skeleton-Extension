@@ -9,14 +9,24 @@ class Bone;
 
 struct TimeFloat
 {
+    TimeFloat() : time(0), value(0) {};
+
     float time;
     float value;
 };
 
 struct BoneAnimation
 {
+    BoneAnimation() : currentIndex(0), beforeIndexTime(0), tmp_angleValue(0), progress(0)
+    {
+        keyFrames.push_back(TimeFloat());
+    };
+
     unsigned int currentIndex;
-    unsigned int nextIndex;
+    float beforeIndexTime;
+
+    float tmp_angleValue;
+
     float progress;
 
     std::vector<TimeFloat> keyFrames;
@@ -41,6 +51,8 @@ class Animation
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 
     private:
+        int GetNextIndex(const std::string &boneName, int index);
+
         float m_time;
         float m_period;
         bool m_autoRepeat;

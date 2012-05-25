@@ -55,6 +55,7 @@ class Skeleton
         Bone* GetRoot();
 
         SkeletonAnimator& GetAnimator() {return m_skeAnim;};
+        void ApplyAnimationToBones();
 
     protected:
     private:

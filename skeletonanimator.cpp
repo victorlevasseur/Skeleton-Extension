@@ -15,44 +15,41 @@ Animation::~Animation()
 void Animation::UpdateTime(float timeToAdd)
 {
     m_time += timeToAdd;
-    if(m_time >= m_period)
-        m_time -= m_period;
+    /*if(m_time >= m_period)
+        m_time -= m_period;*/
 
     std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin();
     for(; it != m_keyFrames.end(); it++)
     {
-        //Update each bone keyframes
-        if(m_time > it->second.keyFrames.at(it->second.nextIndex).time && it->second.nextIndex != 0)
-        {
-            it->second.currentIndex++;
-            it->second.nextIndex++;
+        if(it->second.keyFrames.size() == 0)
+            continue;
 
-            if(it->second.nextIndex >= m_keyFrames.size())
-            {
-                if(m_autoRepeat)
-                    it->second.nextIndex = 0;
-                else
-                    /* TODO : STOP ANIMATION*/;
-            }
-        }
-        else if(m_time > it->second.keyFrames.at(it->second.nextIndex).time && it->second.nextIndex == 0)
-        {
-            it->second.currentIndex = 0;
-            it->second.nextIndex++;
+        TimeFloat key = it->second.keyFrames.at(it->second.currentIndex);
 
-            if(it->second.nextIndex >= m_keyFrames.size())
-            {
-                it->second.nextIndex = 0;
-            }
+        if(key.time >= m_time - it->second.beforeIndexTime)
+        {
+            it->second.currentIndex = GetNextIndex(it->first, it->second.currentIndex);
+            it->second.beforeIndexTime += key.time;
+            key = it->second.keyFrames.at(it->second.currentIndex);
         }
 
-        //Processing progression
-        if(it->second.keyFrames.at(it->second.nextIndex).time < it->second.keyFrames.at(it->second.currentIndex).time)
-            it->second.progress = (m_time - it->second.keyFrames.at(it->second.currentIndex).time) / (it->second.keyFrames.at(it->second.nextIndex).time - it->second.keyFrames.at(it->second.currentIndex).time);
-        else if(it->second.keyFrames.at(it->second.nextIndex).time > it->second.keyFrames.at(it->second.currentIndex).time && m_time > it->second.keyFrames.at(it->second.currentIndex).time)
-            it->second.progress = (m_time - it->second.keyFrames.at(it->second.currentIndex).time) / (it->second.keyFrames.at(it->second.nextIndex).time - it->second.keyFrames.at(it->second.currentIndex).time + m_period);
-        else if(it->second.keyFrames.at(it->second.nextIndex).time > it->second.keyFrames.at(it->second.currentIndex).time)
-            it->second.progress = (m_time - (it->second.keyFrames.at(it->second.currentIndex).time - m_period)) / (it->second.keyFrames.at(it->second.nextIndex).time - (it->second.keyFrames.at(it->second.currentIndex).time - m_period));
+        int nextIndex(GetNextIndex(it->first, it->second.currentIndex));
+        TimeFloat nextKey = it->second.keyFrames.at(nextIndex);
+
+        it->second.progress = key.time != 0 ? (m_time - it->second.beforeIndexTime) / key.time : 1;
+        it->second.tmp_angleValue = (nextKey.value - key.value) * it->second.progress + key.value;
+    }
+}
+
+int Animation::GetNextIndex(const std::string &boneName, int index)
+{
+    if(index < GetBoneKeyFrames(boneName).size() - 1)
+    {
+        return ++index;
+    }
+    else
+    {
+        return 0;
     }
 }
 
@@ -77,16 +74,19 @@ void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)
 {
     for(unsigned int a = 0; a < boneVec.size(); a++)
     {
-        float angleValue;
-        angleValue = GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].currentIndex).value + m_keyFrames[boneVec.at(a)->GetName()].progress * (GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].nextIndex).value - GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].currentIndex).value);
-        boneVec.at(a)->m_relativeRotation = angleValue;
+        //float angleValue;
+        //angleValue = GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].currentIndex).value + m_keyFrames[boneVec.at(a)->GetName()].progress * (GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].nextIndex).value - GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].currentIndex).value);
+        if(m_keyFrames.count(boneVec[a]->GetName()) == 0)
+            continue;
+
+        boneVec[a]->m_relativeRotation = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue;
     }
 }
 
-SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("")
+SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial")
 {
     //ctor
-    CreateAnimation("");
+    CreateAnimation("Initial");
 }
 
 SkeletonAnimator::~SkeletonAnimator()

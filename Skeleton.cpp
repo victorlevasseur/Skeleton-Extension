@@ -111,3 +111,8 @@ void Skeleton::ReorderByZOrder()
     ZOrderFunctor functor;
     std::sort(m_bones.begin(), m_bones.end(), functor);
 }
+
+void Skeleton::ApplyAnimationToBones()
+{
+    m_skeAnim.ApplyToSkeleton(m_bones);
+}

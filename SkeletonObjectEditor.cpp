@@ -398,11 +398,11 @@ void SkeletonObjectEditor::OnnameTextCtrlText(wxCommandEvent& event)
 
             selectedBone->Update();
 
-            if(skeleton.GetAnimator().GetAnimation("").GetBoneKeyFrames(selectedBone->GetName()).size() == 0)
-                skeleton.GetAnimator().GetAnimation("").GetBoneKeyFrames(selectedBone->GetName()).push_back(TimeFloat());
+            if(skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).size() == 0)
+                skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).push_back(TimeFloat());
 
-            skeleton.GetAnimator().GetAnimation("").GetBoneKeyFrames(selectedBone->GetName()).at(0).time = 0;
-            skeleton.GetAnimator().GetAnimation("").GetBoneKeyFrames(selectedBone->GetName()).at(0).value = ToFloat(ToString(angleTextCtrl->GetValue()));
+            skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).at(0).time = 0;
+            skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).at(0).value = ToFloat(ToString(angleTextCtrl->GetValue()));
         }
 
         Panel1->Refresh(); //Refresh
