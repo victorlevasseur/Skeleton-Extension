@@ -60,22 +60,20 @@ void Animation::Reset()
 
 void Animation::Seek(float time)
 {
-    if(time >= m_time)
+    /*if(time >= m_time)
     {
         UpdateTime(time - m_time);
     }
     else
     {
         UpdateTime(m_period - m_time + time);
-    }
+    }*/
 }
 
 void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)
 {
     for(unsigned int a = 0; a < boneVec.size(); a++)
     {
-        //float angleValue;
-        //angleValue = GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].currentIndex).value + m_keyFrames[boneVec.at(a)->GetName()].progress * (GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].nextIndex).value - GetBoneKeyFrames(boneVec.at(a)->GetName()).at(m_keyFrames[boneVec.at(a)->GetName()].currentIndex).value);
         if(m_keyFrames.count(boneVec[a]->GetName()) == 0)
             continue;
 
@@ -112,12 +110,13 @@ void SkeletonAnimator::CreateAnimation(const std::string &name)
 
 void SkeletonAnimator::RenameAnimation(const std::string &name, const std::string &newName)
 {
-
+    m_animations[newName] = m_animations[name];
+    DeleteAnimation(name);
 }
 
 void SkeletonAnimator::DeleteAnimation(const std::string &name)
 {
-
+    m_animations.erase(name);
 }
 
 void SkeletonAnimator::UpdateTime(float timeToAdd)
