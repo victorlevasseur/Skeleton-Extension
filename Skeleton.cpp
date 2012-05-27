@@ -115,4 +115,5 @@ void Skeleton::ReorderByZOrder()
 void Skeleton::ApplyAnimationToBones()
 {
     m_skeAnim.ApplyToSkeleton(m_bones);
+    m_root->Update();
 }

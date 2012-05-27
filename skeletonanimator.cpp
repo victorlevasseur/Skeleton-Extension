@@ -1,6 +1,7 @@
 #include "skeletonanimator.h"
 
 #include "Bone.h"
+#include "GDL/CommonTools.h"
 
 Animation::Animation() : m_period(10), m_autoRepeat(true)
 {
@@ -11,6 +12,8 @@ Animation::~Animation()
 {
 
 }
+
+#include <wx/log.h>
 
 void Animation::UpdateTime(float timeToAdd)
 {
@@ -26,17 +29,17 @@ void Animation::UpdateTime(float timeToAdd)
 
         TimeFloat key = it->second.keyFrames.at(it->second.currentIndex);
 
-        if(key.time >= m_time - it->second.beforeIndexTime)
+        if(m_time >= key.time + it->second.beforeIndexTime)
         {
-            it->second.currentIndex = GetNextIndex(it->first, it->second.currentIndex);
             it->second.beforeIndexTime += key.time;
+            it->second.currentIndex = GetNextIndex(it->first, it->second.currentIndex);
             key = it->second.keyFrames.at(it->second.currentIndex);
         }
 
         int nextIndex(GetNextIndex(it->first, it->second.currentIndex));
         TimeFloat nextKey = it->second.keyFrames.at(nextIndex);
 
-        it->second.progress = key.time != 0 ? (m_time - it->second.beforeIndexTime) / key.time : 1;
+        it->second.progress = key.time != 0 ? ((m_time - it->second.beforeIndexTime) / key.time) : 1;
         it->second.tmp_angleValue = (nextKey.value - key.value) * it->second.progress + key.value;
     }
 }
@@ -45,7 +48,8 @@ int Animation::GetNextIndex(const std::string &boneName, int index)
 {
     if(index < GetBoneKeyFrames(boneName).size() - 1)
     {
-        return ++index;
+        index++;
+        return index;
     }
     else
     {
