@@ -18,8 +18,11 @@ Animation::~Animation()
 void Animation::UpdateTime(float timeToAdd)
 {
     m_time += timeToAdd;
-    /*if(m_time >= m_period)
-        m_time -= m_period;*/
+
+    if(m_time >= m_period)
+    {
+        m_time -= m_period;
+    }
 
     std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin();
     for(; it != m_keyFrames.end(); it++)
@@ -28,20 +31,32 @@ void Animation::UpdateTime(float timeToAdd)
             continue;
 
         TimeFloat key = it->second.keyFrames.at(it->second.currentIndex);
-
-        if(m_time >= key.time + it->second.beforeIndexTime)
+        if(m_period == 0)
         {
-            it->second.beforeIndexTime += key.time;
-            it->second.currentIndex = GetNextIndex(it->first, it->second.currentIndex);
-            key = it->second.keyFrames.at(it->second.currentIndex);
+            it->second.tmp_angleValue = key.value;
+            continue;
         }
 
-        int nextIndex(GetNextIndex(it->first, it->second.currentIndex));
-        TimeFloat nextKey = it->second.keyFrames.at(nextIndex);
+        TimeFloat nextKey = it->second.keyFrames.at(GetNextIndex(it->first, it->second.currentIndex));
 
-        it->second.progress = key.time != 0 ? ((m_time - it->second.beforeIndexTime) / key.time) : 1;
+        while(((m_time > nextKey.time) && (key.time <= nextKey.time)) ||
+              ((key.time > nextKey.time) && (m_time > nextKey.time) && (m_time < key.time)))
+        {
+            it->second.currentIndex = GetNextIndex(it->first, it->second.currentIndex);
+            key = nextKey;
+
+            nextKey = it->second.keyFrames.at(GetNextIndex(it->first, it->second.currentIndex));
+        }
+
+        it->second.progress = GetTimeDelta(key, nextKey) != 0 ? ((((m_time > key.time) ? m_time - key.time : m_time + m_period - key.time)) / GetTimeDelta(key, nextKey)) : 1;
+
         it->second.tmp_angleValue = (nextKey.value - key.value) * it->second.progress + key.value;
     }
+}
+
+float Animation::GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2)
+{
+    return frame1.time <= frame2.time ? frame2.time - frame1.time : frame2.time + m_period - frame1.time;
 }
 
 int Animation::GetNextIndex(const std::string &boneName, int index)
@@ -64,14 +79,14 @@ void Animation::Reset()
 
 void Animation::Seek(float time)
 {
-    /*if(time >= m_time)
+    if(time >= m_time)
     {
         UpdateTime(time - m_time);
     }
     else
     {
         UpdateTime(m_period - m_time + time);
-    }*/
+    }
 }
 
 void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)

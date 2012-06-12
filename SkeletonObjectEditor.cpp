@@ -398,18 +398,19 @@ void SkeletonObjectEditor::OnnameTextCtrlText(wxCommandEvent& event)
 
             selectedBone->Update();
 
+            skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(10);
+
             if(skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).size() == 0)
                 skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).push_back(TimeFloat());
 
-            if(skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).size() <= 1)
+            if(skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).size() < 2)
                 skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).push_back(TimeFloat());
 
-            skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).at(0).time = 2;
+            skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).at(0).time = 0;
             skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).at(0).value = ToFloat(ToString(angleTextCtrl->GetValue()));
 
-            skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).at(1).time = 2;
-            skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).at(1).value = ToFloat(ToString(angleTextCtrl->GetValue())) + 40;
-
+            skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).at(1).time = 5;
+            skeleton.GetAnimator().GetAnimation("Initial").GetBoneKeyFrames(selectedBone->GetName()).at(1).value = ToFloat(ToString(angleTextCtrl->GetValue())) + 30;
         }
 
         Panel1->Refresh(); //Refresh

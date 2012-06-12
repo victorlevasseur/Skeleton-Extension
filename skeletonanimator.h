@@ -45,6 +45,7 @@ class Animation
         void Reset();
 
         float GetPeriod() const {return m_period;};
+        void SetPeriod(float value) {m_period = value;};
 
         inline std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
 
@@ -52,6 +53,7 @@ class Animation
 
     private:
         int GetNextIndex(const std::string &boneName, int index);
+        float GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2);
 
         float m_time;
         float m_period;
