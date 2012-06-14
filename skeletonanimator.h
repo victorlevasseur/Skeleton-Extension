@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <algorithm>
 
 class Bone;
 
@@ -15,18 +16,18 @@ struct TimeFloat
     float value;
 };
 
-struct BoneAnimation
+class BoneAnimation
 {
-    BoneAnimation() : currentIndex(0), beforeIndexTime(0), tmp_angleValue(0), progress(0)
+    public:
+
+    BoneAnimation() : currentIndex(0), tmp_angleValue(0), progress(0)
     {
         keyFrames.push_back(TimeFloat());
     };
 
     unsigned int currentIndex;
-    float beforeIndexTime;
 
     float tmp_angleValue;
-
     float progress;
 
     std::vector<TimeFloat> keyFrames;
@@ -47,9 +48,16 @@ class Animation
         float GetPeriod() const {return m_period;};
         void SetPeriod(float value) {m_period = value;};
 
-        inline std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
+        void SetKeyFrame(const std::string &boneName, TimeFloat &keyframe);
+        void SetKeyFrame(const std::string &boneName, float time, float value);
+
+        /// Don't forget to call ReorderKeys(const std::string &boneName); after modifying a bone keyframes list.
+        inline const std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
+        void ReorderKeys(const std::string &boneName);
 
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
+
+        void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
 
     private:
         int GetNextIndex(const std::string &boneName, int index);
@@ -82,10 +90,18 @@ class SkeletonAnimator
 
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 
+        void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
+
     protected:
     private:
         std::map<std::string, Animation> m_animations;
         std::string m_currentAnimation;
+};
+
+class TimeOrderFunctor : public std::binary_function<TimeFloat, TimeFloat, bool>
+{
+    public:
+        bool operator() (TimeFloat left, TimeFloat right) {return (left.time < right.time);};
 };
 
 inline Animation& SkeletonAnimator::GetAnimation(const std::string &name)
@@ -93,7 +109,7 @@ inline Animation& SkeletonAnimator::GetAnimation(const std::string &name)
     return m_animations[name];
 }
 
-inline std::vector<TimeFloat>& Animation::GetBoneKeyFrames(const std::string &boneName)
+inline const std::vector<TimeFloat>& Animation::GetBoneKeyFrames(const std::string &boneName)
 {
     return m_keyFrames[boneName].keyFrames;
 }

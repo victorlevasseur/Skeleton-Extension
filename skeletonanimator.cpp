@@ -13,7 +13,30 @@ Animation::~Animation()
 
 }
 
-#include <wx/log.h>
+void Animation::SetKeyFrame(const std::string &boneName, TimeFloat &keyframe)
+{
+    for(unsigned int a = 0; a < m_keyFrames[boneName].keyFrames.size(); a++)
+    {
+        if(m_keyFrames[boneName].keyFrames[a].time == keyframe.time)
+        {
+            m_keyFrames[boneName].keyFrames[a] = keyframe;
+            ReorderKeys(boneName);
+            return;
+        }
+    }
+
+    m_keyFrames[boneName].keyFrames.push_back(keyframe);
+    ReorderKeys(boneName);
+}
+
+void Animation::SetKeyFrame(const std::string &boneName, float time, float value)
+{
+    TimeFloat timefloat;
+    timefloat.time = time;
+    timefloat.value = value;
+
+    SetKeyFrame(boneName, timefloat);
+}
 
 void Animation::UpdateTime(float timeToAdd)
 {
@@ -100,6 +123,20 @@ void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)
     }
 }
 
+void Animation::NotifyBoneRenamed(const std::string &oldName, const std::string &newName)
+{
+    if(m_keyFrames.count(oldName) == 0)
+        return;
+
+    m_keyFrames[newName] = BoneAnimation(m_keyFrames[oldName]);
+    m_keyFrames.erase(oldName);
+}
+
+void Animation::ReorderKeys(const std::string &boneName)
+{
+    std::sort(m_keyFrames[boneName].keyFrames.begin(), m_keyFrames[boneName].keyFrames.end(), TimeOrderFunctor());
+}
+
 SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial")
 {
     //ctor
@@ -156,4 +193,12 @@ void SkeletonAnimator::Reset()
 void SkeletonAnimator::ApplyToSkeleton(std::vector<Bone*> &boneVec)
 {
     GetAnimation(m_currentAnimation).ApplyToSkeleton(boneVec);
+}
+
+void SkeletonAnimator::NotifyBoneRenamed(const std::string &oldName, const std::string &newName)
+{
+    for(std::map<std::string, Animation>::iterator it = m_animations.begin(); it != m_animations.end(); it++)
+    {
+        it->second.NotifyBoneRenamed(oldName, newName);
+    }
 }
