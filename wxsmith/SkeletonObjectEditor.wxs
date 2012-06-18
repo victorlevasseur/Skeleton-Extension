@@ -17,24 +17,77 @@
 						<cols>1</cols>
 						<object class="sizeritem">
 							<object class="wxFlexGridSizer" variable="FlexGridSizer5" member="no">
-								<cols>3</cols>
+								<cols>1</cols>
+								<growablecols>0</growablecols>
+								<growablerows>1</growablerows>
 								<object class="sizeritem">
-									<object class="wxToggleButton" name="ID_TOGGLEBUTTON1" variable="ToggleButton1" member="yes">
-										<label>Edition des os</label>
-										<checked>1</checked>
-										<handler function="OnToggleButton1Toggle" entry="EVT_TOGGLEBUTTON" />
+									<object class="wxFlexGridSizer" variable="FlexGridSizer11" member="no">
+										<cols>5</cols>
+										<object class="sizeritem">
+											<object class="wxToggleButton" name="ID_TOGGLEBUTTON1" variable="ToggleButton1" member="yes">
+												<label>Edition des os</label>
+												<checked>1</checked>
+												<handler function="OnToggleButton1Toggle" entry="EVT_TOGGLEBUTTON" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxToggleButton" name="ID_TOGGLEBUTTON2" variable="ToggleButton2" member="yes">
+												<label>Animation</label>
+												<handler function="OnToggleButton2Toggle" entry="EVT_TOGGLEBUTTON" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxChoice" name="ID_CHOICE1" variable="AnimationCombobox" member="yes">
+												<size>110,21</size>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxBitmapButton" name="ID_BITMAPBUTTON2" variable="BitmapButton2" member="yes">
+												<bitmap>res/addicon.png</bitmap>
+												<default>1</default>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxBitmapButton" name="ID_BITMAPBUTTON3" variable="BitmapButton3" member="yes">
+												<bitmap>res/deleteicon.png</bitmap>
+												<default>1</default>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
 									</object>
-									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxToggleButton" name="ID_TOGGLEBUTTON2" variable="ToggleButton2" member="yes">
-										<label>Animation</label>
-										<handler function="OnToggleButton2Toggle" entry="EVT_TOGGLEBUTTON" />
+									<object class="wxFlexGridSizer" variable="FlexGridSizer12" member="no">
+										<cols>3</cols>
+										<growablecols>0</growablecols>
+										<object class="sizeritem">
+											<object class="wxPanel" name="ID_PANEL3" variable="Panel2" member="yes">
+												<size>281,43</size>
+												<handler function="OnPanel2Paint" entry="EVT_PAINT" />
+												<handler function="OnPanel2EraseBackground" entry="EVT_ERASE_BACKGROUND" />
+											</object>
+											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
 									</object>
-									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<option>1</option>
 								</object>
 							</object>
@@ -88,9 +141,7 @@
 															<option>1</option>
 														</object>
 														<object class="sizeritem">
-															<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="nameTextCtrl" member="yes">
-																<size>142,27</size>
-															</object>
+															<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="nameTextCtrl" member="yes" />
 															<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 															<border>5</border>
 															<option>1</option>

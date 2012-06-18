@@ -106,6 +106,17 @@ Bone* Skeleton::GetRoot()
     return m_root;
 }
 
+bool Skeleton::BoneNameAlreadyUsed(const std::string &name)
+{
+    for(std::vector<Bone*>::iterator it = m_bones.begin(); it != m_bones.end(); it++)
+    {
+        if((*it)->GetName() == name)
+            return true;
+    }
+
+    return false;
+}
+
 void Skeleton::ReorderByZOrder()
 {
     ZOrderFunctor functor;

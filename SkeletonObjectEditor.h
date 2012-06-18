@@ -32,6 +32,7 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/textctrl.h>
 #include <wx/tglbtn.h>
 #include <wx/panel.h>
+#include <wx/choice.h>
 #include <wx/bmpbuttn.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
@@ -62,6 +63,7 @@ class SkeletonObjectEditor: public wxDialog
 		wxTextCtrl* lengthTextCtrl;
 		wxToggleButton* ToggleButton1;
 		wxPanel* Panel1;
+		wxBitmapButton* BitmapButton2;
 		wxStaticText* StaticText1;
 		wxTextCtrl* offsetXTextCtrl;
 		wxStaticText* StaticText3;
@@ -73,7 +75,10 @@ class SkeletonObjectEditor: public wxDialog
 		wxButton* Button3;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText7;
+		wxChoice* AnimationCombobox;
 		wxTextCtrl* zOrderTextCtrl;
+		wxBitmapButton* BitmapButton3;
+		wxPanel* Panel2;
 		wxButton* addChildBoneBt;
 		wxButton* deleteBoneBt;
 		wxStaticText* StaticText4;
@@ -84,6 +89,10 @@ class SkeletonObjectEditor: public wxDialog
 		//(*Identifiers(SkeletonObjectEditor)
 		static const long ID_TOGGLEBUTTON1;
 		static const long ID_TOGGLEBUTTON2;
+		static const long ID_CHOICE1;
+		static const long ID_BITMAPBUTTON2;
+		static const long ID_BITMAPBUTTON3;
+		static const long ID_PANEL3;
 		static const long ID_PANEL1;
 		static const long ID_STATICTEXT1;
 		static const long ID_TEXTCTRL1;
@@ -129,6 +138,8 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel1MouseMove(wxMouseEvent& event);
 		void OnPanel1RightUp(wxMouseEvent& event);
 		void OnPanel1EraseBackground(wxEraseEvent& event);
+		void OnPanel2Paint(wxPaintEvent& event);
+		void OnPanel2EraseBackground(wxEraseEvent& event);
 		//*)
 
 		Game & game;
@@ -148,6 +159,9 @@ class SkeletonObjectEditor: public wxDialog
 
 		sf::Vector2f lastPos;
 		char mode;
+
+		float timeline_scale; //Size of one second
+		float timeline_offset;
 
 		DECLARE_EVENT_TABLE()
 };

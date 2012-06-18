@@ -55,12 +55,14 @@ class Animation
         inline const std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
         void ReorderKeys(const std::string &boneName);
 
+        std::vector<float> GetListOfKeyFramesTime(const std::string &bone = "") const;
+
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
 
     private:
-        int GetNextIndex(const std::string &boneName, int index);
+        int GetNextIndex(const std::string &boneName, unsigned int index);
         float GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2);
 
         float m_time;
@@ -83,6 +85,8 @@ class SkeletonAnimator
         void CreateAnimation(const std::string &name);
         void RenameAnimation(const std::string &name, const std::string &newName);
         void DeleteAnimation(const std::string &name);
+
+        std::vector<std::string> GetListOfAnimations() const;
 
         void UpdateTime(float timeToAdd);
         void Seek(float time);

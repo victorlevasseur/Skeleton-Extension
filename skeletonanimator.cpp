@@ -82,7 +82,7 @@ float Animation::GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2)
     return frame1.time <= frame2.time ? frame2.time - frame1.time : frame2.time + m_period - frame1.time;
 }
 
-int Animation::GetNextIndex(const std::string &boneName, int index)
+int Animation::GetNextIndex(const std::string &boneName, unsigned int index)
 {
     if(index < GetBoneKeyFrames(boneName).size() - 1)
     {
@@ -137,6 +137,35 @@ void Animation::ReorderKeys(const std::string &boneName)
     std::sort(m_keyFrames[boneName].keyFrames.begin(), m_keyFrames[boneName].keyFrames.end(), TimeOrderFunctor());
 }
 
+std::vector<float> Animation::GetListOfKeyFramesTime(const std::string &bone) const
+{
+    std::vector<float> listOfKeys;
+
+    if(bone == "")
+    {
+        for(std::map<std::string, BoneAnimation>::const_iterator it = m_keyFrames.begin(); it != m_keyFrames.end(); it++)
+        {
+            for(unsigned int a = 0; a < it->second.keyFrames.size(); a++)
+            {
+                listOfKeys.push_back(it->second.keyFrames.at(a).time);
+            }
+        }
+    }
+    else
+    {
+        for(unsigned int a = 0; a < m_keyFrames.at(bone).keyFrames.size(); a++)
+        {
+            listOfKeys.push_back(m_keyFrames.at(bone).keyFrames.at(a).time);
+        }
+    }
+
+    std::sort(listOfKeys.begin(), listOfKeys.end());
+    std::vector<float>::iterator lastEle = std::unique(listOfKeys.begin(), listOfKeys.end());
+    listOfKeys.resize(lastEle - listOfKeys.begin());
+
+    return listOfKeys;
+}
+
 SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial")
 {
     //ctor
@@ -175,6 +204,18 @@ void SkeletonAnimator::DeleteAnimation(const std::string &name)
     m_animations.erase(name);
 }
 
+std::vector<std::string> SkeletonAnimator::GetListOfAnimations() const
+{
+    std::vector<std::string> animations;
+
+    for(std::map<std::string, Animation>::const_iterator it = m_animations.begin(); it != m_animations.end(); it++)
+    {
+        animations.push_back(it->first);
+    }
+
+    return animations;
+}
+
 void SkeletonAnimator::UpdateTime(float timeToAdd)
 {
     GetAnimation(m_currentAnimation).UpdateTime(timeToAdd);
@@ -197,6 +238,11 @@ void SkeletonAnimator::ApplyToSkeleton(std::vector<Bone*> &boneVec)
 
 void SkeletonAnimator::NotifyBoneRenamed(const std::string &oldName, const std::string &newName)
 {
+    if(oldName == newName)
+    {
+        return;
+    }
+
     for(std::map<std::string, Animation>::iterator it = m_animations.begin(); it != m_animations.end(); it++)
     {
         it->second.NotifyBoneRenamed(oldName, newName);

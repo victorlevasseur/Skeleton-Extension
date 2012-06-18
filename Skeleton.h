@@ -57,6 +57,10 @@ class Skeleton
         SkeletonAnimator& GetAnimator() {return m_skeAnim;};
         void ApplyAnimationToBones();
 
+        bool BoneNameAlreadyUsed(const std::string &name);
+
+        const std::vector<Bone*>& GetListOfBones() const {return m_bones;};
+
     protected:
     private:
         Bone *m_root;
