@@ -50,6 +50,7 @@ class Animation
 
         void SetKeyFrame(const std::string &boneName, TimeFloat &keyframe);
         void SetKeyFrame(const std::string &boneName, float time, float value);
+        void RemoveKeyFrame(const std::string &boneName, float time);
 
         /// Don't forget to call ReorderKeys(const std::string &boneName); after modifying a bone keyframes list.
         inline const std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
@@ -82,7 +83,7 @@ class SkeletonAnimator
         const std::string& GetCurrentAnimation() const;
         void SetCurrentAnimation(const std::string &animName);
 
-        void CreateAnimation(const std::string &name);
+        void CreateAnimation(const std::string &name, const std::string &asACopyOf = std::string());
         void RenameAnimation(const std::string &name, const std::string &newName);
         void DeleteAnimation(const std::string &name);
 

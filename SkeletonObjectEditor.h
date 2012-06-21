@@ -52,8 +52,11 @@ class SkeletonObjectEditor: public wxDialog
 		virtual ~SkeletonObjectEditor();
 
 		//(*Declarations(SkeletonObjectEditor)
+		wxStaticText* StaticText10;
 		wxPanel* Core;
+		wxStaticText* StaticText9;
 		wxToggleButton* ToggleButton2;
+		wxTextCtrl* periodTextCtrl;
 		wxButton* ValidateButton;
 		wxTextCtrl* offsetYTextCtrl;
 		wxStaticText* StaticText2;
@@ -93,6 +96,9 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_BITMAPBUTTON2;
 		static const long ID_BITMAPBUTTON3;
 		static const long ID_PANEL3;
+		static const long ID_STATICTEXT9;
+		static const long ID_TEXTCTRL8;
+		static const long ID_STATICTEXT10;
 		static const long ID_PANEL1;
 		static const long ID_STATICTEXT1;
 		static const long ID_TEXTCTRL1;
@@ -140,6 +146,8 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel1EraseBackground(wxEraseEvent& event);
 		void OnPanel2Paint(wxPaintEvent& event);
 		void OnPanel2EraseBackground(wxEraseEvent& event);
+		void OnTextCtrl1TextEnter(wxCommandEvent& event);
+		void OnBitmapButton2Click(wxCommandEvent& event);
 		//*)
 
 		Game & game;
@@ -159,6 +167,8 @@ class SkeletonObjectEditor: public wxDialog
 
 		sf::Vector2f lastPos;
 		char mode;
+
+		void UpdateAnimationsList();
 
 		float timeline_scale; //Size of one second
 		float timeline_offset;

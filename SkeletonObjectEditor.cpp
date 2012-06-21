@@ -32,6 +32,7 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/colordlg.h>
 #include <wx/filedlg.h>
 #include <wx/dcbuffer.h>
+#include <wx/textdlg.h>
 #include <wx/msgdlg.h>
 
 #include "GDL/Game.h"
@@ -48,6 +49,9 @@ const long SkeletonObjectEditor::ID_CHOICE1 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON3 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL3 = wxNewId();
+const long SkeletonObjectEditor::ID_STATICTEXT9 = wxNewId();
+const long SkeletonObjectEditor::ID_TEXTCTRL8 = wxNewId();
+const long SkeletonObjectEditor::ID_STATICTEXT10 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL1 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT1 = wxNewId();
 const long SkeletonObjectEditor::ID_TEXTCTRL1 = wxNewId();
@@ -127,10 +131,16 @@ mode(0)
 	BitmapButton3->SetDefault();
 	FlexGridSizer11->Add(BitmapButton3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer5->Add(FlexGridSizer11, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	FlexGridSizer12 = new wxFlexGridSizer(0, 3, 0, 0);
+	FlexGridSizer12 = new wxFlexGridSizer(0, 4, 0, 0);
 	FlexGridSizer12->AddGrowableCol(0);
-	Panel2 = new wxPanel(Core, ID_PANEL3, wxDefaultPosition, wxSize(281,43), wxTAB_TRAVERSAL, _T("ID_PANEL3"));
+	Panel2 = new wxPanel(Core, ID_PANEL3, wxDefaultPosition, wxSize(662,48), wxTAB_TRAVERSAL, _T("ID_PANEL3"));
 	FlexGridSizer12->Add(Panel2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticText9 = new wxStaticText(Core, ID_STATICTEXT9, _("Période :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+	FlexGridSizer12->Add(StaticText9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	periodTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL8, _("0"), wxDefaultPosition, wxSize(39,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
+	FlexGridSizer12->Add(periodTextCtrl, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticText10 = new wxStaticText(Core, ID_STATICTEXT10, _("s"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+	FlexGridSizer12->Add(StaticText10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer5->Add(FlexGridSizer12, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer6->Add(FlexGridSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer1 = new wxFlexGridSizer(1, 2, 0, 0);
@@ -215,8 +225,10 @@ mode(0)
 
 	Connect(ID_TOGGLEBUTTON1,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton1Toggle);
 	Connect(ID_TOGGLEBUTTON2,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton2Toggle);
+	Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton2Click);
 	Panel2->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2Paint,0,this);
 	Panel2->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2EraseBackground,0,this);
+	Connect(ID_TEXTCTRL8,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&SkeletonObjectEditor::OnTextCtrl1TextEnter);
 	Panel1->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1Paint,0,this);
 	Panel1->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1EraseBackground,0,this);
 	Panel1->Connect(wxEVT_LEFT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1LeftDown,0,this);
@@ -247,6 +259,9 @@ mode(0)
 
     timeline_offset = 0;
     timeline_scale = 5;
+
+    ToggleMode(0);
+    UpdateAnimationsList();
 
     skeleton.GetRoot()->Update();
 }
@@ -373,16 +388,13 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
 {
     if(selectedBone)
     {
-        if(mode == 0)
-        {
-            nameTextCtrl->SetValue(wxString(selectedBone->GetName()));
-            angleTextCtrl->SetValue(wxString(ToString(selectedBone->GetRotation())));
-            lengthTextCtrl->SetValue(wxString(ToString(selectedBone->GetSize())));
-            offsetXTextCtrl->SetValue(wxString(ToString(selectedBone->GetOffset().x)));
-            offsetYTextCtrl->SetValue(wxString(ToString(selectedBone->GetOffset().y)));
-            imageTextCtrl->SetValue(wxString(selectedBone->GetTextureName()));
-            zOrderTextCtrl->SetValue(wxString(ToString(selectedBone->GetZOrder())));
-        }
+        nameTextCtrl->SetValue(wxString(selectedBone->GetName()));
+        angleTextCtrl->SetValue(wxString(ToString(selectedBone->GetRotation())));
+        lengthTextCtrl->SetValue(wxString(ToString(selectedBone->GetSize())));
+        offsetXTextCtrl->SetValue(wxString(ToString(selectedBone->GetOffset().x)));
+        offsetYTextCtrl->SetValue(wxString(ToString(selectedBone->GetOffset().y)));
+        imageTextCtrl->SetValue(wxString(selectedBone->GetTextureName()));
+        zOrderTextCtrl->SetValue(wxString(ToString(selectedBone->GetZOrder())));
     }
     else
     {
@@ -465,6 +477,10 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         zOrderTextCtrl->Enable(true);
         addChildBoneBt->Enable(true);
         deleteBoneBt->Enable(true);
+
+        BitmapButton2->Enable(false);
+        BitmapButton3->Enable(false);
+        AnimationCombobox->Enable(false);
     }
     else
     {
@@ -486,6 +502,10 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         zOrderTextCtrl->Enable(false);
         addChildBoneBt->Enable(false);
         deleteBoneBt->Enable(false);
+
+        BitmapButton2->Enable(true);
+        BitmapButton3->Enable(true);
+        AnimationCombobox->Enable(true);
     }
     mode = _mode;
 
@@ -542,5 +562,36 @@ void SkeletonObjectEditor::OnPanel2EraseBackground(wxEraseEvent& event)
 {
 }
 
+void SkeletonObjectEditor::UpdateAnimationsList()
+{
+    wxString selected = AnimationCombobox->GetString(AnimationCombobox->GetSelection());
+    AnimationCombobox->Clear();
+
+    std::vector<std::string> animations = skeleton.GetAnimator().GetListOfAnimations();
+
+    for(unsigned int a = 0; a < animations.size(); a++)
+    {
+        if(animations.at(a) != "Initial")
+            AnimationCombobox->AppendString(animations.at(a).c_str());
+    }
+
+    if(AnimationCombobox->FindString(selected, true) != -1)
+        AnimationCombobox->Select(AnimationCombobox->FindString(selected, true));
+}
+
+void SkeletonObjectEditor::OnTextCtrl1TextEnter(wxCommandEvent& event)
+{
+}
+
+void SkeletonObjectEditor::OnBitmapButton2Click(wxCommandEvent& event)
+{
+    //Add an animation
+    wxTextEntryDialog dialog(this, _("Nom de l'animation"), _("Nouvelle animation"), "New Animation");
+    dialog.ShowModal();
+
+    skeleton.GetAnimator().CreateAnimation(std::string(dialog.GetValue().c_str()), "Initial");
+
+    UpdateAnimationsList();
+}
 
 #endif

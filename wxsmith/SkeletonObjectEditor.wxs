@@ -54,6 +54,7 @@
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON2" variable="BitmapButton2" member="yes">
 												<bitmap>res/addicon.png</bitmap>
 												<default>1</default>
+												<handler function="OnBitmapButton2Click" entry="EVT_BUTTON" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
@@ -74,16 +75,41 @@
 								</object>
 								<object class="sizeritem">
 									<object class="wxFlexGridSizer" variable="FlexGridSizer12" member="no">
-										<cols>3</cols>
+										<cols>4</cols>
 										<growablecols>0</growablecols>
 										<object class="sizeritem">
 											<object class="wxPanel" name="ID_PANEL3" variable="Panel2" member="yes">
-												<size>281,43</size>
+												<size>662,48</size>
 												<handler function="OnPanel2Paint" entry="EVT_PAINT" />
 												<handler function="OnPanel2EraseBackground" entry="EVT_ERASE_BACKGROUND" />
 											</object>
 											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
+												<label>Période :</label>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxTextCtrl" name="ID_TEXTCTRL8" variable="periodTextCtrl" member="yes">
+												<value>0</value>
+												<size>39,21</size>
+												<handler function="OnTextCtrl1TextEnter" entry="EVT_TEXT_ENTER" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT10" variable="StaticText10" member="yes">
+												<label>s</label>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<option>1</option>
 										</object>
 									</object>

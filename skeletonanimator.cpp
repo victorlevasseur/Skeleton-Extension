@@ -38,6 +38,19 @@ void Animation::SetKeyFrame(const std::string &boneName, float time, float value
     SetKeyFrame(boneName, timefloat);
 }
 
+void Animation::RemoveKeyFrame(const std::string &boneName, float time)
+{
+    for(unsigned int a = 0; a < m_keyFrames[boneName].keyFrames.size(); a++)
+    {
+        if(m_keyFrames[boneName].keyFrames[a].time == time)
+        {
+            m_keyFrames[boneName].keyFrames.erase(m_keyFrames[boneName].keyFrames.begin() + a);
+            ReorderKeys(boneName);
+            return;
+        }
+    }
+}
+
 void Animation::UpdateTime(float timeToAdd)
 {
     m_time += timeToAdd;
@@ -188,9 +201,12 @@ void SkeletonAnimator::SetCurrentAnimation(const std::string &animName)
     GetAnimation(m_currentAnimation).Reset();
 }
 
-void SkeletonAnimator::CreateAnimation(const std::string &name)
+void SkeletonAnimator::CreateAnimation(const std::string &name, const std::string &asACopyOf)
 {
-    m_animations[name] = Animation();
+    if(asACopyOf != "")
+        m_animations[name] = Animation(m_animations[asACopyOf]);
+    else
+        m_animations[name] = Animation();
 }
 
 void SkeletonAnimator::RenameAnimation(const std::string &name, const std::string &newName)
