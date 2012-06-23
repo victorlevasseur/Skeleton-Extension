@@ -225,6 +225,7 @@ mode(0)
 
 	Connect(ID_TOGGLEBUTTON1,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton1Toggle);
 	Connect(ID_TOGGLEBUTTON2,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton2Toggle);
+	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&SkeletonObjectEditor::OnAnimationComboboxSelect);
 	Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton2Click);
 	Panel2->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2Paint,0,this);
 	Panel2->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2EraseBackground,0,this);
@@ -257,6 +258,7 @@ mode(0)
     isDragging = false;
     selectedBone = 0;
 
+    timeline_current = 0;
     timeline_offset = 0;
     timeline_scale = 5;
 
@@ -489,6 +491,7 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         {
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), 0, (*it)->GetRotation());
         }
+        skeleton.GetAnimator().Seek(0);
 
         ToggleButton1->SetValue(false);
         ToggleButton2->SetValue(true);
@@ -509,8 +512,13 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
     }
     mode = _mode;
 
+    skeleton.ApplyAnimationToBones();
+
     Panel1->Refresh();
     Panel1->Update();
+
+    Panel2->Refresh(); //Refresh
+    Panel2->Update();
 }
 
 void SkeletonObjectEditor::OnToggleButton1Toggle(wxCommandEvent& event)
@@ -556,6 +564,11 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
         dc.DrawLine((a * timeline_scale * 10) - (timeline_offset * timeline_scale), 17,
                     (a * timeline_scale * 10) - (timeline_offset * timeline_scale), panelSize.GetHeight() - 1);
     }
+
+    dc.SetPen(wxColour(91, 255, 91));
+
+    dc.DrawLine((timeline_current * timeline_scale) - (timeline_offset * timeline_scale), 17,
+                (timeline_current * timeline_scale) - (timeline_offset * timeline_scale), panelSize.GetHeight() - 1);
 }
 
 void SkeletonObjectEditor::OnPanel2EraseBackground(wxEraseEvent& event)
@@ -579,6 +592,30 @@ void SkeletonObjectEditor::UpdateAnimationsList()
         AnimationCombobox->Select(AnimationCombobox->FindString(selected, true));
 }
 
+void SkeletonObjectEditor::SelectAnimation(const std::string &name)
+{
+    timeline_currentAnim = &(skeleton.GetAnimator().GetAnimation(name));
+    timeline_offset = 0;
+    timeline_current = 0;
+
+    skeleton.GetAnimator().SetCurrentAnimation(name);
+    skeleton.ApplyAnimationToBones();
+
+    Panel2->Refresh(); //Refresh
+    Panel2->Update();
+
+    if(ToString(AnimationCombobox->GetString(AnimationCombobox->GetSelection())) != name)
+    {
+        if(AnimationCombobox->FindString(name, true) != -1)
+            AnimationCombobox->Select(AnimationCombobox->FindString(name, true));
+    }
+}
+
+void SkeletonObjectEditor::OnAnimationComboboxSelect(wxCommandEvent& event)
+{
+    SelectAnimation(ToString(AnimationCombobox->GetString(AnimationCombobox->GetSelection())));
+}
+
 void SkeletonObjectEditor::OnTextCtrl1TextEnter(wxCommandEvent& event)
 {
 }
@@ -590,6 +627,7 @@ void SkeletonObjectEditor::OnBitmapButton2Click(wxCommandEvent& event)
     dialog.ShowModal();
 
     skeleton.GetAnimator().CreateAnimation(std::string(dialog.GetValue().c_str()), "Initial");
+    SelectAnimation(std::string(dialog.GetValue().c_str()));
 
     UpdateAnimationsList();
 }

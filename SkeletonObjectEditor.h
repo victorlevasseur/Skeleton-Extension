@@ -148,6 +148,7 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel2EraseBackground(wxEraseEvent& event);
 		void OnTextCtrl1TextEnter(wxCommandEvent& event);
 		void OnBitmapButton2Click(wxCommandEvent& event);
+		void OnAnimationComboboxSelect(wxCommandEvent& event);
 		//*)
 
 		Game & game;
@@ -169,7 +170,11 @@ class SkeletonObjectEditor: public wxDialog
 		char mode;
 
 		void UpdateAnimationsList();
+		void SelectAnimation(const std::string &name);
 
+        Animation* timeline_currentAnim;
+
+        float timeline_current;
 		float timeline_scale; //Size of one second
 		float timeline_offset;
 
