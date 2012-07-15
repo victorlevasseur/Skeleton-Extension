@@ -58,8 +58,10 @@ class SkeletonObjectEditor: public wxDialog
 		wxToggleButton* ToggleButton2;
 		wxTextCtrl* periodTextCtrl;
 		wxButton* ValidateButton;
+		wxButton* Button4;
 		wxTextCtrl* offsetYTextCtrl;
 		wxStaticText* StaticText2;
+		wxButton* removeKeyFrameBt;
 		wxButton* Button1;
 		wxStaticText* StaticText6;
 		wxStaticText* StaticText8;
@@ -74,10 +76,12 @@ class SkeletonObjectEditor: public wxDialog
 		wxButton* Button2;
 		wxTextCtrl* nameTextCtrl;
 		wxTextCtrl* angleTextCtrl;
+		wxButton* Button5;
 		wxTextCtrl* imageTextCtrl;
 		wxButton* Button3;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText7;
+		wxButton* createKeyFrameBt;
 		wxChoice* AnimationCombobox;
 		wxTextCtrl* zOrderTextCtrl;
 		wxBitmapButton* BitmapButton3;
@@ -99,6 +103,8 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_STATICTEXT9;
 		static const long ID_TEXTCTRL8;
 		static const long ID_STATICTEXT10;
+		static const long ID_BUTTON9;
+		static const long ID_BUTTON10;
 		static const long ID_PANEL1;
 		static const long ID_STATICTEXT1;
 		static const long ID_TEXTCTRL1;
@@ -117,6 +123,8 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_STATICTEXT8;
 		static const long ID_TEXTCTRL6;
 		static const long ID_BUTTON5;
+		static const long ID_BUTTON7;
+		static const long ID_BUTTON8;
 		static const long ID_BUTTON2;
 		static const long ID_BUTTON4;
 		static const long ID_BUTTON6;
@@ -149,6 +157,11 @@ class SkeletonObjectEditor: public wxDialog
 		void OnTextCtrl1TextEnter(wxCommandEvent& event);
 		void OnBitmapButton2Click(wxCommandEvent& event);
 		void OnAnimationComboboxSelect(wxCommandEvent& event);
+		void OnPanel2LeftDown(wxMouseEvent& event);
+		void OncreateKeyFrameBtClick(wxCommandEvent& event);
+		void OnPanel2MouseWheel(wxMouseEvent& event);
+		void OnButton4Click(wxCommandEvent& event);
+		void OnButton5Click(wxCommandEvent& event);
 		//*)
 
 		Game & game;
@@ -171,12 +184,16 @@ class SkeletonObjectEditor: public wxDialog
 
 		void UpdateAnimationsList();
 		void SelectAnimation(const std::string &name);
+		void Seek(float time);
 
         Animation* timeline_currentAnim;
 
         float timeline_current;
 		float timeline_scale; //Size of one second
-		float timeline_offset;
+		float timeline_offset; //Offset (in pixels, not as time)
+
+		int GetPositionFromTimeToPixel(float time);
+		float GetPositionFromPixelToTime(int pixel);
 
 		DECLARE_EVENT_TABLE()
 };

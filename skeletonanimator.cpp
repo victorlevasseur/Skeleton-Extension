@@ -75,7 +75,7 @@ void Animation::UpdateTime(float timeToAdd)
 
         TimeFloat nextKey = it->second.keyFrames.at(GetNextIndex(it->first, it->second.currentIndex));
 
-        while(((m_time > nextKey.time) && (key.time <= nextKey.time)) ||
+        while(((m_time > nextKey.time) && (key.time < nextKey.time)) ||
               ((key.time > nextKey.time) && (m_time > nextKey.time) && (m_time < key.time)))
         {
             it->second.currentIndex = GetNextIndex(it->first, it->second.currentIndex);
