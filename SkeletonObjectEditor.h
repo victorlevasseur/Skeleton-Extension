@@ -162,6 +162,7 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel2MouseWheel(wxMouseEvent& event);
 		void OnButton4Click(wxCommandEvent& event);
 		void OnButton5Click(wxCommandEvent& event);
+		void OnremoveKeyFrameBtClick(wxCommandEvent& event);
 		//*)
 
 		Game & game;

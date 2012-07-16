@@ -269,6 +269,7 @@ mode(0)
 	Panel1->Connect(wxEVT_MOTION,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1MouseMove,0,this);
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnnameTextCtrlText);
 	Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OncreateKeyFrameBtClick);
+	Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnremoveKeyFrameBtClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnaddChildBoneBtClick);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OndeleteBoneBtClick);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton3Click);
@@ -844,5 +845,15 @@ void SkeletonObjectEditor::OncreateKeyFrameBtClick(wxCommandEvent& event)
     Panel2->Update();
 }
 
+void SkeletonObjectEditor::OnremoveKeyFrameBtClick(wxCommandEvent& event)
+{
+    if(!timeline_currentAnim || !selectedBone)
+        return;
+
+    timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), timeline_current);
+
+    Panel2->Refresh(); //Refresh
+    Panel2->Update();
+}
 
 #endif
