@@ -256,6 +256,8 @@ mode(0)
 	Panel2->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2Paint,0,this);
 	Panel2->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2EraseBackground,0,this);
 	Panel2->Connect(wxEVT_LEFT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2LeftDown,0,this);
+	Panel2->Connect(wxEVT_RIGHT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2RightDown,0,this);
+	Panel2->Connect(wxEVT_RIGHT_UP,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2RightUp,0,this);
 	Panel2->Connect(wxEVT_MOUSEWHEEL,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2MouseWheel,0,this);
 	Connect(ID_TEXTCTRL8,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&SkeletonObjectEditor::OnTextCtrl1TextEnter);
 	Connect(ID_TEXTCTRL8,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&SkeletonObjectEditor::OnTextCtrl1TextEnter);
@@ -617,11 +619,11 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     if(timeline_currentAnim)
     {
         dc.SetBrush(wxBrush(wxColour(160, 160, 160)));
-        dc.DrawRectangle(GetPositionFromTimeToPixel(0), 16, GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()), panelSize.GetHeight());
+        dc.DrawRectangle(0, 16, GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()), panelSize.GetHeight());
     }
 
     //Each 5s and 10s lines
-    for(unsigned int a = floor(timeline_offset / 5); a < floor(timeline_offset / 5) + floor(panelSize.GetWidth() / (timeline_scale * 10)) + 2;a++)
+    for(int a = floor(timeline_offset / 10) - 1; a < floor(timeline_offset / 5) + floor(panelSize.GetWidth() / (timeline_scale * 10)) + 2;a++)
     {
         dc.DrawText(ToString(a * 10), (a * timeline_scale * 10) - (timeline_offset * timeline_scale) - 7, 2);
 
@@ -662,10 +664,10 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
 
     dc.SetPen(wxColour(91, 255, 91));
 
-    dc.DrawLine((timeline_current * timeline_scale) - (timeline_offset * timeline_scale), 17,
-                (timeline_current * timeline_scale) - (timeline_offset * timeline_scale), panelSize.GetHeight() - 1);
+    dc.DrawLine(GetPositionFromTimeToPixel(timeline_current), 17,
+                GetPositionFromTimeToPixel(timeline_current), panelSize.GetHeight() - 1);
 
-    dc.DrawText(ToString(timeline_current), (timeline_current * timeline_scale) - (timeline_offset * timeline_scale) + 5, 20);
+    dc.DrawText(ToString(timeline_current), GetPositionFromTimeToPixel(timeline_current) + 5, 20);
 }
 
 void SkeletonObjectEditor::OnPanel2EraseBackground(wxEraseEvent& event)
@@ -693,7 +695,24 @@ void SkeletonObjectEditor::OnPanel2LeftDown(wxMouseEvent& event)
 
 void SkeletonObjectEditor::OnPanel2MouseWheel(wxMouseEvent& event)
 {
+//
+}
 
+void SkeletonObjectEditor::OnPanel2RightDown(wxMouseEvent& event)
+{
+    timeline_tmp_dragbegan = event.GetPosition().x;
+}
+
+void SkeletonObjectEditor::OnPanel2RightUp(wxMouseEvent& event)
+{
+    int newPosition = event.GetPosition().x;
+    timeline_offset += (newPosition - timeline_tmp_dragbegan) / timeline_scale;
+
+    if(timeline_offset < 0)
+        timeline_offset = 0;
+
+    Panel2->Refresh(); //Refresh
+    Panel2->Update();
 }
 
 void SkeletonObjectEditor::OnButton4Click(wxCommandEvent& event)
@@ -802,7 +821,7 @@ int SkeletonObjectEditor::GetPositionFromTimeToPixel(float time)
 
 float SkeletonObjectEditor::GetPositionFromPixelToTime(int pixel)
 {
-    return (pixel + timeline_offset) / timeline_scale;
+    return (pixel) / timeline_scale + timeline_offset;
 }
 
 void SkeletonObjectEditor::OnAnimationComboboxSelect(wxCommandEvent& event)

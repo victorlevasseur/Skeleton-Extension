@@ -84,6 +84,8 @@
 												<handler function="OnPanel2Paint" entry="EVT_PAINT" />
 												<handler function="OnPanel2EraseBackground" entry="EVT_ERASE_BACKGROUND" />
 												<handler function="OnPanel2LeftDown" entry="EVT_LEFT_DOWN" />
+												<handler function="OnPanel2RightDown" entry="EVT_RIGHT_DOWN" />
+												<handler function="OnPanel2RightUp" entry="EVT_RIGHT_UP" />
 												<handler function="OnPanel2MouseWheel" entry="EVT_MOUSEWHEEL" />
 											</object>
 											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

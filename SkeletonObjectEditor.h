@@ -163,6 +163,8 @@ class SkeletonObjectEditor: public wxDialog
 		void OnButton4Click(wxCommandEvent& event);
 		void OnButton5Click(wxCommandEvent& event);
 		void OnremoveKeyFrameBtClick(wxCommandEvent& event);
+		void OnPanel2RightDown(wxMouseEvent& event);
+		void OnPanel2RightUp(wxMouseEvent& event);
 		//*)
 
 		Game & game;
@@ -191,7 +193,8 @@ class SkeletonObjectEditor: public wxDialog
 
         float timeline_current;
 		float timeline_scale; //Size of one second
-		float timeline_offset; //Offset (in pixels, not as time)
+		float timeline_offset; //Offset as time
+		int timeline_tmp_dragbegan;
 
 		int GetPositionFromTimeToPixel(float time);
 		float GetPositionFromPixelToTime(int pixel);
