@@ -55,7 +55,7 @@ class Extension : public ExtensionBase
 
                 objInfos.SetIncludeFile("SkeletonObject/SkeletonObject.h");
 
-                DECLARE_OBJECT_ACTION("Volume",
+                /*DECLARE_OBJECT_ACTION("Volume",
                                _("Volume"),
                                _("Modifie le volume d'un objet son."),
                                _("Faire _PARAM2__PARAM1_ au volume de _PARAM0_"),
@@ -400,14 +400,14 @@ class Extension : public ExtensionBase
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetZPos").SetIncludeFile("SkeletonObject/SkeletonObject.h");
-                DECLARE_END_OBJECT_EXPRESSION()
+                DECLARE_END_OBJECT_EXPRESSION()*/
 
             #endif
             DECLARE_END_OBJECT()
 
             // Actions liées à l'écouteur
             #if defined(GD_IDE_ONLY)
-            DECLARE_ACTION("ListenerX",
+            /*DECLARE_ACTION("ListenerX",
                            _("Position x"),
                            _("Modifier la position x de l'écouteur."),
                            _("Faire _PARAM0__PARAM1_ à la position x de l'écouteur"),
@@ -622,7 +622,7 @@ class Extension : public ExtensionBase
 
             DECLARE_EXPRESSION("ListenerDirectionZ", _("Direction en z"), _("Direction en z de l'écouteur"), _("Ecouteur"), "res/actions/son.png")
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerDirectionZ").SetIncludeFile("SkeletonObject/SkeletonListener.h");
-            DECLARE_END_EXPRESSION()
+            DECLARE_END_EXPRESSION()*/
             #endif
 
             CompleteCompilationInformation();

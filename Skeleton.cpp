@@ -20,6 +20,7 @@ Copyright (C) 2012 Victor Levasseur
 
 #include "Skeleton.h"
 
+#include "GDL/tinyxml/tinyxml.h"
 #ifdef GD_IDE_ONLY
 #include <wx/dcbuffer.h>
 #endif
@@ -127,4 +128,19 @@ void Skeleton::ApplyAnimationToBones()
 {
     m_skeAnim.ApplyToSkeleton(m_bones);
     m_root->Update();
+}
+
+void Skeleton::Save(TiXmlElement &elem)
+{
+    GetRoot()->SaveBone(elem);
+}
+
+void Skeleton::Load(const TiXmlElement &elem)
+{
+    TiXmlElement *boneElem = const_cast<TiXmlElement*>(elem.FirstChildElement("Bone"));
+
+    if(boneElem)
+    {
+        GetRoot()->LoadBone(*boneElem);
+    }
 }

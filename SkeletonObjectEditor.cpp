@@ -497,6 +497,7 @@ void SkeletonObjectEditor::OnnameTextCtrlText(wxCommandEvent& event)
         if(selectedBone)
         {
             selectedBone->SetRotation(ToFloat(ToString(angleTextCtrl->GetValue())));
+            selectedBone->SetColor(wxColour(255, 0, 0));
             selectedBone->Update();
         }
     }
@@ -507,6 +508,11 @@ void SkeletonObjectEditor::OnnameTextCtrlText(wxCommandEvent& event)
 
 void SkeletonObjectEditor::ToggleMode(char _mode)
 {
+    for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
+    {
+        skeleton.GetListOfBones().at(a)->UnColorize();
+    }
+
     if(_mode == 0)
     {
         skeleton.GetAnimator().SetCurrentAnimation("Initial");
@@ -724,6 +730,11 @@ void SkeletonObjectEditor::UpdateAnimationsList()
 
 void SkeletonObjectEditor::SelectAnimation(const std::string &name)
 {
+    for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
+    {
+        skeleton.GetListOfBones().at(a)->UnColorize();
+    }
+
     if(name == "")
     {
         timeline_currentAnim = 0;
@@ -759,9 +770,22 @@ void SkeletonObjectEditor::SelectAnimation(const std::string &name)
 
 void SkeletonObjectEditor::Seek(float time)
 {
+    for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
+    {
+        skeleton.GetListOfBones().at(a)->UnColorize();
+    }
+
     skeleton.GetAnimator().Seek(time);
     skeleton.ApplyAnimationToBones();
     timeline_current = time;
+
+    for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
+    {
+        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), timeline_current))
+        {
+            skeleton.GetListOfBones().at(a)->SetColor(wxColour(0, 255, 0));
+        }
+    }
 
     Panel2->Refresh(); //Refresh
     Panel2->Update();
@@ -814,6 +838,7 @@ void SkeletonObjectEditor::OncreateKeyFrameBtClick(wxCommandEvent& event)
         return;
 
     timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), timeline_current, selectedBone->GetRotation());
+    selectedBone->SetColor(wxColour(0, 255, 0));
 
     Panel2->Refresh(); //Refresh
     Panel2->Update();

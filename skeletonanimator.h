@@ -50,6 +50,7 @@ class Animation
 
         void SetKeyFrame(const std::string &boneName, TimeFloat &keyframe);
         void SetKeyFrame(const std::string &boneName, float time, float value);
+        bool HasKeyFrame(const std::string &boneName, float time);
         void RemoveKeyFrame(const std::string &boneName, float time);
 
         /// Don't forget to call ReorderKeys(const std::string &boneName); after modifying a bone keyframes list.

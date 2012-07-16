@@ -38,6 +38,19 @@ void Animation::SetKeyFrame(const std::string &boneName, float time, float value
     SetKeyFrame(boneName, timefloat);
 }
 
+bool Animation::HasKeyFrame(const std::string &boneName, float time)
+{
+    for(unsigned int a = 0; a < m_keyFrames[boneName].keyFrames.size(); a++)
+    {
+        if(m_keyFrames[boneName].keyFrames[a].time == time)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void Animation::RemoveKeyFrame(const std::string &boneName, float time)
 {
     for(unsigned int a = 0; a < m_keyFrames[boneName].keyFrames.size(); a++)
@@ -55,7 +68,7 @@ void Animation::UpdateTime(float timeToAdd)
 {
     m_time += timeToAdd;
 
-    if(m_time >= m_period)
+    while(m_time >= m_period && m_period > 0)
     {
         m_time -= m_period;
     }
@@ -66,7 +79,9 @@ void Animation::UpdateTime(float timeToAdd)
         if(it->second.keyFrames.size() == 0)
             continue;
 
+
         TimeFloat key = it->second.keyFrames.at(it->second.currentIndex);
+
         if(m_period == 0)
         {
             it->second.tmp_angleValue = key.value;
@@ -74,6 +89,7 @@ void Animation::UpdateTime(float timeToAdd)
         }
 
         TimeFloat nextKey = it->second.keyFrames.at(GetNextIndex(it->first, it->second.currentIndex));
+
 
         while(((m_time > nextKey.time) && (key.time < nextKey.time)) ||
               ((key.time > nextKey.time) && (m_time > nextKey.time) && (m_time < key.time)))
@@ -84,8 +100,7 @@ void Animation::UpdateTime(float timeToAdd)
             nextKey = it->second.keyFrames.at(GetNextIndex(it->first, it->second.currentIndex));
         }
 
-        it->second.progress = GetTimeDelta(key, nextKey) != 0 ? ((((m_time > key.time) ? m_time - key.time : m_time + m_period - key.time)) / GetTimeDelta(key, nextKey)) : 1;
-
+        it->second.progress = GetTimeDelta(key, nextKey) != 0 ? ((((m_time >= key.time) ? m_time - key.time : m_time + m_period - key.time)) / GetTimeDelta(key, nextKey)) : 1;
         it->second.tmp_angleValue = (nextKey.value - key.value) * it->second.progress + key.value;
     }
 }
@@ -110,18 +125,43 @@ int Animation::GetNextIndex(const std::string &boneName, unsigned int index)
 
 void Animation::Reset()
 {
-    Seek(m_period - m_time);
+    Seek(0);
 }
 
 void Animation::Seek(float time)
 {
-    if(time >= m_time)
+    m_time = time;
+
+    while(m_time >= m_period && m_period > 0)
     {
-        UpdateTime(time - m_time);
+        m_time -= m_period;
     }
-    else
+
+    std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin();
+    for(; it != m_keyFrames.end(); it++)
     {
-        UpdateTime(m_period - m_time + time);
+        if(it->second.keyFrames.size() == 0)
+            continue;
+
+        for(unsigned int a = 0; a < it->second.keyFrames.size(); a++)
+        {
+            if(it->second.keyFrames.at(a).time > m_time)
+                break;
+            it->second.currentIndex = a;
+        }
+
+        TimeFloat key = it->second.keyFrames.at(it->second.currentIndex);
+
+        if(m_period == 0)
+        {
+            it->second.tmp_angleValue = key.value;
+            continue;
+        }
+
+        TimeFloat nextKey = it->second.keyFrames.at(GetNextIndex(it->first, it->second.currentIndex));
+
+        it->second.progress = GetTimeDelta(key, nextKey) != 0 ? ((((m_time >= key.time) ? m_time - key.time : m_time + m_period - key.time)) / GetTimeDelta(key, nextKey)) : 1;
+        it->second.tmp_angleValue = (nextKey.value - key.value) * it->second.progress + key.value;
     }
 }
 

@@ -64,18 +64,13 @@ SkeletonObject& SkeletonObject::operator=(const SkeletonObject &other)
 
 void SkeletonObject::LoadFromXml(const TiXmlElement * elem)
 {
-    TiXmlElement *boneElem = const_cast<TiXmlElement*>(elem->FirstChildElement("Bone"));
-
-    if(boneElem)
-    {
-        skeleton.GetRoot()->LoadBone(*boneElem);
-    }
+    skeleton.Load(*elem);
 }
 
 #if defined(GD_IDE_ONLY)
 void SkeletonObject::SaveToXml(TiXmlElement * elem)
 {
-    skeleton.GetRoot()->SaveBone(*elem);
+    skeleton.Save(*elem);
 }
 #endif
 

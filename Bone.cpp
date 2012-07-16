@@ -32,6 +32,7 @@ Copyright (C) 2012 Victor Levasseur
 Bone::Bone(std::string name, Skeleton *owner) : m_owner(owner), m_parentBone(0), m_name(name)
 #ifdef GD_IDE_ONLY
 , m_selected(false)
+, m_color(0, 0, 0)
 #endif
 , m_size(100)
 , m_relativeRotation(0)
@@ -66,6 +67,7 @@ void Bone::Init(const Bone &other)
     m_zorder = other.m_zorder;
     #ifdef GD_IDE_ONLY
     m_selected = false;
+    m_color = wxColour(0, 0, 0);
     #endif
 
     for(unsigned int a = 0; a < other.m_childBones.size(); a++)
@@ -113,7 +115,7 @@ void Bone::Draw(sf::RenderTarget &target, sf::Vector2f offset, Bone::DrawType ty
 #ifdef GD_IDE_ONLY
 void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset)
 {
-    dc.SetPen(wxPen(m_selected ? wxColour(0, 0, 255) : wxColour(0, 0, 0)));
+    dc.SetPen(wxPen(m_selected ? wxColour(0, 0, 255) : m_color));
 
     dc.DrawLine(offset.x + m_tmp_position.x,
                 offset.y + m_tmp_position.y,
@@ -137,6 +139,16 @@ void Bone::UnselectAllChilds()
     {
         (*it)->UnselectAllChilds();
     }
+}
+
+void Bone::SetColor(wxColour color)
+{
+    m_color = color;
+}
+
+void Bone::UnColorize()
+{
+    m_color = wxColour(0, 0, 0);
 }
 #endif
 

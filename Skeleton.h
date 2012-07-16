@@ -28,6 +28,7 @@ Copyright (C) 2012 Victor Levasseur
 #include "skeletonanimator.h"
 
 class Bone;
+class TiXmlElement;
 class wxBufferedPaintDC;
 
 class Skeleton
@@ -60,6 +61,9 @@ class Skeleton
         bool BoneNameAlreadyUsed(const std::string &name);
 
         const std::vector<Bone*>& GetListOfBones() const {return m_bones;};
+
+        void Save(TiXmlElement &elem);
+        void Load(const TiXmlElement &elem);
 
     protected:
     private:

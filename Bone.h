@@ -31,6 +31,10 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/ImageManager.h"
 #include "GDL/tinyxml/tinyxml.h"
 
+#if defined(GD_IDE_ONLY)
+#include <wx/colour.h>
+#endif
+
 class ImageManager;
 class Skeleton;
 class wxBufferedPaintDC;
@@ -54,9 +58,13 @@ class Bone
         void Draw(sf::RenderTarget &target, sf::Vector2f offset, DrawType);
         #ifdef GD_IDE_ONLY
         void DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset);
+
         bool IsSelected() {return m_selected;};
         void Select(bool is) {m_selected = is;};
         void UnselectAllChilds();
+
+        void SetColor(wxColour color);
+        void UnColorize();
         #endif
 
         void SaveBone(TiXmlElement &saveIn); ///Save the bone as a subnode of "saveIn"
@@ -105,6 +113,7 @@ class Bone
         std::string m_name;
         #ifdef GD_IDE_ONLY
         bool m_selected;
+        wxColour m_color;
         #endif
 
         float m_size;
