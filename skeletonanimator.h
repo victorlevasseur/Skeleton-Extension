@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <algorithm>
+#include "GDL/tinyxml/tinyxml.h"
 
 class Bone;
 
@@ -63,6 +64,9 @@ class Animation
 
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
 
+        void LoadFromXml(TiXmlElement *ele);
+        void SaveToXml(TiXmlElement *ele);
+
     private:
         int GetNextIndex(const std::string &boneName, unsigned int index);
         float GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2);
@@ -97,6 +101,9 @@ class SkeletonAnimator
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
+
+        void LoadFromXml(TiXmlElement *ele);
+        void SaveToXml(TiXmlElement *ele);
 
     protected:
     private:

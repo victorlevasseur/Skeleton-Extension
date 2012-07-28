@@ -219,6 +219,16 @@ std::vector<float> Animation::GetListOfKeyFramesTime(const std::string &bone) co
     return listOfKeys;
 }
 
+void Animation::LoadFromXml(TiXmlElement *ele)
+{
+
+}
+
+void Animation::SaveToXml(TiXmlElement *ele)
+{
+
+}
+
 SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial")
 {
     //ctor
@@ -302,5 +312,23 @@ void SkeletonAnimator::NotifyBoneRenamed(const std::string &oldName, const std::
     for(std::map<std::string, Animation>::iterator it = m_animations.begin(); it != m_animations.end(); it++)
     {
         it->second.NotifyBoneRenamed(oldName, newName);
+    }
+}
+
+void SkeletonAnimator::LoadFromXml(TiXmlElement *ele)
+{
+    m_animations.clear();
+
+
+}
+
+void SkeletonAnimator::SaveToXml(TiXmlElement *ele)
+{
+    for(std::map<std::string, Animation>::iterator it = m_animations.begin(); it != m_animations.end(); it++)
+    {
+        TiXmlElement *newEle = new TiXmlElement("Animation");
+        newEle->SetAttribute("name", it->first.c_str());
+        it->second.SaveToXml(newEle);
+        ele->LinkEndChild(newEle);
     }
 }
