@@ -9,6 +9,14 @@
 
 class Bone;
 
+enum KeyFrameType
+{
+    AngleKeyFrame = 0,
+    LengthKeyFrame = 1,
+    PositionXKeyFrame = 2,
+    PositionYKeyFrame = 3
+};
+
 struct TimeFloat
 {
     TimeFloat() : time(0), value(0) {};
@@ -21,18 +29,20 @@ class BoneAnimation
 {
     public:
 
-    BoneAnimation() : currentIndex(0), tmp_angleValue(0), progress(0)
+    BoneAnimation()
     {
-        keyFrames.push_back(TimeFloat());
+        keyFrames[AngleKeyFrame].push_back(TimeFloat());
     };
 
-    unsigned int currentIndex;
+    std::map<KeyFrameType, unsigned int> currentIndex;
 
-    float tmp_angleValue;
-    float progress;
+    std::map<KeyFrameType, float> tmp_angleValue;
+    std::map<KeyFrameType, float> progress;
 
-    std::vector<TimeFloat> keyFrames;
+    std::map<KeyFrameType, std::vector<TimeFloat> > keyFrames;
 };
+
+typedef void (Bone::*FloatMethod)(float);
 
 class Animation
 {
@@ -42,23 +52,24 @@ class Animation
         Animation();
         virtual ~Animation();
 
+        void Reset();
+
         void UpdateTime(float timeToAdd);
         void Seek(float time);
-        void Reset();
 
         float GetPeriod() const {return m_period;};
         void SetPeriod(float value) {m_period = value;};
 
-        void SetKeyFrame(const std::string &boneName, TimeFloat &keyframe);
-        void SetKeyFrame(const std::string &boneName, float time, float value);
-        bool HasKeyFrame(const std::string &boneName, float time);
-        void RemoveKeyFrame(const std::string &boneName, float time);
+        void SetKeyFrame(const std::string &boneName, KeyFrameType type, TimeFloat &keyframe);
+        void SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, float value);
+        bool HasKeyFrame(const std::string &boneName, KeyFrameType type, float time);
+        void RemoveKeyFrame(const std::string &boneName, KeyFrameType type, float time);
 
         /// Don't forget to call ReorderKeys(const std::string &boneName); after modifying a bone keyframes list.
-        inline const std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName);
+        inline const std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName, KeyFrameType type = AngleKeyFrame);
         void ReorderKeys(const std::string &boneName);
 
-        std::vector<float> GetListOfKeyFramesTime(const std::string &bone = "") const;
+        std::vector<float> GetListOfKeyFramesTime(const std::string &bone = "");
 
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 
@@ -68,8 +79,11 @@ class Animation
         void SaveToXml(TiXmlElement *ele);
 
     private:
-        int GetNextIndex(const std::string &boneName, unsigned int index);
+        int GetNextIndex(const std::string &boneName, KeyFrameType type, unsigned int index);
         float GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2);
+
+        void UpdateTimeOfType(float timeToAdd, KeyFrameType type);
+        void SeekOfType(float time, KeyFrameType type);
 
         float m_time;
         float m_period;
@@ -122,9 +136,9 @@ inline Animation& SkeletonAnimator::GetAnimation(const std::string &name)
     return m_animations[name];
 }
 
-inline const std::vector<TimeFloat>& Animation::GetBoneKeyFrames(const std::string &boneName)
+inline const std::vector<TimeFloat>& Animation::GetBoneKeyFrames(const std::string &boneName, KeyFrameType type)
 {
-    return m_keyFrames[boneName].keyFrames;
+    return m_keyFrames[boneName].keyFrames[type];
 }
 
 #endif // SKELETONANIMATOR_H

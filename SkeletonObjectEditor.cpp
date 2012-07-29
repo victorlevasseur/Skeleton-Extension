@@ -494,7 +494,7 @@ void SkeletonObjectEditor::OnnameTextCtrlText(wxCommandEvent& event)
             selectedBone->Update();
 
             skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(0);
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), 0, ToFloat(ToString(angleTextCtrl->GetValue())));
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), AngleKeyFrame, 0, ToFloat(ToString(angleTextCtrl->GetValue())));
         }
     }
     else
@@ -547,7 +547,7 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(0);
         for(std::vector<Bone*>::const_iterator it = skeleton.GetListOfBones().begin(); it != skeleton.GetListOfBones().end(); it++)
         {
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), 0, (*it)->GetRotation());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), AngleKeyFrame, 0, (*it)->GetRotation());
         }
         skeleton.GetAnimator().Seek(0);
 
@@ -803,7 +803,7 @@ void SkeletonObjectEditor::Seek(float time)
 
     for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
     {
-        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), timeline_current))
+        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), AngleKeyFrame, timeline_current))
         {
             skeleton.GetListOfBones().at(a)->SetColor(wxColour(0, 255, 0));
         }
@@ -859,7 +859,7 @@ void SkeletonObjectEditor::OncreateKeyFrameBtClick(wxCommandEvent& event)
     if(!timeline_currentAnim || !selectedBone)
         return;
 
-    timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), timeline_current, selectedBone->GetRotation());
+    timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), AngleKeyFrame,  timeline_current, selectedBone->GetRotation());
     selectedBone->SetColor(wxColour(0, 255, 0));
 
     Panel2->Refresh(); //Refresh
@@ -871,7 +871,7 @@ void SkeletonObjectEditor::OnremoveKeyFrameBtClick(wxCommandEvent& event)
     if(!timeline_currentAnim || !selectedBone)
         return;
 
-    timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), timeline_current);
+    timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), AngleKeyFrame, timeline_current);
 
     Panel2->Refresh(); //Refresh
     Panel2->Update();
