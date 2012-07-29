@@ -319,7 +319,15 @@ void SkeletonAnimator::LoadFromXml(TiXmlElement *ele)
 {
     m_animations.clear();
 
-
+    TiXmlNode *child;
+    for( child = ele->FirstChild(); child; child = child->NextSibling() )
+    {
+        if(child->ToElement())
+        {
+            m_animations[std::string(child->ToElement()->Attribute("name"))] = Animation();
+            m_animations[std::string(child->ToElement()->Attribute("name"))].LoadFromXml(child->ToElement());
+        }
+    }
 }
 
 void SkeletonAnimator::SaveToXml(TiXmlElement *ele)

@@ -133,14 +133,23 @@ void Skeleton::ApplyAnimationToBones()
 void Skeleton::Save(TiXmlElement &elem)
 {
     GetRoot()->SaveBone(elem);
+
+    TiXmlElement *animationsElem = new TiXmlElement("Animations");
+    elem.LinkEndChild(animationsElem);
+    GetAnimator().SaveToXml(animationsElem);
 }
 
 void Skeleton::Load(const TiXmlElement &elem)
 {
     TiXmlElement *boneElem = const_cast<TiXmlElement*>(elem.FirstChildElement("Bone"));
-
     if(boneElem)
     {
         GetRoot()->LoadBone(*boneElem);
+    }
+
+    TiXmlElement *animationsElem = const_cast<TiXmlElement*>(elem.FirstChildElement("Animations"));
+    if(animationsElem)
+    {
+        GetAnimator().LoadFromXml(animationsElem);
     }
 }
