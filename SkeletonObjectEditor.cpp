@@ -130,7 +130,7 @@ mode(0)
 	FlexGridSizer11->Add(ToggleButton1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	ToggleButton2 = new wxToggleButton(Core, ID_TOGGLEBUTTON2, _("Animation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON2"));
 	FlexGridSizer11->Add(ToggleButton2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	AnimationCombobox = new wxChoice(Core, ID_CHOICE1, wxDefaultPosition, wxSize(110,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
+	AnimationCombobox = new wxChoice(Core, ID_CHOICE1, wxDefaultPosition, wxSize(167,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
 	FlexGridSizer11->Add(AnimationCombobox, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BitmapButton2 = new wxBitmapButton(Core, ID_BITMAPBUTTON2, wxBitmap(wxImage(_T("res/addicon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
 	BitmapButton2->SetDefault();
@@ -145,7 +145,7 @@ mode(0)
 	FlexGridSizer12->Add(Panel2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer13 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer14 = new wxFlexGridSizer(0, 3, 0, 0);
-	StaticText9 = new wxStaticText(Core, ID_STATICTEXT9, _("Période :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+	StaticText9 = new wxStaticText(Core, ID_STATICTEXT9, _("Periode :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
 	FlexGridSizer14->Add(StaticText9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	periodTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL8, _("0"), wxDefaultPosition, wxSize(39,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
 	FlexGridSizer14->Add(periodTextCtrl, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -164,11 +164,11 @@ mode(0)
 	FlexGridSizer1 = new wxFlexGridSizer(1, 2, 0, 0);
 	FlexGridSizer1->AddGrowableCol(0);
 	FlexGridSizer1->AddGrowableRow(0);
-	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Aperçu"));
+	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Apercu"));
 	Panel1 = new wxPanel(Core, ID_PANEL1, wxDefaultPosition, wxSize(453,373), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	StaticBoxSizer1->Add(Panel1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer1->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Os sélectionné"));
+	StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Os selectionne"));
 	FlexGridSizer2 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer4 = new wxFlexGridSizer(0, 2, 0, 0);
 	StaticText1 = new wxStaticText(Core, ID_STATICTEXT1, _("Nom :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
@@ -180,7 +180,7 @@ mode(0)
 	angleTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL2, _("0"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
 	FlexGridSizer4->Add(angleTextCtrl, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer4->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticText3 = new wxStaticText(Core, ID_STATICTEXT3, _("relatif à l\'os parent."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	StaticText3 = new wxStaticText(Core, ID_STATICTEXT3, _("relatif a l\'os parent."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	wxFont StaticText3Font(wxDEFAULT,wxDEFAULT,wxFONTSTYLE_ITALIC,wxNORMAL,false,wxEmptyString,wxFONTENCODING_DEFAULT);
 	StaticText3->SetFont(StaticText3Font);
 	FlexGridSizer4->Add(StaticText3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -219,7 +219,7 @@ mode(0)
 	FlexGridSizer4->Add(Button1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer4->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
-	createKeyFrameBt = new wxButton(Core, ID_BUTTON7, _("Frame clé"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON7"));
+	createKeyFrameBt = new wxButton(Core, ID_BUTTON7, _("Frame cle"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON7"));
 	createKeyFrameBt->SetToolTip(_("Crée une frame clé pour l\'os sélectionné à sa position actuelle"));
 	BoxSizer1->Add(createKeyFrameBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	removeKeyFrameBt = new wxButton(Core, ID_BUTTON8, _("Enlever f.clé"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON8"));
@@ -313,7 +313,9 @@ SkeletonObjectEditor::~SkeletonObjectEditor()
 
 void SkeletonObjectEditor::OnValidateButtonClick(wxCommandEvent& event)
 {
+    skeleton.GetAnimator().SetCurrentAnimation("Initial");
     skeleton.GetAnimator().Reset();
+    skeleton.ApplyAnimationToBones();
     object.SetSkeleton(skeleton);
 
     EndModal(1);

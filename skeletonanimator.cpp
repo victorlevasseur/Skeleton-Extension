@@ -221,12 +221,59 @@ std::vector<float> Animation::GetListOfKeyFramesTime(const std::string &bone) co
 
 void Animation::LoadFromXml(TiXmlElement *ele)
 {
+    Reset();
+    m_keyFrames.clear();
 
+    float period = 0;
+    ele->QueryFloatAttribute("period", &period);
+    SetPeriod(period);
+
+    //Query all BoneAnimation
+    TiXmlNode *child;
+    for( child = ele->FirstChild("Bone"); child; child = child->NextSibling() )
+    {
+        if(child->ToElement())
+        {
+            m_keyFrames[std::string(child->ToElement()->Attribute("name"))] = BoneAnimation();
+            BoneAnimation *currentBoneAnim = &m_keyFrames[std::string(child->ToElement()->Attribute("name"))];
+            currentBoneAnim->keyFrames.clear();
+
+            //Query all KeyFrames
+            TiXmlNode *keyframe;
+            for( keyframe = child->ToElement()->FirstChild("Keyframe"); keyframe; keyframe = keyframe->NextSibling() )
+            {
+                if(keyframe->ToElement())
+                {
+                    TimeFloat timefloat;
+                    keyframe->ToElement()->QueryFloatAttribute("time", &timefloat.time);
+                    keyframe->ToElement()->QueryFloatAttribute("value", &timefloat.value);
+                    currentBoneAnim->keyFrames.push_back(timefloat);
+                }
+            }
+        }
+    }
 }
 
 void Animation::SaveToXml(TiXmlElement *ele)
 {
+    ele->SetDoubleAttribute("period", m_period);
 
+    for(std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin(); it != m_keyFrames.end(); it++)
+    {
+        TiXmlElement *boneEle = new TiXmlElement("Bone");
+        boneEle->SetAttribute("name", it->first.c_str());
+
+        for(unsigned int a = 0; a < it->second.keyFrames.size(); a++)
+        {
+            TiXmlElement *timefloatEle = new TiXmlElement("Keyframe");
+            timefloatEle->SetDoubleAttribute("time", it->second.keyFrames.at(a).time);
+            timefloatEle->SetDoubleAttribute("value", it->second.keyFrames.at(a).value);
+
+            boneEle->LinkEndChild(timefloatEle);
+        }
+
+        ele->LinkEndChild(boneEle);
+    }
 }
 
 SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial")
