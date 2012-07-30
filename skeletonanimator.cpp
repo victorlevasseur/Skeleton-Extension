@@ -40,6 +40,9 @@ void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, floa
 
 bool Animation::HasKeyFrame(const std::string &boneName, KeyFrameType type, float time)
 {
+    if(m_keyFrames[boneName].keyFrames.count(type) == 0)
+        return false;
+
     for(unsigned int a = 0; a < m_keyFrames[boneName].keyFrames[type].size(); a++)
     {
         if(m_keyFrames[boneName].keyFrames[type][a].time == time)
@@ -74,6 +77,7 @@ void Animation::UpdateTime(float timeToAdd)
     }
 
     UpdateTimeOfType(timeToAdd, AngleKeyFrame);
+    UpdateTimeOfType(timeToAdd, LengthKeyFrame);
 }
 
 float Animation::GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2)
@@ -83,7 +87,7 @@ float Animation::GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2)
 
 int Animation::GetNextIndex(const std::string &boneName, KeyFrameType type, unsigned int index)
 {
-    if(index < GetBoneKeyFrames(boneName).size() - 1)
+    if(index < GetBoneKeyFrames(boneName, type).size() - 1)
     {
         index++;
         return index;
@@ -109,6 +113,7 @@ void Animation::Seek(float time)
     }
 
     SeekOfType(time, AngleKeyFrame);
+    SeekOfType(time, LengthKeyFrame);
 }
 
 void Animation::UpdateTimeOfType(float timeToAdd, KeyFrameType type)
@@ -183,6 +188,7 @@ void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)
             continue;
 
         boneVec[a]->m_relativeRotation = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[AngleKeyFrame];
+        boneVec[a]->m_size = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[LengthKeyFrame];
     }
 }
 
@@ -295,9 +301,9 @@ void Animation::SaveToXml(TiXmlElement *ele)
         for(std::map<KeyFrameType, std::vector<TimeFloat> >::iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
         {
             TiXmlElement *keyframetypeEle = new TiXmlElement("Type");
-            keyframetypeEle->SetAttribute("type", static_cast<int>(it2->first));
+            keyframetypeEle->SetDoubleAttribute("type", static_cast<int>(it2->first));
 
-            for(unsigned int a = 0; a < it->second.keyFrames.size(); a++)
+            for(unsigned int a = 0; a < it2->second.size(); a++)
             {
                 TiXmlElement *timefloatEle = new TiXmlElement("Keyframe");
                 timefloatEle->SetDoubleAttribute("time", it2->second.at(a).time);

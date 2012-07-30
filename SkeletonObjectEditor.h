@@ -55,13 +55,16 @@ class SkeletonObjectEditor: public wxDialog
 		wxStaticText* StaticText10;
 		wxPanel* Core;
 		wxStaticText* StaticText9;
+		wxBitmapButton* angleDeleteKeyFrameBt;
 		wxToggleButton* ToggleButton2;
 		wxTextCtrl* periodTextCtrl;
 		wxButton* ValidateButton;
+		wxBitmapButton* lengthCreateKeyFrameBt;
 		wxButton* Button4;
+		wxBitmapButton* angleCreateKeyFrameBt;
 		wxTextCtrl* offsetYTextCtrl;
+		wxBitmapButton* lengthDeleteKeyFrameBt;
 		wxStaticText* StaticText2;
-		wxButton* removeKeyFrameBt;
 		wxButton* Button1;
 		wxStaticText* StaticText6;
 		wxStaticText* StaticText8;
@@ -81,7 +84,6 @@ class SkeletonObjectEditor: public wxDialog
 		wxButton* Button3;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText7;
-		wxButton* createKeyFrameBt;
 		wxChoice* AnimationCombobox;
 		wxTextCtrl* zOrderTextCtrl;
 		wxBitmapButton* BitmapButton3;
@@ -110,9 +112,13 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_TEXTCTRL1;
 		static const long ID_STATICTEXT2;
 		static const long ID_TEXTCTRL2;
+		static const long ID_BITMAPBUTTON4;
+		static const long ID_BITMAPBUTTON5;
 		static const long ID_STATICTEXT3;
 		static const long ID_STATICTEXT4;
 		static const long ID_TEXTCTRL3;
+		static const long ID_BITMAPBUTTON6;
+		static const long ID_BITMAPBUTTON7;
 		static const long ID_STATICTEXT6;
 		static const long ID_TEXTCTRL5;
 		static const long ID_STATICTEXT7;
@@ -123,8 +129,6 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_STATICTEXT8;
 		static const long ID_TEXTCTRL6;
 		static const long ID_BUTTON5;
-		static const long ID_BUTTON7;
-		static const long ID_BUTTON8;
 		static const long ID_BUTTON2;
 		static const long ID_BUTTON4;
 		static const long ID_BUTTON6;
@@ -165,6 +169,8 @@ class SkeletonObjectEditor: public wxDialog
 		void OnremoveKeyFrameBtClick(wxCommandEvent& event);
 		void OnPanel2RightDown(wxMouseEvent& event);
 		void OnPanel2RightUp(wxMouseEvent& event);
+		void OnlengthCreateKeyFrameBtClick(wxCommandEvent& event);
+		void OnlengthDeleteKeyFrameBtClick(wxCommandEvent& event);
 		//*)
 
 		Game & game;
@@ -188,6 +194,8 @@ class SkeletonObjectEditor: public wxDialog
 		void UpdateAnimationsList();
 		void SelectAnimation(const std::string &name);
 		void Seek(float time);
+
+		void UncolorizeBoneIfNecessary(Bone &bone);
 
         Animation* timeline_currentAnim;
 

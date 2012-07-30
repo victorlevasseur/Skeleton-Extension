@@ -34,6 +34,7 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/dcbuffer.h>
 #include <wx/textdlg.h>
 #include <wx/msgdlg.h>
+#include <wx/log.h>
 
 #include "GDL/Game.h"
 #include "SkeletonObject.h"
@@ -59,9 +60,13 @@ const long SkeletonObjectEditor::ID_STATICTEXT1 = wxNewId();
 const long SkeletonObjectEditor::ID_TEXTCTRL1 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT2 = wxNewId();
 const long SkeletonObjectEditor::ID_TEXTCTRL2 = wxNewId();
+const long SkeletonObjectEditor::ID_BITMAPBUTTON4 = wxNewId();
+const long SkeletonObjectEditor::ID_BITMAPBUTTON5 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT3 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT4 = wxNewId();
 const long SkeletonObjectEditor::ID_TEXTCTRL3 = wxNewId();
+const long SkeletonObjectEditor::ID_BITMAPBUTTON6 = wxNewId();
+const long SkeletonObjectEditor::ID_BITMAPBUTTON7 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT6 = wxNewId();
 const long SkeletonObjectEditor::ID_TEXTCTRL5 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT7 = wxNewId();
@@ -72,8 +77,6 @@ const long SkeletonObjectEditor::ID_BITMAPBUTTON1 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT8 = wxNewId();
 const long SkeletonObjectEditor::ID_TEXTCTRL6 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON5 = wxNewId();
-const long SkeletonObjectEditor::ID_BUTTON7 = wxNewId();
-const long SkeletonObjectEditor::ID_BUTTON8 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON4 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON6 = wxNewId();
@@ -97,6 +100,7 @@ mode(0)
 	//(*Initialize(SkeletonObjectEditor)
 	wxStaticBoxSizer* StaticBoxSizer2;
 	wxFlexGridSizer* FlexGridSizer4;
+	wxFlexGridSizer* FlexGridSizer16;
 	wxFlexGridSizer* FlexGridSizer10;
 	wxFlexGridSizer* FlexGridSizer3;
 	wxFlexGridSizer* FlexGridSizer5;
@@ -106,13 +110,13 @@ mode(0)
 	wxFlexGridSizer* FlexGridSizer15;
 	wxFlexGridSizer* FlexGridSizer8;
 	wxFlexGridSizer* FlexGridSizer14;
-	wxBoxSizer* BoxSizer1;
 	wxFlexGridSizer* FlexGridSizer13;
 	wxFlexGridSizer* FlexGridSizer12;
 	wxFlexGridSizer* FlexGridSizer6;
 	wxStaticBoxSizer* StaticBoxSizer1;
 	wxFlexGridSizer* FlexGridSizer1;
 	wxFlexGridSizer* FlexGridSizer11;
+	wxFlexGridSizer* FlexGridSizer17;
 
 	Create(parent, wxID_ANY, _("Editer le squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
 	SetClientSize(wxSize(752,489));
@@ -121,6 +125,8 @@ mode(0)
 	FlexGridSizer3->AddGrowableRow(0);
 	Core = new wxPanel(this, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
 	FlexGridSizer6 = new wxFlexGridSizer(0, 1, 0, 0);
+	FlexGridSizer6->AddGrowableCol(0);
+	FlexGridSizer6->AddGrowableRow(1);
 	FlexGridSizer5 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer5->AddGrowableCol(0);
 	FlexGridSizer5->AddGrowableRow(1);
@@ -177,8 +183,15 @@ mode(0)
 	FlexGridSizer4->Add(nameTextCtrl, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText2 = new wxStaticText(Core, ID_STATICTEXT2, _("Angle :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	FlexGridSizer4->Add(StaticText2, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer16 = new wxFlexGridSizer(0, 3, 0, 0);
+	FlexGridSizer16->AddGrowableCol(0);
 	angleTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL2, _("0"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-	FlexGridSizer4->Add(angleTextCtrl, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer16->Add(angleTextCtrl, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	angleCreateKeyFrameBt = new wxBitmapButton(Core, ID_BITMAPBUTTON4, wxBitmap(wxImage(_T("res\\icon-key.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON4"));
+	FlexGridSizer16->Add(angleCreateKeyFrameBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	angleDeleteKeyFrameBt = new wxBitmapButton(Core, ID_BITMAPBUTTON5, wxBitmap(wxImage(_T("res\\icon-key-delete.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON5"));
+	FlexGridSizer16->Add(angleDeleteKeyFrameBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer4->Add(FlexGridSizer16, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer4->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText3 = new wxStaticText(Core, ID_STATICTEXT3, _("relatif a l\'os parent."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	wxFont StaticText3Font(wxDEFAULT,wxDEFAULT,wxFONTSTYLE_ITALIC,wxNORMAL,false,wxEmptyString,wxFONTENCODING_DEFAULT);
@@ -186,8 +199,15 @@ mode(0)
 	FlexGridSizer4->Add(StaticText3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText4 = new wxStaticText(Core, ID_STATICTEXT4, _("Longueur :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	FlexGridSizer4->Add(StaticText4, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer17 = new wxFlexGridSizer(0, 3, 0, 0);
+	FlexGridSizer17->AddGrowableCol(0);
 	lengthTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
-	FlexGridSizer4->Add(lengthTextCtrl, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer17->Add(lengthTextCtrl, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	lengthCreateKeyFrameBt = new wxBitmapButton(Core, ID_BITMAPBUTTON6, wxBitmap(wxImage(_T("res\\icon-key.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON6"));
+	FlexGridSizer17->Add(lengthCreateKeyFrameBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	lengthDeleteKeyFrameBt = new wxBitmapButton(Core, ID_BITMAPBUTTON7, wxBitmap(wxImage(_T("res\\icon-key-delete.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON7"));
+	FlexGridSizer17->Add(lengthDeleteKeyFrameBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer4->Add(FlexGridSizer17, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	StaticText6 = new wxStaticText(Core, ID_STATICTEXT6, _("Décalage :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
 	FlexGridSizer4->Add(StaticText6, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer9 = new wxFlexGridSizer(0, 3, 0, 0);
@@ -217,14 +237,6 @@ mode(0)
 	FlexGridSizer4->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button1 = new wxButton(Core, ID_BUTTON5, _("Appliquer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON5"));
 	FlexGridSizer4->Add(Button1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer4->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
-	createKeyFrameBt = new wxButton(Core, ID_BUTTON7, _("Frame cle"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON7"));
-	createKeyFrameBt->SetToolTip(_("Crée une frame clé pour l\'os sélectionné à sa position actuelle"));
-	BoxSizer1->Add(createKeyFrameBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	removeKeyFrameBt = new wxButton(Core, ID_BUTTON8, _("Enlever f.clé"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON8"));
-	BoxSizer1->Add(removeKeyFrameBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer4->Add(BoxSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer2->Add(FlexGridSizer4, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	addChildBoneBt = new wxButton(Core, ID_BUTTON2, _("Ajouter un os enfant"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
 	FlexGridSizer2->Add(addChildBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -269,9 +281,11 @@ mode(0)
 	Panel1->Connect(wxEVT_RIGHT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1RightDown,0,this);
 	Panel1->Connect(wxEVT_RIGHT_UP,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1RightUp,0,this);
 	Panel1->Connect(wxEVT_MOTION,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1MouseMove,0,this);
+	Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OncreateKeyFrameBtClick);
+	Connect(ID_BITMAPBUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnremoveKeyFrameBtClick);
+	Connect(ID_BITMAPBUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnlengthCreateKeyFrameBtClick);
+	Connect(ID_BITMAPBUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnlengthDeleteKeyFrameBtClick);
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnnameTextCtrlText);
-	Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OncreateKeyFrameBtClick);
-	Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnremoveKeyFrameBtClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnaddChildBoneBtClick);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OndeleteBoneBtClick);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton3Click);
@@ -495,6 +509,7 @@ void SkeletonObjectEditor::OnnameTextCtrlText(wxCommandEvent& event)
 
             skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(0);
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), AngleKeyFrame, 0, ToFloat(ToString(angleTextCtrl->GetValue())));
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), LengthKeyFrame, 0, ToFloat(ToString(lengthTextCtrl->GetValue())));
         }
     }
     else
@@ -502,6 +517,7 @@ void SkeletonObjectEditor::OnnameTextCtrlText(wxCommandEvent& event)
         if(selectedBone)
         {
             selectedBone->SetRotation(ToFloat(ToString(angleTextCtrl->GetValue())));
+            selectedBone->SetSize(ToFloat(ToString(lengthTextCtrl->GetValue())));
             selectedBone->SetColor(wxColour(255, 0, 0));
             selectedBone->Update();
         }
@@ -529,7 +545,6 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         ToggleButton2->SetValue(false);
 
         nameTextCtrl->Enable(true);
-        lengthTextCtrl->Enable(true);
         offsetXTextCtrl->Enable(true);
         offsetYTextCtrl->Enable(true);
         imageTextCtrl->Enable(true);
@@ -548,6 +563,7 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         for(std::vector<Bone*>::const_iterator it = skeleton.GetListOfBones().begin(); it != skeleton.GetListOfBones().end(); it++)
         {
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), AngleKeyFrame, 0, (*it)->GetRotation());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), LengthKeyFrame, 0, (*it)->GetSize());
         }
         skeleton.GetAnimator().Seek(0);
 
@@ -555,7 +571,6 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         ToggleButton2->SetValue(true);
 
         nameTextCtrl->Enable(false);
-        lengthTextCtrl->Enable(false);
         offsetXTextCtrl->Enable(false);
         offsetYTextCtrl->Enable(false);
         imageTextCtrl->Enable(false);
@@ -799,11 +814,13 @@ void SkeletonObjectEditor::Seek(float time)
 
     skeleton.GetAnimator().Seek(time);
     skeleton.ApplyAnimationToBones();
+
     timeline_current = time;
 
     for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
     {
-        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), AngleKeyFrame, timeline_current))
+        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), AngleKeyFrame, timeline_current) ||
+           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), LengthKeyFrame, timeline_current))
         {
             skeleton.GetListOfBones().at(a)->SetColor(wxColour(0, 255, 0));
         }
@@ -854,13 +871,28 @@ void SkeletonObjectEditor::OnBitmapButton2Click(wxCommandEvent& event)
     UpdateAnimationsList();
 }
 
+void SkeletonObjectEditor::UncolorizeBoneIfNecessary(Bone &bone)
+{
+    if(bone.GetRotation() != ToFloat(ToString(angleTextCtrl->GetValue())))
+        return;
+    if(bone.GetSize() != ToFloat(ToString(lengthTextCtrl->GetValue())))
+        return;
+
+    selectedBone->SetColor(wxColour(0, 255, 0));
+}
+
 void SkeletonObjectEditor::OncreateKeyFrameBtClick(wxCommandEvent& event)
 {
+    if(mode != 1)
+        return;
+
     if(!timeline_currentAnim || !selectedBone)
         return;
 
-    timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), AngleKeyFrame,  timeline_current, selectedBone->GetRotation());
-    selectedBone->SetColor(wxColour(0, 255, 0));
+    timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), AngleKeyFrame, timeline_current, selectedBone->GetRotation());
+    UncolorizeBoneIfNecessary(*selectedBone);
+
+    Seek(timeline_current);
 
     Panel2->Refresh(); //Refresh
     Panel2->Update();
@@ -868,10 +900,48 @@ void SkeletonObjectEditor::OncreateKeyFrameBtClick(wxCommandEvent& event)
 
 void SkeletonObjectEditor::OnremoveKeyFrameBtClick(wxCommandEvent& event)
 {
+    if(mode != 1)
+        return;
+
     if(!timeline_currentAnim || !selectedBone)
         return;
 
     timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), AngleKeyFrame, timeline_current);
+
+    Seek(timeline_current);
+
+    Panel2->Refresh(); //Refresh
+    Panel2->Update();
+}
+
+void SkeletonObjectEditor::OnlengthCreateKeyFrameBtClick(wxCommandEvent& event)
+{
+    if(mode != 1)
+        return;
+
+    if(!timeline_currentAnim || !selectedBone)
+        return;
+
+    timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), LengthKeyFrame, timeline_current, selectedBone->GetSize());
+    UncolorizeBoneIfNecessary(*selectedBone);
+
+    Seek(timeline_current);
+
+    Panel2->Refresh(); //Refresh
+    Panel2->Update();
+}
+
+void SkeletonObjectEditor::OnlengthDeleteKeyFrameBtClick(wxCommandEvent& event)
+{
+    if(mode != 1)
+        return;
+
+    if(!timeline_currentAnim || !selectedBone)
+        return;
+
+    timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), LengthKeyFrame, timeline_current);
+
+    Seek(timeline_current);
 
     Panel2->Refresh(); //Refresh
     Panel2->Update();

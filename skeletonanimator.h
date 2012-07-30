@@ -66,7 +66,7 @@ class Animation
         void RemoveKeyFrame(const std::string &boneName, KeyFrameType type, float time);
 
         /// Don't forget to call ReorderKeys(const std::string &boneName); after modifying a bone keyframes list.
-        inline const std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName, KeyFrameType type = AngleKeyFrame);
+        inline const std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName, KeyFrameType type);
         void ReorderKeys(const std::string &boneName);
 
         std::vector<float> GetListOfKeyFramesTime(const std::string &bone = "");
