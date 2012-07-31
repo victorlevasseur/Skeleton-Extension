@@ -36,8 +36,12 @@ Copyright (C) 2012 Victor Levasseur
 #endif
 
 class ImageManager;
-class Skeleton;
 class wxBufferedPaintDC;
+
+namespace Sk
+{
+
+class Skeleton;
 
 class Bone
 {
@@ -130,5 +134,7 @@ class Bone
         std::string m_textureName;
         boost::shared_ptr<SFMLTextureWrapper> m_texture;
 };
+
+}
 
 #endif // BONE_H

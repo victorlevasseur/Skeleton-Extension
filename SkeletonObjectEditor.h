@@ -55,6 +55,7 @@ class SkeletonObjectEditor: public wxDialog
 		wxStaticText* StaticText10;
 		wxPanel* Core;
 		wxStaticText* StaticText9;
+		wxBitmapButton* angleApplyToAllBt;
 		wxBitmapButton* angleDeleteKeyFrameBt;
 		wxToggleButton* ToggleButton2;
 		wxTextCtrl* periodTextCtrl;
@@ -80,6 +81,7 @@ class SkeletonObjectEditor: public wxDialog
 		wxTextCtrl* nameTextCtrl;
 		wxTextCtrl* angleTextCtrl;
 		wxButton* Button5;
+		wxBitmapButton* lengthApplyToAllBt;
 		wxTextCtrl* imageTextCtrl;
 		wxButton* Button3;
 		wxStaticText* StaticText5;
@@ -114,11 +116,13 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_TEXTCTRL2;
 		static const long ID_BITMAPBUTTON4;
 		static const long ID_BITMAPBUTTON5;
+		static const long ID_BITMAPBUTTON8;
 		static const long ID_STATICTEXT3;
 		static const long ID_STATICTEXT4;
 		static const long ID_TEXTCTRL3;
 		static const long ID_BITMAPBUTTON6;
 		static const long ID_BITMAPBUTTON7;
+		static const long ID_BITMAPBUTTON9;
 		static const long ID_STATICTEXT6;
 		static const long ID_TEXTCTRL5;
 		static const long ID_STATICTEXT7;
@@ -171,6 +175,8 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel2RightUp(wxMouseEvent& event);
 		void OnlengthCreateKeyFrameBtClick(wxCommandEvent& event);
 		void OnlengthDeleteKeyFrameBtClick(wxCommandEvent& event);
+		void OnangleApplyToAllBtClick(wxCommandEvent& event);
+		void OnlengthApplyToAllBtClick(wxCommandEvent& event);
 		//*)
 
 		Game & game;
@@ -178,10 +184,10 @@ class SkeletonObjectEditor: public wxDialog
 		SkeletonObject & object;
 		wxAuiManager m_mgr;
 
-		Skeleton skeleton;
-		Bone *selectedBone;
+		Sk::Skeleton skeleton;
+		Sk::Bone *selectedBone;
 
-		Bone *FindBoneOnPosition(sf::Vector2f position, Bone *base);
+		Sk::Bone *FindBoneOnPosition(sf::Vector2f position, Sk::Bone *base);
 		void UpdateForSelectedBone();
 		void ToggleMode(char _mode); //0 => Edition, 1 => Animation
 
@@ -195,9 +201,9 @@ class SkeletonObjectEditor: public wxDialog
 		void SelectAnimation(const std::string &name);
 		void Seek(float time);
 
-		void UncolorizeBoneIfNecessary(Bone &bone);
+		void UncolorizeBoneIfNecessary(Sk::Bone &bone);
 
-        Animation* timeline_currentAnim;
+        Sk::Animation* timeline_currentAnim;
 
         float timeline_current;
 		float timeline_scale; //Size of one second

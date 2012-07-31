@@ -1,7 +1,12 @@
 #include "skeletonanimator.h"
 
 #include "Bone.h"
+#include "interpolationMethods.h"
+
 #include "GDL/CommonTools.h"
+
+namespace Sk
+{
 
 Animation::Animation() : m_period(10), m_autoRepeat(true)
 {
@@ -67,6 +72,11 @@ void Animation::RemoveKeyFrame(const std::string &boneName, KeyFrameType type, f
     }
 }
 
+void Animation::ClearKeyFrame(const std::string &boneName, KeyFrameType type)
+{
+    m_keyFrames[boneName].keyFrames[type].clear();
+}
+
 void Animation::UpdateTime(float timeToAdd)
 {
     m_time += timeToAdd;
@@ -76,8 +86,8 @@ void Animation::UpdateTime(float timeToAdd)
         m_time -= m_period;
     }
 
-    UpdateTimeOfType(timeToAdd, AngleKeyFrame);
-    UpdateTimeOfType(timeToAdd, LengthKeyFrame);
+    UpdateTimeOfSmoothedType(timeToAdd, AngleKeyFrame);
+    UpdateTimeOfSmoothedType(timeToAdd, LengthKeyFrame);
 }
 
 float Animation::GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2)
@@ -112,11 +122,11 @@ void Animation::Seek(float time)
         m_time -= m_period;
     }
 
-    SeekOfType(time, AngleKeyFrame);
-    SeekOfType(time, LengthKeyFrame);
+    SeekOfSmoothedType(time, AngleKeyFrame);
+    SeekOfSmoothedType(time, LengthKeyFrame);
 }
 
-void Animation::UpdateTimeOfType(float timeToAdd, KeyFrameType type)
+void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
 {
     std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin();
     for(; it != m_keyFrames.end(); it++)
@@ -150,7 +160,7 @@ void Animation::UpdateTimeOfType(float timeToAdd, KeyFrameType type)
     }
 }
 
-void Animation::SeekOfType(float time, KeyFrameType type)
+void Animation::SeekOfSmoothedType(float time, KeyFrameType type)
 {
     std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin();
     for(; it != m_keyFrames.end(); it++)
@@ -428,4 +438,6 @@ void SkeletonAnimator::SaveToXml(TiXmlElement *ele)
         it->second.SaveToXml(newEle);
         ele->LinkEndChild(newEle);
     }
+}
+
 }

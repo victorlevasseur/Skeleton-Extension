@@ -27,9 +27,14 @@ Copyright (C) 2012 Victor Levasseur
 #include "Bone.h"
 #include "skeletonanimator.h"
 
-class Bone;
+
 class TiXmlElement;
 class wxBufferedPaintDC;
+
+namespace Sk
+{
+
+class Bone;
 
 class Skeleton
 {
@@ -78,5 +83,7 @@ struct ZOrderFunctor
 
     bool operator() (Bone *left, Bone *right) {return (left->m_zorder < right->m_zorder);};
 };
+
+}
 
 #endif // SKELETON_H

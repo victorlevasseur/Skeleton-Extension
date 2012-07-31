@@ -25,6 +25,9 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/dcbuffer.h>
 #endif
 
+namespace Sk
+{
+
 Skeleton::Skeleton() : m_root(new Bone("root", this))
 {
     RegisterBone(m_root);
@@ -152,4 +155,6 @@ void Skeleton::Load(const TiXmlElement &elem)
     {
         GetAnimator().LoadFromXml(animationsElem);
     }
+}
+
 }

@@ -48,7 +48,7 @@ SkeletonObject::~SkeletonObject()
 
 void SkeletonObject::Init(const SkeletonObject &other)
 {
-    skeleton = Skeleton(other.skeleton);
+    skeleton = Sk::Skeleton(other.skeleton);
 }
 
 SkeletonObject::SkeletonObject(const SkeletonObject &other) : Object(other)
@@ -92,7 +92,7 @@ bool SkeletonObject::LoadRuntimeResources(const RuntimeScene & scene, const Imag
 
 bool SkeletonObject::Draw( sf::RenderTarget& renderTarget )
 {
-    skeleton.Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Bone::Sprites);
+    skeleton.Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
 
     return true;
 }
@@ -104,7 +104,7 @@ bool SkeletonObject::Draw( sf::RenderTarget& renderTarget )
  */
 bool SkeletonObject::DrawEdittime( sf::RenderTarget& renderTarget )
 {
-    skeleton.Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Bone::Sprites);
+    skeleton.Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
 
     return true;
 }
@@ -187,14 +187,14 @@ float SkeletonObject::GetCenterY() const
     return 16;
 }
 
-Skeleton SkeletonObject::GetSkeleton()
+Sk::Skeleton SkeletonObject::GetSkeleton()
 {
     return skeleton;
 }
 
-void SkeletonObject::SetSkeleton(Skeleton _ske)
+void SkeletonObject::SetSkeleton(Sk::Skeleton _ske)
 {
-    skeleton = Skeleton(_ske);
+    skeleton = Sk::Skeleton(_ske);
 }
 
 void DestroySkeletonObject(Object * object)

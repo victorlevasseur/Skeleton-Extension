@@ -29,6 +29,9 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/dcbuffer.h>
 #endif
 
+namespace Sk
+{
+
 Bone::Bone(std::string name, Skeleton *owner) : m_owner(owner), m_parentBone(0), m_name(name)
 #ifdef GD_IDE_ONLY
 , m_selected(false)
@@ -393,4 +396,6 @@ void Bone::LoadBone(TiXmlElement &boneElement)
     }
 
     Update();
+}
+
 }

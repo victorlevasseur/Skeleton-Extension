@@ -3,7 +3,7 @@
 	<object class="wxDialog" name="SkeletonObjectEditor">
 		<title>Editer le squelette</title>
 		<centered>1</centered>
-		<size>752,489</size>
+		<size>941,585</size>
 		<id_arg>0</id_arg>
 		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
 		<object class="wxFlexGridSizer" variable="FlexGridSizer3" member="no">
@@ -232,7 +232,7 @@
 														</object>
 														<object class="sizeritem">
 															<object class="wxFlexGridSizer" variable="FlexGridSizer16" member="no">
-																<cols>3</cols>
+																<cols>4</cols>
 																<growablecols>0</growablecols>
 																<object class="sizeritem">
 																	<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="angleTextCtrl" member="yes">
@@ -245,19 +245,27 @@
 																<object class="sizeritem">
 																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON4" variable="angleCreateKeyFrameBt" member="yes">
 																		<bitmap>res\icon-key.png</bitmap>
+																		<tooltip>Créer une frame clée pour cette valeur</tooltip>
 																		<handler function="OncreateKeyFrameBtClick" entry="EVT_BUTTON" />
 																	</object>
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
 																	<option>1</option>
 																</object>
 																<object class="sizeritem">
 																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON5" variable="angleDeleteKeyFrameBt" member="yes">
 																		<bitmap>res\icon-key-delete.png</bitmap>
+																		<tooltip>Supprimer la frame clée de cette valeur</tooltip>
 																		<handler function="OnremoveKeyFrameBtClick" entry="EVT_BUTTON" />
 																	</object>
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
+																	<option>1</option>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON8" variable="angleApplyToAllBt" member="yes">
+																		<bitmap>res\icon-apply-to-all.png</bitmap>
+																		<handler function="OnangleApplyToAllBtClick" entry="EVT_BUTTON" />
+																	</object>
+																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<option>1</option>
 																</object>
 															</object>
@@ -290,7 +298,7 @@
 														</object>
 														<object class="sizeritem">
 															<object class="wxFlexGridSizer" variable="FlexGridSizer17" member="no">
-																<cols>3</cols>
+																<cols>4</cols>
 																<growablecols>0</growablecols>
 																<object class="sizeritem">
 																	<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="lengthTextCtrl" member="yes" />
@@ -301,19 +309,28 @@
 																<object class="sizeritem">
 																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON6" variable="lengthCreateKeyFrameBt" member="yes">
 																		<bitmap>res\icon-key.png</bitmap>
+																		<tooltip>Créer une frame clée pour cette valeur</tooltip>
 																		<handler function="OnlengthCreateKeyFrameBtClick" entry="EVT_BUTTON" />
 																	</object>
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
 																	<option>1</option>
 																</object>
 																<object class="sizeritem">
 																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON7" variable="lengthDeleteKeyFrameBt" member="yes">
 																		<bitmap>res\icon-key-delete.png</bitmap>
+																		<tooltip>Supprimer la frame clée de cette valeur</tooltip>
 																		<handler function="OnlengthDeleteKeyFrameBtClick" entry="EVT_BUTTON" />
 																	</object>
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
+																	<option>1</option>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON9" variable="lengthApplyToAllBt" member="yes">
+																		<bitmap>res\icon-apply-to-all.png</bitmap>
+																		<default>1</default>
+																		<handler function="OnlengthApplyToAllBtClick" entry="EVT_BUTTON" />
+																	</object>
+																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<option>1</option>
 																</object>
 															</object>
@@ -334,7 +351,7 @@
 																<object class="sizeritem">
 																	<object class="wxTextCtrl" name="ID_TEXTCTRL5" variable="offsetXTextCtrl" member="yes">
 																		<value>0</value>
-																		<size>62,27</size>
+																		<size>53,27</size>
 																	</object>
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<border>5</border>
@@ -350,7 +367,7 @@
 																<object class="sizeritem">
 																	<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="offsetYTextCtrl" member="yes">
 																		<value>0</value>
-																		<size>63,27</size>
+																		<size>52,27</size>
 																	</object>
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<border>5</border>

@@ -7,6 +7,9 @@
 #include <algorithm>
 #include "GDL/tinyxml/tinyxml.h"
 
+namespace Sk
+{
+
 class Bone;
 
 enum KeyFrameType
@@ -14,7 +17,9 @@ enum KeyFrameType
     AngleKeyFrame = 0,
     LengthKeyFrame = 1,
     PositionXKeyFrame = 2,
-    PositionYKeyFrame = 3
+    PositionYKeyFrame = 3,
+    ImageKeyFrame = 4,
+    ZOrderKeyFrame = 5
 };
 
 struct TimeFloat
@@ -32,6 +37,11 @@ class BoneAnimation
     BoneAnimation()
     {
         keyFrames[AngleKeyFrame].push_back(TimeFloat());
+
+        TimeFloat lengthTimeFloat;
+        lengthTimeFloat.time = 0;
+        lengthTimeFloat.value = 100;
+        keyFrames[LengthKeyFrame].push_back(TimeFloat());
     };
 
     std::map<KeyFrameType, unsigned int> currentIndex;
@@ -64,6 +74,7 @@ class Animation
         void SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, float value);
         bool HasKeyFrame(const std::string &boneName, KeyFrameType type, float time);
         void RemoveKeyFrame(const std::string &boneName, KeyFrameType type, float time);
+        void ClearKeyFrame(const std::string &boneName, KeyFrameType type);
 
         /// Don't forget to call ReorderKeys(const std::string &boneName); after modifying a bone keyframes list.
         inline const std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName, KeyFrameType type);
@@ -82,8 +93,8 @@ class Animation
         int GetNextIndex(const std::string &boneName, KeyFrameType type, unsigned int index);
         float GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2);
 
-        void UpdateTimeOfType(float timeToAdd, KeyFrameType type);
-        void SeekOfType(float time, KeyFrameType type);
+        void UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type);
+        void SeekOfSmoothedType(float time, KeyFrameType type);
 
         float m_time;
         float m_period;
@@ -139,6 +150,8 @@ inline Animation& SkeletonAnimator::GetAnimation(const std::string &name)
 inline const std::vector<TimeFloat>& Animation::GetBoneKeyFrames(const std::string &boneName, KeyFrameType type)
 {
     return m_keyFrames[boneName].keyFrames[type];
+}
+
 }
 
 #endif // SKELETONANIMATOR_H

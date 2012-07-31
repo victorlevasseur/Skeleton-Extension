@@ -101,11 +101,11 @@ class GD_EXTENSION_API SkeletonObject : public Object
         virtual float GetCenterX() const;
         virtual float GetCenterY() const;
 
-        Skeleton GetSkeleton();
-        void SetSkeleton(Skeleton _ske);
+        Sk::Skeleton GetSkeleton();
+        void SetSkeleton(Sk::Skeleton _ske);
 
     private:
-        Skeleton skeleton;
+        Sk::Skeleton skeleton;
         //Bone bone;
 
 };
