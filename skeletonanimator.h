@@ -24,10 +24,13 @@ enum KeyFrameType
 
 struct TimeFloat
 {
-    TimeFloat() : time(0), value(0) {};
+    TimeFloat() : time(0), value(0), interpolation("Linear") {};
 
     float time;
     float value;
+
+    std::string interpolation;
+    std::map<std::string, float> parameters;
 };
 
 class BoneAnimation

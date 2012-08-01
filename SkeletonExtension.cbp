@@ -574,6 +574,7 @@
 		<Unit filename="SkeletonObject.h" />
 		<Unit filename="SkeletonObjectEditor.cpp" />
 		<Unit filename="SkeletonObjectEditor.h" />
+		<Unit filename="interpolationMethods.cpp" />
 		<Unit filename="interpolationMethods.h" />
 		<Unit filename="skeletonanimator.cpp" />
 		<Unit filename="skeletonanimator.h" />
