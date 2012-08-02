@@ -35,9 +35,11 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/textdlg.h>
 #include <wx/msgdlg.h>
 #include <wx/log.h>
+#include <wx/choicdlg.h>
 
 #include "GDL/Game.h"
 #include "SkeletonObject.h"
+#include "interpolationMethods.h"
 #include "GDL/IDE/MainEditorCommand.h"
 #include "GDCore/IDE/CommonBitmapManager.h"
 #include "GDL/CommonTools.h"
@@ -70,6 +72,7 @@ const long SkeletonObjectEditor::ID_TEXTCTRL3 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON6 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON7 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON9 = wxNewId();
+const long SkeletonObjectEditor::ID_BITMAPBUTTON11 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT6 = wxNewId();
 const long SkeletonObjectEditor::ID_TEXTCTRL5 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT7 = wxNewId();
@@ -198,9 +201,11 @@ mode(0)
 	angleDeleteKeyFrameBt->SetToolTip(_("Supprimer la frame clée de cette valeur"));
 	FlexGridSizer16->Add(angleDeleteKeyFrameBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	angleApplyToAllBt = new wxBitmapButton(Core, ID_BITMAPBUTTON8, wxBitmap(wxImage(_T("res\\icon-apply-to-all.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON8"));
+	angleApplyToAllBt->SetToolTip(_("Appliquer la valeur sur toutes les animations\n(supprime toute les frames clés de l\'os concernant cette valeur)"));
 	FlexGridSizer16->Add(angleApplyToAllBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	angleInterpolationBt = new wxBitmapButton(Core, ID_BITMAPBUTTON10, wxBitmap(wxImage(_T("res\\icon-interpolationtype.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON10"));
 	angleInterpolationBt->SetDefault();
+	angleInterpolationBt->SetToolTip(_("Changer la méthode d\'interpolation entre la frame clée actuelle et la suivante."));
 	FlexGridSizer16->Add(angleInterpolationBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer4->Add(FlexGridSizer16, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer4->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -222,9 +227,14 @@ mode(0)
 	FlexGridSizer17->Add(lengthDeleteKeyFrameBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	lengthApplyToAllBt = new wxBitmapButton(Core, ID_BITMAPBUTTON9, wxBitmap(wxImage(_T("res\\icon-apply-to-all.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON9"));
 	lengthApplyToAllBt->SetDefault();
+	lengthApplyToAllBt->SetToolTip(_("Appliquer la valeur sur toutes les animations\n(supprime toute les frames clés de l\'os concernant cette valeur)"));
 	FlexGridSizer17->Add(lengthApplyToAllBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	lengthInterpolationBt = new wxBitmapButton(Core, ID_BITMAPBUTTON11, wxBitmap(wxImage(_T("res\\icon-interpolationtype.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON11"));
+	lengthInterpolationBt->SetDefault();
+	lengthInterpolationBt->SetToolTip(_("Changer la méthode d\'interpolation entre la frame clée actuelle et la suivante."));
+	FlexGridSizer17->Add(lengthInterpolationBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer4->Add(FlexGridSizer17, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	StaticText6 = new wxStaticText(Core, ID_STATICTEXT6, _("Décalage :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+	StaticText6 = new wxStaticText(Core, ID_STATICTEXT6, _("Decalage :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
 	FlexGridSizer4->Add(StaticText6, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer9 = new wxFlexGridSizer(0, 3, 0, 0);
 	offsetXTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL5, _("0"), wxDefaultPosition, wxSize(53,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL5"));
@@ -300,9 +310,11 @@ mode(0)
 	Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OncreateKeyFrameBtClick);
 	Connect(ID_BITMAPBUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnremoveKeyFrameBtClick);
 	Connect(ID_BITMAPBUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnangleApplyToAllBtClick);
+	Connect(ID_BITMAPBUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnangleInterpolationBtClick);
 	Connect(ID_BITMAPBUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnlengthCreateKeyFrameBtClick);
 	Connect(ID_BITMAPBUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnlengthDeleteKeyFrameBtClick);
 	Connect(ID_BITMAPBUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnlengthApplyToAllBtClick);
+	Connect(ID_BITMAPBUTTON11,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnlengthInterpolationBtClick);
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnnameTextCtrlText);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnaddChildBoneBtClick);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OndeleteBoneBtClick);
@@ -1007,6 +1019,58 @@ void SkeletonObjectEditor::OnlengthApplyToAllBtClick(wxCommandEvent& event)
         skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).ClearKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame);
         skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, 0, selectedBone->GetSize());
     }
+}
+
+void SkeletonObjectEditor::OnangleInterpolationBtClick(wxCommandEvent& event)
+{
+    if(mode != 1)
+        return;
+
+    if(!selectedBone && !timeline_currentAnim)
+        return;
+
+    if(!timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current))
+        return;
+
+    std::string inter = ChooseInterpolationMethod();
+
+    timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current, inter);
+}
+
+void SkeletonObjectEditor::OnlengthInterpolationBtClick(wxCommandEvent& event)
+{
+    if(mode != 1)
+        return;
+
+    if(!selectedBone && !timeline_currentAnim)
+        return;
+
+    if(!timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current))
+        return;
+
+    std::string inter = ChooseInterpolationMethod();
+
+    timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current, inter);
+}
+
+std::string SkeletonObjectEditor::ChooseInterpolationMethod()
+{
+    std::vector<std::string> listOfMethods = Sk::Interpolation::Get::Methods();
+    wxString methods[listOfMethods.size()];
+    for(unsigned int a = 0; a < listOfMethods.size(); a++)
+    {
+        methods[a] = wxString(listOfMethods.at(a).c_str());
+    }
+
+    wxSingleChoiceDialog dialog(this,
+                                "Choisissez la methode d'interpolation qui sera utilisee\nentre la frame clee selectionnee et la frame clee suivante",
+                                "Methode d'interpolation",
+                                listOfMethods.size(),
+                                methods);
+
+    dialog.ShowModal();
+
+    return std::string(ToString(dialog.GetStringSelection()));
 }
 
 #endif

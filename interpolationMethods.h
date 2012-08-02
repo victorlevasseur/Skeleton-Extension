@@ -2,6 +2,7 @@
 #define INTERPOLATIONMETHOD_H
 
 #include <string>
+#include <vector>
 #include <map>
 #include <math.h>
 
@@ -112,6 +113,17 @@ public:
         }
 
         return 0;
+    }
+
+    static std::vector<std::string> Methods()
+    {
+        std::vector<std::string> list;
+        list.push_back("Linear");
+        list.push_back("Sinusoidale");
+        list.push_back("Exponential");
+        list.push_back("InvertedExponential");
+
+        return list;
     }
 
 private:

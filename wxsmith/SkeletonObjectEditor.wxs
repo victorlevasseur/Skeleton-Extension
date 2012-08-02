@@ -264,6 +264,7 @@
 																<object class="sizeritem">
 																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON8" variable="angleApplyToAllBt" member="yes">
 																		<bitmap>res\icon-apply-to-all.png</bitmap>
+																		<tooltip>Appliquer la valeur sur toutes les animations&#x0A;(supprime toute les frames clés de l&apos;os concernant cette valeur)</tooltip>
 																		<handler function="OnangleApplyToAllBtClick" entry="EVT_BUTTON" />
 																	</object>
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -273,6 +274,8 @@
 																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON10" variable="angleInterpolationBt" member="yes">
 																		<bitmap>res\icon-interpolationtype.png</bitmap>
 																		<default>1</default>
+																		<tooltip>Changer la méthode d&apos;interpolation entre la frame clée actuelle et la suivante.</tooltip>
+																		<handler function="OnangleInterpolationBtClick" entry="EVT_BUTTON" />
 																	</object>
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<option>1</option>
@@ -337,7 +340,18 @@
 																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON9" variable="lengthApplyToAllBt" member="yes">
 																		<bitmap>res\icon-apply-to-all.png</bitmap>
 																		<default>1</default>
+																		<tooltip>Appliquer la valeur sur toutes les animations&#x0A;(supprime toute les frames clés de l&apos;os concernant cette valeur)</tooltip>
 																		<handler function="OnlengthApplyToAllBtClick" entry="EVT_BUTTON" />
+																	</object>
+																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<option>1</option>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON11" variable="lengthInterpolationBt" member="yes">
+																		<bitmap>res\icon-interpolationtype.png</bitmap>
+																		<default>1</default>
+																		<tooltip>Changer la méthode d&apos;interpolation entre la frame clée actuelle et la suivante.</tooltip>
+																		<handler function="OnlengthInterpolationBtClick" entry="EVT_BUTTON" />
 																	</object>
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<option>1</option>
@@ -348,7 +362,7 @@
 														</object>
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
-																<label>Décalage :</label>
+																<label>Decalage :</label>
 															</object>
 															<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
 															<border>5</border>

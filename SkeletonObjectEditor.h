@@ -90,6 +90,7 @@ class SkeletonObjectEditor: public wxDialog
 		wxTextCtrl* zOrderTextCtrl;
 		wxBitmapButton* BitmapButton3;
 		wxPanel* Panel2;
+		wxBitmapButton* lengthInterpolationBt;
 		wxButton* addChildBoneBt;
 		wxButton* deleteBoneBt;
 		wxStaticText* StaticText4;
@@ -125,6 +126,7 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_BITMAPBUTTON6;
 		static const long ID_BITMAPBUTTON7;
 		static const long ID_BITMAPBUTTON9;
+		static const long ID_BITMAPBUTTON11;
 		static const long ID_STATICTEXT6;
 		static const long ID_TEXTCTRL5;
 		static const long ID_STATICTEXT7;
@@ -179,6 +181,8 @@ class SkeletonObjectEditor: public wxDialog
 		void OnlengthDeleteKeyFrameBtClick(wxCommandEvent& event);
 		void OnangleApplyToAllBtClick(wxCommandEvent& event);
 		void OnlengthApplyToAllBtClick(wxCommandEvent& event);
+		void OnangleInterpolationBtClick(wxCommandEvent& event);
+		void OnlengthInterpolationBtClick(wxCommandEvent& event);
 		//*)
 
 		Game & game;
@@ -206,6 +210,8 @@ class SkeletonObjectEditor: public wxDialog
 		void UncolorizeBoneIfNecessary(Sk::Bone &bone);
 
         Sk::Animation* timeline_currentAnim;
+
+        std::string ChooseInterpolationMethod();
 
         float timeline_current;
 		float timeline_scale; //Size of one second

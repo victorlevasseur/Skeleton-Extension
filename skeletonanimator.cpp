@@ -77,6 +77,30 @@ void Animation::ClearKeyFrame(const std::string &boneName, KeyFrameType type)
     m_keyFrames[boneName].keyFrames[type].clear();
 }
 
+std::string Animation::GetKeyFrameInterpolation(const std::string &boneName, KeyFrameType type, float time)
+{
+    for(unsigned int a = 0; a < m_keyFrames[boneName].keyFrames[type].size(); a++)
+    {
+        if(m_keyFrames[boneName].keyFrames[type][a].time == time)
+        {
+            return m_keyFrames[boneName].keyFrames[type][a].interpolation;
+        }
+    }
+
+    return "";
+}
+
+void Animation::SetKeyFrameInterpolation(const std::string &boneName, KeyFrameType type, float time, const std::string &method)
+{
+    for(unsigned int a = 0; a < m_keyFrames[boneName].keyFrames[type].size(); a++)
+    {
+        if(m_keyFrames[boneName].keyFrames[type][a].time == time)
+        {
+            m_keyFrames[boneName].keyFrames[type][a].interpolation = method;
+        }
+    }
+}
+
 void Animation::UpdateTime(float timeToAdd)
 {
     m_time += timeToAdd;
