@@ -82,7 +82,7 @@
 										<growablecols>0</growablecols>
 										<object class="sizeritem">
 											<object class="wxPanel" name="ID_PANEL3" variable="Panel2" member="yes">
-												<size>662,48</size>
+												<size>725,64</size>
 												<handler function="OnPanel2Paint" entry="EVT_PAINT" />
 												<handler function="OnPanel2EraseBackground" entry="EVT_ERASE_BACKGROUND" />
 												<handler function="OnPanel2LeftDown" entry="EVT_LEFT_DOWN" />
@@ -182,7 +182,7 @@
 										<label>Apercu</label>
 										<object class="sizeritem">
 											<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
-												<size>453,373</size>
+												<size>457,373</size>
 												<handler function="OnPanel1Paint" entry="EVT_PAINT" />
 												<handler function="OnPanel1EraseBackground" entry="EVT_ERASE_BACKGROUND" />
 												<handler function="OnPanel1LeftDown" entry="EVT_LEFT_DOWN" />
@@ -208,6 +208,7 @@
 												<object class="sizeritem">
 													<object class="wxFlexGridSizer" variable="FlexGridSizer4" member="no">
 														<cols>2</cols>
+														<growablecols>1</growablecols>
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
 																<label>Nom :</label>
@@ -232,7 +233,7 @@
 														</object>
 														<object class="sizeritem">
 															<object class="wxFlexGridSizer" variable="FlexGridSizer16" member="no">
-																<cols>4</cols>
+																<cols>5</cols>
 																<growablecols>0</growablecols>
 																<object class="sizeritem">
 																	<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="angleTextCtrl" member="yes">
@@ -268,6 +269,14 @@
 																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<option>1</option>
 																</object>
+																<object class="sizeritem">
+																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON10" variable="angleInterpolationBt" member="yes">
+																		<bitmap>res\icon-interpolationtype.png</bitmap>
+																		<default>1</default>
+																	</object>
+																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<option>1</option>
+																</object>
 															</object>
 															<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 															<option>1</option>
@@ -298,7 +307,7 @@
 														</object>
 														<object class="sizeritem">
 															<object class="wxFlexGridSizer" variable="FlexGridSizer17" member="no">
-																<cols>4</cols>
+																<cols>5</cols>
 																<growablecols>0</growablecols>
 																<object class="sizeritem">
 																	<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="lengthTextCtrl" member="yes" />
@@ -451,6 +460,7 @@
 												<object class="sizeritem">
 													<object class="wxButton" name="ID_BUTTON2" variable="addChildBoneBt" member="yes">
 														<label>Ajouter un os enfant</label>
+														<size>292,23</size>
 														<handler function="OnaddChildBoneBtClick" entry="EVT_BUTTON" />
 													</object>
 													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

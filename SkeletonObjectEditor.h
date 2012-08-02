@@ -93,6 +93,7 @@ class SkeletonObjectEditor: public wxDialog
 		wxButton* addChildBoneBt;
 		wxButton* deleteBoneBt;
 		wxStaticText* StaticText4;
+		wxBitmapButton* angleInterpolationBt;
 		//*)
 
 	protected:
@@ -117,6 +118,7 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_BITMAPBUTTON4;
 		static const long ID_BITMAPBUTTON5;
 		static const long ID_BITMAPBUTTON8;
+		static const long ID_BITMAPBUTTON10;
 		static const long ID_STATICTEXT3;
 		static const long ID_STATICTEXT4;
 		static const long ID_TEXTCTRL3;
