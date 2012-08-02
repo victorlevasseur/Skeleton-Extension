@@ -19,7 +19,9 @@ enum KeyFrameType
     PositionXKeyFrame = 2,
     PositionYKeyFrame = 3,
     ImageKeyFrame = 4,
-    ZOrderKeyFrame = 5
+    ZOrderKeyFrame = 5,
+
+    AnyKeyFrame = 1000
 };
 
 struct TimeFloat
@@ -86,7 +88,7 @@ class Animation
         inline const std::vector<TimeFloat>& GetBoneKeyFrames(const std::string &boneName, KeyFrameType type);
         void ReorderKeys(const std::string &boneName);
 
-        std::vector<float> GetListOfKeyFramesTime(const std::string &bone = "");
+        std::vector<float> GetListOfKeyFramesTime(const std::string &bone = "", KeyFrameType type = AnyKeyFrame);
 
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 

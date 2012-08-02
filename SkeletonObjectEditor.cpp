@@ -153,7 +153,7 @@ mode(0)
 	FlexGridSizer5->Add(FlexGridSizer11, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer12 = new wxFlexGridSizer(0, 4, 0, 0);
 	FlexGridSizer12->AddGrowableCol(0);
-	Panel2 = new wxPanel(Core, ID_PANEL3, wxDefaultPosition, wxSize(725,64), wxTAB_TRAVERSAL, _T("ID_PANEL3"));
+	Panel2 = new wxPanel(Core, ID_PANEL3, wxDefaultPosition, wxSize(725,85), wxTAB_TRAVERSAL, _T("ID_PANEL3"));
 	FlexGridSizer12->Add(Panel2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer13 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer14 = new wxFlexGridSizer(0, 3, 0, 0);
@@ -665,6 +665,11 @@ void SkeletonObjectEditor::OnPanel1EraseBackground(wxEraseEvent& event)
 {
 }
 
+#define ANGLE_RIBBON_HEIGHT 16
+#define LENGTH_RIBBON_HEIGHT 16 + int((panelSize.GetHeight() - 16)/5) + 1
+#define OFFSET_RIBBON_HEIGHT 16 + int((panelSize.GetHeight() - 16)/5)*2 + 1
+#define IMAGE_RIBBON_HEIGHT 16 + int((panelSize.GetHeight() - 16)/5)*3 + 1
+
 void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
 {
     wxBufferedPaintDC dc(Panel2);
@@ -676,13 +681,25 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     if(mode == 0)
         return;
 
-    dc.SetBrush(wxBrush(wxColour(114, 114, 114)));
+    dc.SetBrush(wxBrush(wxColour(110, 110, 110)));
     dc.DrawRectangle(0, 16, panelSize.GetWidth(), panelSize.GetHeight());
+
+    dc.SetPen(wxPen(wxColour(0, 0, 0, 255)));
+
+    //Draw Length Ribbon
+    dc.SetBrush(wxBrush(wxColour(120, 120, 120)));
+    dc.SetPen(wxPen(wxColour(120, 120, 120)));
+    dc.DrawRectangle(0, LENGTH_RIBBON_HEIGHT, panelSize.GetWidth(), int((panelSize.GetHeight() - 16)/5));
+
+    //Draw Image Ribbon
+    dc.SetBrush(wxBrush(wxColour(120, 120, 120)));
+    dc.SetPen(wxPen(wxColour(120, 120, 120)));
+    dc.DrawRectangle(0, 16 + int((panelSize.GetHeight() - 16)/5) * 3 + 1, panelSize.GetWidth(), int((panelSize.GetHeight() - 16)/5));
 
     if(timeline_currentAnim)
     {
-        dc.SetBrush(wxBrush(wxColour(160, 160, 160)));
-        dc.DrawRectangle(0, 16, GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()), panelSize.GetHeight());
+        dc.SetPen(wxPen(wxColour(255, 255, 0)));
+        dc.DrawLine(GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()), 17, GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()), panelSize.GetHeight());
     }
 
     //Each 5s and 10s lines
@@ -690,12 +707,12 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     {
         dc.DrawText(ToString(a * 10), (a * timeline_scale * 10) - (timeline_offset * timeline_scale) - 7, 2);
 
-        dc.SetPen(wxColour(100, 100, 100));
+        dc.SetPen(wxColour(170, 170, 170));
 
         dc.DrawLine((a * timeline_scale * 10 - 5 * timeline_scale) - (timeline_offset * timeline_scale), 17,
                     (a * timeline_scale * 10 - 5 * timeline_scale) - (timeline_offset * timeline_scale), panelSize.GetHeight() - 1);
 
-        dc.SetPen(wxColour(91, 91, 91));
+        dc.SetPen(wxColour(130, 130, 130));
 
         dc.DrawLine((a * timeline_scale * 10) - (timeline_offset * timeline_scale), 17,
                     (a * timeline_scale * 10) - (timeline_offset * timeline_scale), panelSize.GetHeight() - 1);
@@ -703,25 +720,46 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
 
     if(timeline_currentAnim)
     {
-        dc.SetPen(wxColour(0, 148, 255));
-
-        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime();
+        //Draw angle keyframes
+        {
+        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::AngleKeyFrame);
         for(unsigned int a = 0; a < keyFrames.size(); a++)
         {
-            dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)), 17,
-                        GetPositionFromTimeToPixel(keyFrames.at(a)), panelSize.GetHeight() - 1);
+            if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, keyFrames.at(a)))
+            {
+                dc.SetPen(wxColour(0, 148, 255));
+            }
+            else
+            {
+                dc.SetPen(wxColour(0, 255, 255));
+            }
+
+            dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)), ANGLE_RIBBON_HEIGHT,
+                        GetPositionFromTimeToPixel(keyFrames.at(a)), LENGTH_RIBBON_HEIGHT);
+            dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)) - 1, ANGLE_RIBBON_HEIGHT,
+                        GetPositionFromTimeToPixel(keyFrames.at(a)) - 1, LENGTH_RIBBON_HEIGHT);
+        }
         }
 
-        if(selectedBone)
+        //Draw length keyframes
         {
-            dc.SetPen(wxColour(0, 255, 255));
-
-            std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime(selectedBone->GetName());
-            for(unsigned int a = 0; a < keyFrames.size(); a++)
+        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::LengthKeyFrame);
+        for(unsigned int a = 0; a < keyFrames.size(); a++)
+        {
+            if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, keyFrames.at(a)))
             {
-                dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)), 17,
-                            GetPositionFromTimeToPixel(keyFrames.at(a)), panelSize.GetHeight() - 1);
+                dc.SetPen(wxColour(0, 148, 255));
             }
+            else
+            {
+                dc.SetPen(wxColour(0, 255, 255));
+            }
+
+            dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)) - 1, LENGTH_RIBBON_HEIGHT,
+                        GetPositionFromTimeToPixel(keyFrames.at(a)) - 1, OFFSET_RIBBON_HEIGHT);
+            dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)), LENGTH_RIBBON_HEIGHT,
+                        GetPositionFromTimeToPixel(keyFrames.at(a)), OFFSET_RIBBON_HEIGHT);
+        }
         }
     }
 
@@ -730,7 +768,8 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     dc.DrawLine(GetPositionFromTimeToPixel(timeline_current), 17,
                 GetPositionFromTimeToPixel(timeline_current), panelSize.GetHeight() - 1);
 
-    dc.DrawText(ToString(timeline_current), GetPositionFromTimeToPixel(timeline_current) + 5, 20);
+    dc.DrawText(ToString(timeline_current), GetPositionFromTimeToPixel(timeline_current) + 5,
+                16 + 4*(int((panelSize.GetHeight() - 16)/5)) + 1);
 }
 
 void SkeletonObjectEditor::OnPanel2EraseBackground(wxEraseEvent& event)

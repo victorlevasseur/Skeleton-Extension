@@ -82,7 +82,7 @@
 										<growablecols>0</growablecols>
 										<object class="sizeritem">
 											<object class="wxPanel" name="ID_PANEL3" variable="Panel2" member="yes">
-												<size>725,64</size>
+												<size>725,85</size>
 												<handler function="OnPanel2Paint" entry="EVT_PAINT" />
 												<handler function="OnPanel2EraseBackground" entry="EVT_ERASE_BACKGROUND" />
 												<handler function="OnPanel2LeftDown" entry="EVT_LEFT_DOWN" />

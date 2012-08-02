@@ -244,15 +244,38 @@ void Animation::ReorderKeys(const std::string &boneName)
     }
 }
 
-std::vector<float> Animation::GetListOfKeyFramesTime(const std::string &bone)
+std::vector<float> Animation::GetListOfKeyFramesTime(const std::string &bone, KeyFrameType type)
 {
     std::vector<float> listOfKeys;
 
     if(bone == "")
     {
-        for(std::map<std::string, BoneAnimation>::const_iterator it = m_keyFrames.begin(); it != m_keyFrames.end(); it++)
+        for(std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin(); it != m_keyFrames.end(); it++)
         {
-            for(std::map<KeyFrameType, std::vector<TimeFloat> >::const_iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
+            if(type == AnyKeyFrame)
+            {
+                for(std::map<KeyFrameType, std::vector<TimeFloat> >::iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
+                {
+                    for(unsigned int a = 0; a < it2->second.size(); a++)
+                    {
+                        listOfKeys.push_back(it2->second.at(a).time);
+                    }
+                }
+            }
+            else
+            {
+                for(unsigned int a = 0; a < it->second.keyFrames[type].size(); a++)
+                {
+                    listOfKeys.push_back(it->second.keyFrames[type].at(a).time);
+                }
+            }
+        }
+    }
+    else
+    {
+        if(type == AnyKeyFrame)
+        {
+            for(std::map<KeyFrameType, std::vector<TimeFloat> >::iterator it2 = m_keyFrames[bone].keyFrames.begin(); it2 != m_keyFrames[bone].keyFrames.end(); it2++)
             {
                 for(unsigned int a = 0; a < it2->second.size(); a++)
                 {
@@ -260,14 +283,11 @@ std::vector<float> Animation::GetListOfKeyFramesTime(const std::string &bone)
                 }
             }
         }
-    }
-    else
-    {
-        for(std::map<KeyFrameType, std::vector<TimeFloat> >::const_iterator it2 = m_keyFrames[bone].keyFrames.begin(); it2 != m_keyFrames[bone].keyFrames.end(); it2++)
+        else
         {
-            for(unsigned int a = 0; a < it2->second.size(); a++)
+            for(unsigned int a = 0; a < m_keyFrames[bone].keyFrames[type].size(); a++)
             {
-                listOfKeys.push_back(it2->second.at(a).time);
+                listOfKeys.push_back(m_keyFrames[bone].keyFrames[type].at(a).time);
             }
         }
     }
