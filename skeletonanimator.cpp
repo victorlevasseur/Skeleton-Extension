@@ -335,8 +335,9 @@ void Animation::LoadFromXml(TiXmlElement *ele)
                         TimeFloat timefloat;
                         keyframe->ToElement()->QueryFloatAttribute("time", &timefloat.time);
                         keyframe->ToElement()->QueryFloatAttribute("value", &timefloat.value);
-                        timefloat.interpolation = std::string(keyframe->ToElement()->Attribute("interpolation"));
-                        if(timefloat.interpolation == "")
+                        if(keyframe->ToElement()->Attribute("interpolation"))
+                            timefloat.interpolation = std::string(keyframe->ToElement()->Attribute("interpolation"));
+                        else
                             timefloat.interpolation = "Linear";
 
                         currentBoneAnim->keyFrames[type].push_back(timefloat);
