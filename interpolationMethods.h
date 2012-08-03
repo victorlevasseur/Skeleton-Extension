@@ -17,7 +17,7 @@ public:
     InterpolationMethod() {};
     virtual ~InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue, std::map<std::string, float> &parameters) = 0;
+    virtual float GetResult(float progress, float firstValue, float secondValue) = 0;
     virtual std::string& GetName() const = 0;
 };
 
@@ -26,7 +26,7 @@ class Linear : public InterpolationMethod
 public:
     Linear() : InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue, std::map<std::string, float> &parameters)
+    virtual float GetResult(float progress, float firstValue, float secondValue)
     {
         return ((secondValue - firstValue) * progress + firstValue);
     }
@@ -39,7 +39,7 @@ class Sinusoidale : public InterpolationMethod
 public:
     Sinusoidale() : InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue, std::map<std::string, float> &parameters)
+    virtual float GetResult(float progress, float firstValue, float secondValue)
     {
         return ((secondValue - firstValue) * ((sin(progress * (M_PI) - M_PI/2) + 1) / 2) + firstValue);
     }
@@ -52,7 +52,7 @@ class Exponential : public InterpolationMethod
 public:
     Exponential() : InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue, std::map<std::string, float> &parameters)
+    virtual float GetResult(float progress, float firstValue, float secondValue)
     {
         return ((secondValue - firstValue) * (1 - exp(-progress * 5)) + firstValue);
     }
@@ -65,7 +65,7 @@ class InvertedExponential : public InterpolationMethod
 public:
     InvertedExponential() : InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue, std::map<std::string, float> &parameters)
+    virtual float GetResult(float progress, float firstValue, float secondValue)
     {
         if(progress == 0)
             return firstValue;

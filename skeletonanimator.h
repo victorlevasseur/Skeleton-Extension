@@ -32,7 +32,6 @@ struct TimeFloat
     float value;
 
     std::string interpolation;
-    std::map<std::string, float> parameters;
 };
 
 class BoneAnimation

@@ -180,7 +180,7 @@ void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
         }
 
         it->second.progress[type] = GetTimeDelta(key, nextKey) != 0 ? ((((m_time >= key.time) ? m_time - key.time : m_time + m_period - key.time)) / GetTimeDelta(key, nextKey)) : 1;
-        it->second.tmp_angleValue[type] = Sk::Interpolation::Get::Method(key.interpolation)->GetResult(it->second.progress[type], key.value, nextKey.value, key.parameters);
+        it->second.tmp_angleValue[type] = Sk::Interpolation::Get::Method(key.interpolation)->GetResult(it->second.progress[type], key.value, nextKey.value);
     }
 }
 
@@ -210,8 +210,7 @@ void Animation::SeekOfSmoothedType(float time, KeyFrameType type)
         TimeFloat nextKey = it->second.keyFrames[type].at(GetNextIndex(it->first, type, it->second.currentIndex[type]));
 
         it->second.progress[type] = GetTimeDelta(key, nextKey) != 0 ? ((((m_time >= key.time) ? m_time - key.time : m_time + m_period - key.time)) / GetTimeDelta(key, nextKey)) : 1;
-        it->second.tmp_angleValue[type] = Sk::Interpolation::Get::Method(key.interpolation)->GetResult(it->second.progress[type], key.value, nextKey.value, key.parameters);
-        //it->second.tmp_angleValue[type] = (nextKey.value - key.value) * it->second.progress[type] + key.value;
+        it->second.tmp_angleValue[type] = Sk::Interpolation::Get::Method(key.interpolation)->GetResult(it->second.progress[type], key.value, nextKey.value);
     }
 }
 
@@ -336,6 +335,10 @@ void Animation::LoadFromXml(TiXmlElement *ele)
                         TimeFloat timefloat;
                         keyframe->ToElement()->QueryFloatAttribute("time", &timefloat.time);
                         keyframe->ToElement()->QueryFloatAttribute("value", &timefloat.value);
+                        timefloat.interpolation = std::string(keyframe->ToElement()->Attribute("interpolation"));
+                        if(timefloat.interpolation == "")
+                            timefloat.interpolation = "Linear";
+
                         currentBoneAnim->keyFrames[type].push_back(timefloat);
                     }
                 }
@@ -363,6 +366,7 @@ void Animation::SaveToXml(TiXmlElement *ele)
                 TiXmlElement *timefloatEle = new TiXmlElement("Keyframe");
                 timefloatEle->SetDoubleAttribute("time", it2->second.at(a).time);
                 timefloatEle->SetDoubleAttribute("value", it2->second.at(a).value);
+                timefloatEle->SetAttribute("interpolation", it2->second.at(a).interpolation.c_str());
 
                 keyframetypeEle->LinkEndChild(timefloatEle);
             }

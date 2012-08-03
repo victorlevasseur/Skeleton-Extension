@@ -45,6 +45,8 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/CommonTools.h"
 #include "GDL/IDE/Dialogs/ResourcesEditor.h"
 
+#include <algorithm>
+
 //(*IdInit(SkeletonObjectEditor)
 const long SkeletonObjectEditor::ID_TOGGLEBUTTON1 = wxNewId();
 const long SkeletonObjectEditor::ID_TOGGLEBUTTON2 = wxNewId();
@@ -748,11 +750,11 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
         {
             if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, keyFrames.at(a)))
             {
-                dc.SetPen(wxColour(0, 148, 255));
+                dc.SetPen(wxColour(255, 0, 0));
             }
             else
             {
-                dc.SetPen(wxColour(0, 255, 255));
+                dc.SetPen(wxColour(255, 100, 100));
             }
 
             dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)) - 1, LENGTH_RIBBON_HEIGHT,
@@ -1071,7 +1073,7 @@ void SkeletonObjectEditor::OnangleInterpolationBtClick(wxCommandEvent& event)
     if(!timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current))
         return;
 
-    std::string inter = ChooseInterpolationMethod();
+    std::string inter = ChooseInterpolationMethod(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current));
 
     timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current, inter);
 }
@@ -1084,15 +1086,15 @@ void SkeletonObjectEditor::OnlengthInterpolationBtClick(wxCommandEvent& event)
     if(!selectedBone && !timeline_currentAnim)
         return;
 
-    if(!timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current))
+    if(!timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current))
         return;
 
-    std::string inter = ChooseInterpolationMethod();
+    std::string inter = ChooseInterpolationMethod(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current));
 
     timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current, inter);
 }
 
-std::string SkeletonObjectEditor::ChooseInterpolationMethod()
+std::string SkeletonObjectEditor::ChooseInterpolationMethod(const std::string &inter)
 {
     std::vector<std::string> listOfMethods = Sk::Interpolation::Get::Methods();
     wxString methods[listOfMethods.size()];
@@ -1106,6 +1108,7 @@ std::string SkeletonObjectEditor::ChooseInterpolationMethod()
                                 "Methode d'interpolation",
                                 listOfMethods.size(),
                                 methods);
+    dialog.SetSelection(std::distance(listOfMethods.begin(), std::find(listOfMethods.begin(), listOfMethods.end(), inter)));
 
     dialog.ShowModal();
 

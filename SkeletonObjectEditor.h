@@ -211,7 +211,7 @@ class SkeletonObjectEditor: public wxDialog
 
         Sk::Animation* timeline_currentAnim;
 
-        std::string ChooseInterpolationMethod();
+        std::string ChooseInterpolationMethod(const std::string &inter);
 
         float timeline_current;
 		float timeline_scale; //Size of one second
