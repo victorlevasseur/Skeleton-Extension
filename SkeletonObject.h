@@ -30,7 +30,6 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDCore/IDE/ArbitraryResourceWorker.h"
 #endif
 
-
 class ImageManager;
 class RuntimeScene;
 class Object;

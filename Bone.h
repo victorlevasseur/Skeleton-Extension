@@ -21,6 +21,10 @@ Copyright (C) 2012 Victor Levasseur
 #ifndef BONE_H
 #define BONE_H
 
+#if defined(GD_IDE_ONLY)
+#include <wx/colour.h>
+#endif
+
 #include <cmath>
 #include <vector>
 #include <map>
@@ -30,10 +34,6 @@ Copyright (C) 2012 Victor Levasseur
 #include <SFML/Graphics/Texture.hpp>
 #include "GDL/ImageManager.h"
 #include "GDL/tinyxml/tinyxml.h"
-
-#if defined(GD_IDE_ONLY)
-#include <wx/colour.h>
-#endif
 
 class ImageManager;
 class wxBufferedPaintDC;

@@ -26,14 +26,14 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/Position.h"
 #include "GDL/CommonTools.h"
 
-#include "SkeletonObject.h"
-
 #if defined(GD_IDE_ONLY)
 #include <wx/wx.h>
 #include "GDL/IDE/ArbitraryResourceWorker.h"
 #include "GDL/IDE/MainEditorCommand.h"
 #include "SkeletonObjectEditor.h"
 #endif
+
+#include "SkeletonObject.h"
 
 SkeletonObject::SkeletonObject(std::string name_) :
 Object(name_), skeleton()

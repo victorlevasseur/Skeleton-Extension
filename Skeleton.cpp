@@ -18,12 +18,13 @@ Copyright (C) 2012 Victor Levasseur
   3. This notice may not be removed or altered from any source distribution.
   */
 
-#include "Skeleton.h"
-
-#include "GDL/tinyxml/tinyxml.h"
 #ifdef GD_IDE_ONLY
 #include <wx/dcbuffer.h>
 #endif
+
+#include "Skeleton.h"
+
+#include "GDL/tinyxml/tinyxml.h"
 
 namespace Sk
 {
