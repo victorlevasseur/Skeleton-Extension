@@ -18,16 +18,16 @@ Copyright (C) 2012 Victor Levasseur
   3. This notice may not be removed or altered from any source distribution.
   */
 
+#ifdef GD_IDE_ONLY
+#include <wx/dcbuffer.h>
+#endif
+
 #include "Bone.h"
 
 #include <algorithm>
 #include "GDL/ImageManager.h"
 #include <SFML/Graphics.hpp>
 #include "Skeleton.h"
-
-#ifdef GD_IDE_ONLY
-#include <wx/dcbuffer.h>
-#endif
 
 namespace Sk
 {

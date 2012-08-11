@@ -32,7 +32,7 @@ Copyright (C) 2012 Victor Levasseur
 
 #if defined(GD_IDE_ONLY)
 #include "GDL/IDE/ArbitraryResourceWorker.h"
-#include "GDL/IDE/MainEditorCommand.h"
+#include "GDCore/IDE/Dialogs/MainFrameWrapper.h"
 #include "SkeletonObjectEditor.h"
 #endif
 
@@ -128,7 +128,7 @@ bool SkeletonObject::GenerateThumbnail(const Game & game, wxBitmap & thumbnail)
     return true;
 }
 
-void SkeletonObject::EditObject( wxWindow* parent, Game & game, MainEditorCommand & mainEditorCommand )
+void SkeletonObject::EditObject( wxWindow* parent, Game & game, gd::MainFrameWrapper & mainEditorCommand )
 {
     SkeletonObjectEditor dialog(parent, game, *this, mainEditorCommand);
     dialog.ShowModal();

@@ -36,6 +36,8 @@ Copyright (C) 2012 Victor Levasseur
 //*)
 #include <wx/aui/aui.h>
 
+#include "GDCore/IDE/Dialogs/MainFrameWrapper.h"
+
 #include "Bone.h"
 #include "Skeleton.h"
 
@@ -48,7 +50,7 @@ class SkeletonObjectEditor: public wxDialog
 {
 	public:
 
-		SkeletonObjectEditor( wxWindow* parent, Game & game_, SkeletonObject & object_, MainEditorCommand & mainEditorCommand_ );
+		SkeletonObjectEditor( wxWindow* parent, Game & game_, SkeletonObject & object_, gd::MainFrameWrapper & mainEditorCommand_ );
 		virtual ~SkeletonObjectEditor();
 
 		//(*Declarations(SkeletonObjectEditor)
@@ -186,7 +188,7 @@ class SkeletonObjectEditor: public wxDialog
 		//*)
 
 		Game & game;
-		MainEditorCommand & mainEditorCommand;
+		gd::MainFrameWrapper & mainEditorCommand;
 		SkeletonObject & object;
 		wxAuiManager m_mgr;
 

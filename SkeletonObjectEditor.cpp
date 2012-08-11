@@ -34,7 +34,6 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/dcbuffer.h>
 #include <wx/textdlg.h>
 #include <wx/msgdlg.h>
-#include <wx/log.h>
 #include <wx/choicdlg.h>
 
 #include "GDL/Game.h"
@@ -97,7 +96,7 @@ BEGIN_EVENT_TABLE(SkeletonObjectEditor,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-SkeletonObjectEditor::SkeletonObjectEditor( wxWindow* parent, Game & game_, SkeletonObject & object_, MainEditorCommand & mainEditorCommand_ ) :
+SkeletonObjectEditor::SkeletonObjectEditor( wxWindow* parent, Game & game_, SkeletonObject & object_, gd::MainFrameWrapper & mainEditorCommand_ ) :
 game(game_),
 mainEditorCommand(mainEditorCommand_),
 object(object_),
@@ -706,7 +705,7 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     //Each 5s and 10s lines
     for(int a = floor(timeline_offset / 10) - 1; a < floor(timeline_offset / 5) + floor(panelSize.GetWidth() / (timeline_scale * 10)) + 2;a++)
     {
-        dc.DrawText(ToString(a * 10), (a * timeline_scale * 10) - (timeline_offset * timeline_scale) - 7, 2);
+        dc.DrawRotatedText(ToString(a * 10), (a * timeline_scale * 10) - (timeline_offset * timeline_scale) - 7, 2, 0);
 
         dc.SetPen(wxColour(170, 170, 170));
 
@@ -769,8 +768,9 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     dc.DrawLine(GetPositionFromTimeToPixel(timeline_current), 17,
                 GetPositionFromTimeToPixel(timeline_current), panelSize.GetHeight() - 1);
 
-    dc.DrawText(ToString(timeline_current), GetPositionFromTimeToPixel(timeline_current) + 5,
-                16 + 4*(int((panelSize.GetHeight() - 16)/5)) + 1);
+    dc.DrawRotatedText(ToString(timeline_current), GetPositionFromTimeToPixel(timeline_current) + 5,
+                16 + 4*(int((panelSize.GetHeight() - 16)/5)) + 1,
+                0);
 }
 
 void SkeletonObjectEditor::OnPanel2EraseBackground(wxEraseEvent& event)

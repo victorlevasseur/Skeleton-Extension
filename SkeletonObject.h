@@ -28,6 +28,10 @@ Copyright (C) 2012 Victor Levasseur
 
 #if defined(GD_IDE_ONLY)
 #include "GDCore/IDE/ArbitraryResourceWorker.h"
+namespace gd
+{
+    class MainFrameWrapper;
+}
 #endif
 
 class ImageManager;
@@ -73,7 +77,7 @@ class GD_EXTENSION_API SkeletonObject : public Object
 
         virtual wxPanel * CreateInitialPositionPanel( wxWindow* parent, const Game & game_, const Scene & scene_, const InitialPosition & position );
 
-        virtual void EditObject( wxWindow* parent, Game & game_, MainEditorCommand & mainEditorCommand_ );
+        virtual void EditObject( wxWindow* parent, Game & game_, gd::MainFrameWrapper & mainEditorCommand_ );
 
         virtual void GetPropertyForDebugger (unsigned int propertyNb, std::string & name, std::string & value) const;
         virtual bool ChangeProperty(unsigned int propertyNb, std::string newValue);
