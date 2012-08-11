@@ -18,6 +18,10 @@ Copyright (C) 2012 Victor Levasseur
   3. This notice may not be removed or altered from any source distribution.
   */
 
+#if defined(GD_IDE_ONLY)
+#include <wx/wx.h> //Must be placed first, otherwise we get errors relative to "cannot convert 'const TCHAR*'..." in wx/msw/winundef.h
+#endif
+
 #include <SFML/Graphics.hpp>
 #include "GDL/Object.h"
 
@@ -27,7 +31,6 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/CommonTools.h"
 
 #if defined(GD_IDE_ONLY)
-#include <wx/wx.h>
 #include "GDL/IDE/ArbitraryResourceWorker.h"
 #include "GDL/IDE/MainEditorCommand.h"
 #include "SkeletonObjectEditor.h"

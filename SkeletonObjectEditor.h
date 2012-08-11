@@ -23,9 +23,6 @@ Copyright (C) 2012 Victor Levasseur
 #ifndef SkeletonObjectEDITOR_H
 #define SkeletonObjectEDITOR_H
 
-#include "Bone.h"
-#include "Skeleton.h"
-
 //(*Headers(SkeletonObjectEditor)
 #include <wx/sizer.h>
 #include <wx/stattext.h>
@@ -38,6 +35,9 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/dialog.h>
 //*)
 #include <wx/aui/aui.h>
+
+#include "Bone.h"
+#include "Skeleton.h"
 
 class Game;
 class SkeletonObject;

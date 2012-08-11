@@ -44,7 +44,6 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDCore/IDE/CommonBitmapManager.h"
 #include "GDL/CommonTools.h"
 #include "GDL/IDE/Dialogs/ResourcesEditor.h"
-
 #include <algorithm>
 
 //(*IdInit(SkeletonObjectEditor)
