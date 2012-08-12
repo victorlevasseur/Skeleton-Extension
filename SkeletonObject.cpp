@@ -22,21 +22,21 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/wx.h> //Must be placed first, otherwise we get errors relative to "cannot convert 'const TCHAR*'..." in wx/msw/winundef.h
 #endif
 
+#include "SkeletonObject.h"
+
 #include <SFML/Graphics.hpp>
 #include "GDL/Object.h"
-
 #include "GDL/ImageManager.h"
 #include "GDL/tinyxml/tinyxml.h"
 #include "GDL/Position.h"
 #include "GDL/CommonTools.h"
 
 #if defined(GD_IDE_ONLY)
-#include "GDL/IDE/ArbitraryResourceWorker.h"
 #include "GDCore/IDE/Dialogs/MainFrameWrapper.h"
+#include "GDCore/IDE/ArbitraryResourceWorker.h"
+#include "GDCore/PlatformDefinition/Project.h"
 #include "SkeletonObjectEditor.h"
 #endif
-
-#include "SkeletonObject.h"
 
 SkeletonObject::SkeletonObject(std::string name_) :
 Object(name_), skeleton()
@@ -54,6 +54,11 @@ void SkeletonObject::Init(const SkeletonObject &other)
     skeleton = Sk::Skeleton(other.skeleton);
 }
 
+Object* SkeletonObject::Clone() const
+{
+    return new SkeletonObject(*this);
+}
+
 SkeletonObject::SkeletonObject(const SkeletonObject &other) : Object(other)
 {
     Init(other);
@@ -61,7 +66,8 @@ SkeletonObject::SkeletonObject(const SkeletonObject &other) : Object(other)
 
 SkeletonObject& SkeletonObject::operator=(const SkeletonObject &other)
 {
-    Init(other);
+    if ( &other != this )
+        Init(other);
     return *this;
 }
 
@@ -95,8 +101,12 @@ bool SkeletonObject::LoadRuntimeResources(const RuntimeScene & scene, const Imag
 
 bool SkeletonObject::Draw( sf::RenderTarget& renderTarget )
 {
-    skeleton.Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
+    if ( hidden )
+    {
+        return true;
+    }
 
+    skeleton.Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
     return true;
 }
 
@@ -105,10 +115,9 @@ bool SkeletonObject::Draw( sf::RenderTarget& renderTarget )
 /**
  * Render object at edittime
  */
-bool SkeletonObject::DrawEdittime( sf::RenderTarget& renderTarget )
+bool SkeletonObject::DrawEdittime( sf::RenderTarget &renderTarget )
 {
     skeleton.Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
-
     return true;
 }
 
@@ -122,7 +131,7 @@ void SkeletonObject::ExposeResources(gd::ArbitraryResourceWorker & worker)
 
 }
 
-bool SkeletonObject::GenerateThumbnail(const Game & game, wxBitmap & thumbnail)
+bool SkeletonObject::GenerateThumbnail(const gd::Project & project, wxBitmap & thumbnail)
 {
     thumbnail = wxBitmap("res/Skeleton24.png", wxBITMAP_TYPE_ANY);
     return true;

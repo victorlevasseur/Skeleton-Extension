@@ -27,9 +27,9 @@ Copyright (C) 2012 Victor Levasseur
 #include "Bone.h"
 #include "skeletonanimator.h"
 
+class wxBufferedPaintDC;
 
 class TiXmlElement;
-class wxBufferedPaintDC;
 
 namespace Sk
 {

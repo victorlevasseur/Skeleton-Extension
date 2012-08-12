@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (C) 2012 Victor Levasseur
 
   This software is provided 'as-is', without any express or implied

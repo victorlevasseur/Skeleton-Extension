@@ -27,11 +27,9 @@ Copyright (C) 2012 Victor Levasseur
 #include "Bone.h"
 
 #if defined(GD_IDE_ONLY)
-#include "GDCore/IDE/ArbitraryResourceWorker.h"
-namespace gd
-{
-    class MainFrameWrapper;
-}
+namespace gd {class ArbitraryResourceWorker;}
+namespace gd {class Project;}
+namespace gd {class MainFrameWrapper;}
 #endif
 
 class ImageManager;
@@ -39,6 +37,7 @@ class RuntimeScene;
 class Object;
 class ImageManager;
 class InitialPosition;
+
 #if defined(GD_IDE_ONLY)
 namespace sf
 {
@@ -48,8 +47,6 @@ namespace sf
 class wxBitmap;
 class Game;
 class wxWindow;
-class MainEditorCommand;
-class ResourcesMergingHelper;
 #endif
 
 class GD_EXTENSION_API SkeletonObject : public Object
@@ -59,21 +56,21 @@ class GD_EXTENSION_API SkeletonObject : public Object
         SkeletonObject(std::string name_);
         virtual ~SkeletonObject();
 
-        void Init(const SkeletonObject &other);
         SkeletonObject(const SkeletonObject &other);
         SkeletonObject& operator=(const SkeletonObject &other);
 
-        virtual Object* Clone() { return new SkeletonObject(*this);}
+        virtual Object* Clone() const;
 
         virtual bool LoadResources(const RuntimeScene & scene, const ImageManager & imageMgr );
         virtual bool LoadRuntimeResources(const RuntimeScene & scene, const ImageManager & imageMgr );
+        virtual bool InitializeFromInitialPosition(const InitialPosition & position) {return true;}
 
         virtual bool Draw(sf::RenderTarget & renderTarget);
 
         #if defined(GD_IDE_ONLY)
         virtual bool DrawEdittime(sf::RenderTarget & renderTarget);
         virtual void ExposeResources(gd::ArbitraryResourceWorker & worker);
-        virtual bool GenerateThumbnail(const Game & game, wxBitmap & thumbnail);
+        virtual bool GenerateThumbnail(const gd::Project & project, wxBitmap & thumbnail);
 
         virtual wxPanel * CreateInitialPositionPanel( wxWindow* parent, const Game & game_, const Scene & scene_, const InitialPosition & position );
 
@@ -95,6 +92,7 @@ class GD_EXTENSION_API SkeletonObject : public Object
 
         virtual float GetWidth() const;
         virtual float GetHeight() const;
+
         virtual void SetWidth(float ) {};
         virtual void SetHeight(float ) {};
 
@@ -104,13 +102,17 @@ class GD_EXTENSION_API SkeletonObject : public Object
         virtual float GetCenterX() const;
         virtual float GetCenterY() const;
 
+        virtual bool SetAngle(float newAngle) {return false;};
+        virtual float GetAngle() const {return 0;};
+
         Sk::Skeleton GetSkeleton();
         void SetSkeleton(Sk::Skeleton _ske);
 
+    protected:
+        void Init(const SkeletonObject &other);
+
     private:
         Sk::Skeleton skeleton;
-        //Bone bone;
-
 };
 
 void DestroySkeletonObject(Object * object);

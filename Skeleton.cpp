@@ -23,7 +23,6 @@ Copyright (C) 2012 Victor Levasseur
 #endif
 
 #include "Skeleton.h"
-
 #include "GDL/tinyxml/tinyxml.h"
 
 namespace Sk
