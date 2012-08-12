@@ -35,6 +35,7 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/dialog.h>
 //*)
 #include <wx/aui/aui.h>
+#include <wx/propgrid/propgrid.h>
 
 #include "GDCore/IDE/Dialogs/MainFrameWrapper.h"
 
@@ -75,11 +76,13 @@ class SkeletonObjectEditor: public wxDialog
 		wxToggleButton* ToggleButton1;
 		wxPanel* Panel1;
 		wxBitmapButton* BitmapButton2;
+		wxFlexGridSizer* FlexGridSizer2;
 		wxStaticText* StaticText1;
 		wxTextCtrl* offsetXTextCtrl;
 		wxStaticText* StaticText3;
 		wxBitmapButton* BitmapButton1;
 		wxButton* Button2;
+		wxPanel* Panel3;
 		wxTextCtrl* nameTextCtrl;
 		wxTextCtrl* angleTextCtrl;
 		wxButton* Button5;
@@ -141,6 +144,7 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_BUTTON5;
 		static const long ID_BUTTON2;
 		static const long ID_BUTTON4;
+		static const long ID_PANEL4;
 		static const long ID_BUTTON6;
 		static const long ID_BUTTON1;
 		static const long ID_BUTTON3;
@@ -187,10 +191,13 @@ class SkeletonObjectEditor: public wxDialog
 		void OnlengthInterpolationBtClick(wxCommandEvent& event);
 		//*)
 
+		void PreparePropertyGrid();
+
 		Game & game;
 		gd::MainFrameWrapper & mainEditorCommand;
 		SkeletonObject & object;
 		wxAuiManager m_mgr;
+		wxPropertyGrid *m_grid;
 
 		Sk::Skeleton skeleton;
 		Sk::Bone *selectedBone;

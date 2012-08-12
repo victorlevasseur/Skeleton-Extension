@@ -65,6 +65,7 @@
 					<Add option="-lgdl" />
 					<Add option="-lGDCore" />
 					<Add option="-lwxmsw29ud_xrc" />
+					<Add option="-lwxmsw29ud_propgrid" />
 					<Add option="-lwxmsw29ud_richtext" />
 					<Add option="-lwxmsw29ud_ribbon" />
 					<Add option="-lwxmsw29ud_aui" />
@@ -165,6 +166,7 @@
 					<Add option="-lGDCore" />
 					<Add option="-lgdl" />
 					<Add option="-lwxmsw29u_xrc" />
+					<Add option="-lwxmsw29u_propgrid" />
 					<Add option="-lwxmsw29u_richtext" />
 					<Add option="-lwxmsw29u_ribbon" />
 					<Add option="-lwxmsw29u_aui" />
@@ -266,6 +268,7 @@
 					<Add option="-lgdl" />
 					<Add option="-lGDCore" />
 					<Add option="-lwxmsw29u_xrc" />
+					<Add option="-lwxmsw29u_propgrid" />
 					<Add option="-lwxmsw29u_richtext" />
 					<Add option="-lwxmsw29u_ribbon" />
 					<Add option="-lwxmsw29u_aui" />

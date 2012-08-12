@@ -3,7 +3,7 @@
 	<object class="wxDialog" name="SkeletonObjectEditor">
 		<title>Editer le squelette</title>
 		<centered>1</centered>
-		<size>941,585</size>
+		<size>1089,606</size>
 		<id_arg>0</id_arg>
 		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
 		<object class="wxFlexGridSizer" variable="FlexGridSizer3" member="no">
@@ -173,7 +173,7 @@
 						</object>
 						<object class="sizeritem">
 							<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
-								<cols>2</cols>
+								<cols>3</cols>
 								<rows>1</rows>
 								<growablecols>0</growablecols>
 								<growablerows>0</growablerows>
@@ -203,8 +203,10 @@
 									<object class="wxStaticBoxSizer" variable="StaticBoxSizer2" member="no">
 										<label>Os selectionne</label>
 										<object class="sizeritem">
-											<object class="wxFlexGridSizer" variable="FlexGridSizer2" member="no">
+											<object class="wxFlexGridSizer" variable="FlexGridSizer2" member="yes">
 												<cols>1</cols>
+												<growablecols>0</growablecols>
+												<growablerows>3</growablerows>
 												<object class="sizeritem">
 													<object class="wxFlexGridSizer" variable="FlexGridSizer4" member="no">
 														<cols>2</cols>
@@ -495,6 +497,14 @@
 											<border>5</border>
 											<option>1</option>
 										</object>
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxPanel" name="ID_PANEL4" variable="Panel3" member="yes">
+										<size>260,405</size>
 									</object>
 									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>

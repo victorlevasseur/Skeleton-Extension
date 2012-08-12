@@ -35,6 +35,7 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/textdlg.h>
 #include <wx/msgdlg.h>
 #include <wx/choicdlg.h>
+#include <wx/arrstr.h>
 
 #include "GDL/Game.h"
 #include "SkeletonObject.h"
@@ -85,6 +86,7 @@ const long SkeletonObjectEditor::ID_TEXTCTRL6 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON5 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON4 = wxNewId();
+const long SkeletonObjectEditor::ID_PANEL4 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON6 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON1 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON3 = wxNewId();
@@ -111,7 +113,6 @@ mode(0)
 	wxFlexGridSizer* FlexGridSizer3;
 	wxFlexGridSizer* FlexGridSizer5;
 	wxFlexGridSizer* FlexGridSizer9;
-	wxFlexGridSizer* FlexGridSizer2;
 	wxFlexGridSizer* FlexGridSizer7;
 	wxFlexGridSizer* FlexGridSizer15;
 	wxFlexGridSizer* FlexGridSizer8;
@@ -125,7 +126,7 @@ mode(0)
 	wxFlexGridSizer* FlexGridSizer17;
 
 	Create(parent, wxID_ANY, _("Editer le squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER, _T("wxID_ANY"));
-	SetClientSize(wxSize(941,585));
+	SetClientSize(wxSize(1089,606));
 	FlexGridSizer3 = new wxFlexGridSizer(1, 1, 0, 0);
 	FlexGridSizer3->AddGrowableCol(0);
 	FlexGridSizer3->AddGrowableRow(0);
@@ -173,7 +174,7 @@ mode(0)
 	FlexGridSizer12->Add(FlexGridSizer13, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer5->Add(FlexGridSizer12, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer6->Add(FlexGridSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer1 = new wxFlexGridSizer(1, 2, 0, 0);
+	FlexGridSizer1 = new wxFlexGridSizer(1, 3, 0, 0);
 	FlexGridSizer1->AddGrowableCol(0);
 	FlexGridSizer1->AddGrowableRow(0);
 	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Apercu"));
@@ -182,6 +183,8 @@ mode(0)
 	FlexGridSizer1->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Os selectionne"));
 	FlexGridSizer2 = new wxFlexGridSizer(0, 1, 0, 0);
+	FlexGridSizer2->AddGrowableCol(0);
+	FlexGridSizer2->AddGrowableRow(3);
 	FlexGridSizer4 = new wxFlexGridSizer(0, 2, 0, 0);
 	FlexGridSizer4->AddGrowableCol(1);
 	StaticText1 = new wxStaticText(Core, ID_STATICTEXT1, _("Nom :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
@@ -270,6 +273,8 @@ mode(0)
 	FlexGridSizer2->Add(deleteBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer2->Add(FlexGridSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer1->Add(StaticBoxSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	Panel3 = new wxPanel(Core, ID_PANEL4, wxDefaultPosition, wxSize(260,405), wxTAB_TRAVERSAL, _T("ID_PANEL4"));
+	FlexGridSizer1->Add(Panel3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer6->Add(FlexGridSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer7 = new wxFlexGridSizer(0, 4, 0, 0);
 	Button3 = new wxButton(Core, ID_BUTTON6, _("Banque d\'image"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
@@ -333,6 +338,8 @@ mode(0)
                     | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_HINT_FADE | wxAUI_MGR_NO_VENETIAN_BLINDS_FADE );
     m_mgr.Update();
 
+    PreparePropertyGrid();
+
     offset = sf::Vector2f(20, 20);
     isDragging = false;
     selectedBone = 0;
@@ -353,6 +360,47 @@ SkeletonObjectEditor::~SkeletonObjectEditor()
     m_mgr.UnInit();
 	//(*Destroy(SkeletonObjectEditor)
 	//*)
+}
+
+void SkeletonObjectEditor::PreparePropertyGrid()
+{
+    long GRIDID = wxNewId();
+
+    m_grid = new wxPropertyGrid(
+        Panel3, // parent
+        GRIDID, // id
+        wxDefaultPosition, // position
+        wxSize(300,500), // size
+        wxPG_SPLITTER_AUTO_CENTER |
+        wxPG_DEFAULT_STYLE );
+
+    m_grid->SetExtraStyle( wxPG_EX_HELP_AS_TOOLTIPS );
+    //FlexGridSizer2->Add(, 1, wxALL|wxEXPAND, 5);
+
+    //Create some stuff for property grid
+    std::vector<std::string> listOfMethods = Sk::Interpolation::Get::Methods();
+    wxArrayString interMethods;
+    for(unsigned int a = 0; a < listOfMethods.size(); a++)
+    {
+        interMethods.Add(wxString(listOfMethods.at(a).c_str()));
+    }
+
+    //Creating all needed items
+    m_grid->Append( new wxPropertyCategory(_(L"Identification")) );
+    m_grid->Append( new wxStringProperty("Nom", "BoneName", "Bone") );
+
+    m_grid->Append( new wxPropertyCategory(_(L"Propriétés")) );
+    m_grid->Append( new wxFloatProperty("Angle", "BoneAngle", 0.f) );
+    {
+        m_grid->AppendIn("BoneAngle", new wxBoolProperty(_(L"Frame clée"), "BoneAngleKeyFrame", false));
+        m_grid->AppendIn("BoneAngle", new wxEnumProperty(_(L"Type d'interpolation"), "BoneAngleInterpolation", interMethods));
+    }
+
+    m_grid->Append( new wxFloatProperty("Longueur", "BoneLength", 100.f) );
+    {
+        m_grid->AppendIn("BoneLength", new wxBoolProperty(_(L"Frame clée"), "BoneLengthKeyFrame", false));
+        m_grid->AppendIn("BoneLength", new wxEnumProperty(_(L"Type d'interpolation"), "BoneLengthInterpolation", interMethods));
+    }
 }
 
 void SkeletonObjectEditor::OnValidateButtonClick(wxCommandEvent& event)
