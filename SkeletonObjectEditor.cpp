@@ -420,6 +420,9 @@ void SkeletonObjectEditor::PreparePropertyGrid()
         m_grid->AppendIn("BoneZOrder", new wxBoolProperty(_(L"Frame clée"), "BoneZOrderKeyFrame", false));
         m_grid->AppendIn("BoneZOrder", new wxEnumProperty(_(L"Type d'interpolation"), "BoneZOrderInterpolation", interMethods));
     }
+
+    Connect(GRIDID, wxEVT_PG_CHANGING, (wxObjectEventFunction)&SkeletonObjectEditor::OnGridPropertyChanging);
+    Connect(GRIDID, wxEVT_PG_CHANGED, (wxObjectEventFunction)&SkeletonObjectEditor::OnGridPropertyChanged);
 }
 
 void SkeletonObjectEditor::OnValidateButtonClick(wxCommandEvent& event)
@@ -685,6 +688,8 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         lengthCreateKeyFrameBt->Enable(false);
         lengthDeleteKeyFrameBt->Enable(false);
 
+        m_grid->GetProperty(_(L"Identification.BoneName"))->Enable(true);
+
         m_grid->GetProperty(_(L"Propriétés.BoneAngle.BoneAngleKeyFrame"))->Enable(false);
         m_grid->GetProperty(_(L"Propriétés.BoneAngle.BoneAngleInterpolation"))->Enable(false);
 
@@ -732,6 +737,8 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         angleDeleteKeyFrameBt->Enable(true);
         lengthCreateKeyFrameBt->Enable(true);
         lengthDeleteKeyFrameBt->Enable(true);
+
+        m_grid->GetProperty(_(L"Identification.BoneName"))->Enable(false);
 
         m_grid->GetProperty(_(L"Propriétés.BoneAngle.BoneAngleKeyFrame"))->Enable(true);
         m_grid->GetProperty(_(L"Propriétés.BoneAngle.BoneAngleInterpolation"))->Enable(true);
@@ -1210,6 +1217,52 @@ void SkeletonObjectEditor::OnlengthInterpolationBtClick(wxCommandEvent& event)
     std::string inter = ChooseInterpolationMethod(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current));
 
     timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current, inter);
+}
+
+void SkeletonObjectEditor::OnGridPropertyChanging(wxPropertyGridEvent& event)
+{
+    if(mode == 0 && selectedBone)
+    {
+        if(event.GetProperty()->GetBaseName() == _(L"BoneName"))
+        {
+            if(skeleton.BoneNameAlreadyUsed(ToString(event.GetPropertyValue().GetString())) && ToString(event.GetPropertyValue().GetString()) != selectedBone->GetName())
+            {
+                wxMessageBox("Un os ayant ce nom existe déjà.\nModifiez le nom et cliquez sur Appliquer.", "Nom de l'os");
+                event.Veto(true);
+            }
+        }
+    }
+    else if(mode == 1 && selectedBone && timeline_currentAnim)
+    {
+
+    }
+    else
+    {
+        event.Veto(true);
+    }
+}
+
+void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
+{
+    if(event.WasVetoed())
+        return;
+
+    if(mode == 0 && selectedBone)
+    {
+        if(event.GetProperty()->GetBaseName() == _(L"BoneName"))
+        {
+            std::string oldName = selectedBone->GetName();
+            selectedBone->SetName(ToString(event.GetPropertyValue().GetString()));
+            skeleton.GetAnimator().NotifyBoneRenamed(oldName, selectedBone->GetName());
+        }
+    }
+    else if(mode == 1 && selectedBone && timeline_currentAnim)
+    {
+
+    }
+
+    Panel1->Refresh();
+    Panel1->Update();
 }
 
 std::string SkeletonObjectEditor::ChooseInterpolationMethod(const std::string &inter)

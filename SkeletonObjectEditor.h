@@ -190,6 +190,8 @@ class SkeletonObjectEditor: public wxDialog
 		void OnangleInterpolationBtClick(wxCommandEvent& event);
 		void OnlengthInterpolationBtClick(wxCommandEvent& event);
 		//*)
+		void OnGridPropertyChanging(wxPropertyGridEvent& event);
+		void OnGridPropertyChanged(wxPropertyGridEvent& event);
 
 		void PreparePropertyGrid();
 
