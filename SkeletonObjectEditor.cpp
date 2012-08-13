@@ -46,6 +46,9 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/IDE/Dialogs/ResourcesEditor.h"
 #include <algorithm>
 
+#undef _
+#define _(s)                     wxGetTranslation((L##s))
+
 //(*IdInit(SkeletonObjectEditor)
 const long SkeletonObjectEditor::ID_TOGGLEBUTTON1 = wxNewId();
 const long SkeletonObjectEditor::ID_TOGGLEBUTTON2 = wxNewId();
@@ -158,7 +161,7 @@ mode(0)
 	FlexGridSizer12->Add(Panel2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer13 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer14 = new wxFlexGridSizer(0, 3, 0, 0);
-	StaticText9 = new wxStaticText(Core, ID_STATICTEXT9, _("Periode :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+	StaticText9 = new wxStaticText(Core, ID_STATICTEXT9, _("Période :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
 	FlexGridSizer14->Add(StaticText9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	periodTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL8, _("0"), wxDefaultPosition, wxSize(39,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
 	FlexGridSizer14->Add(periodTextCtrl, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -177,11 +180,11 @@ mode(0)
 	FlexGridSizer1 = new wxFlexGridSizer(1, 3, 0, 0);
 	FlexGridSizer1->AddGrowableCol(0);
 	FlexGridSizer1->AddGrowableRow(0);
-	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Apercu"));
+	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Aperçu"));
 	Panel1 = new wxPanel(Core, ID_PANEL1, wxDefaultPosition, wxSize(457,373), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	StaticBoxSizer1->Add(Panel1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer1->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Os selectionne"));
+	StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Os sélectionné"));
 	FlexGridSizer2 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer2->AddGrowableCol(0);
 	FlexGridSizer2->AddGrowableRow(0);
@@ -212,7 +215,7 @@ mode(0)
 	FlexGridSizer16->Add(angleInterpolationBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer4->Add(FlexGridSizer16, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer4->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticText3 = new wxStaticText(Core, ID_STATICTEXT3, _("relatif a l\'os parent."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	StaticText3 = new wxStaticText(Core, ID_STATICTEXT3, _("relatif à l\'os parent."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	wxFont StaticText3Font(wxDEFAULT,wxDEFAULT,wxFONTSTYLE_ITALIC,wxNORMAL,false,wxEmptyString,wxFONTENCODING_DEFAULT);
 	StaticText3->SetFont(StaticText3Font);
 	FlexGridSizer4->Add(StaticText3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -386,39 +389,39 @@ void SkeletonObjectEditor::PreparePropertyGrid()
     }
 
     //Creating all needed items
-    m_grid->Append( new wxPropertyCategory(_(L"Identification")) );
+    m_grid->Append( new wxPropertyCategory(_("Identification")) );
     m_grid->Append( new wxStringProperty("Nom", "BoneName", "Bone") );
 
-    m_grid->Append( new wxPropertyCategory(_(L"Propriétés")) );
+    m_grid->Append( new wxPropertyCategory(_("Propriétés")) );
     m_grid->Append( new wxFloatProperty("Angle", "BoneAngle", 0.f) );
     {
-        m_grid->AppendIn("BoneAngle", new wxBoolProperty(_(L"Frame clée"), "BoneAngleKeyFrame", false));
-        m_grid->AppendIn("BoneAngle", new wxEnumProperty(_(L"Type d'interpolation"), "BoneAngleInterpolation", interMethods));
+        m_grid->AppendIn("BoneAngle", new wxBoolProperty(_("Frame clée"), "BoneAngleKeyFrame", false));
+        m_grid->AppendIn("BoneAngle", new wxEnumProperty(_("Type d'interpolation"), "BoneAngleInterpolation", interMethods));
     }
 
     m_grid->Append( new wxFloatProperty("Longueur", "BoneLength", 100.f) );
     {
-        m_grid->AppendIn("BoneLength", new wxBoolProperty(_(L"Frame clée"), "BoneLengthKeyFrame", false));
-        m_grid->AppendIn("BoneLength", new wxEnumProperty(_(L"Type d'interpolation"), "BoneLengthInterpolation", interMethods));
+        m_grid->AppendIn("BoneLength", new wxBoolProperty(_("Frame clée"), "BoneLengthKeyFrame", false));
+        m_grid->AppendIn("BoneLength", new wxEnumProperty(_("Type d'interpolation"), "BoneLengthInterpolation", interMethods));
     }
 
-    m_grid->Append( new wxStringProperty(_(L"Décalage"), "BoneOffset", "") );
+    m_grid->Append( new wxStringProperty(_("Décalage"), "BoneOffset", "") );
     {
-        m_grid->AppendIn("BoneOffset", new wxFloatProperty(_(L"X"), "BoneOffsetX", 0.f));
-        m_grid->AppendIn("BoneOffset", new wxFloatProperty(_(L"Y"), "BoneOffsetY", 0.f));
-        m_grid->AppendIn("BoneOffset", new wxBoolProperty(_(L"Frame clée"), "BoneOffsetKeyFrame", false));
-        m_grid->AppendIn("BoneOffset", new wxEnumProperty(_(L"Type d'interpolation"), "BoneOffsetInterpolation", interMethods));
+        m_grid->AppendIn("BoneOffset", new wxFloatProperty(_("X"), "BoneOffsetX", 0.f));
+        m_grid->AppendIn("BoneOffset", new wxFloatProperty(_("Y"), "BoneOffsetY", 0.f));
+        m_grid->AppendIn("BoneOffset", new wxBoolProperty(_("Frame clée"), "BoneOffsetKeyFrame", false));
+        m_grid->AppendIn("BoneOffset", new wxEnumProperty(_("Type d'interpolation"), "BoneOffsetInterpolation", interMethods));
     }
 
     m_grid->Append( new wxStringProperty("Image", "BoneImage", "") );
     {
-        m_grid->AppendIn("BoneImage", new wxBoolProperty(_(L"Frame clée"), "BoneImageKeyFrame", false));
+        m_grid->AppendIn("BoneImage", new wxBoolProperty(_("Frame clée"), "BoneImageKeyFrame", false));
     }
 
     m_grid->Append( new wxIntProperty("Plan", "BoneZOrder", 0) );
     {
-        m_grid->AppendIn("BoneZOrder", new wxBoolProperty(_(L"Frame clée"), "BoneZOrderKeyFrame", false));
-        m_grid->AppendIn("BoneZOrder", new wxEnumProperty(_(L"Type d'interpolation"), "BoneZOrderInterpolation", interMethods));
+        m_grid->AppendIn("BoneZOrder", new wxBoolProperty(_("Frame clée"), "BoneZOrderKeyFrame", false));
+        m_grid->AppendIn("BoneZOrder", new wxEnumProperty(_("Type d'interpolation"), "BoneZOrderInterpolation", interMethods));
     }
 
     Connect(GRIDID, wxEVT_PG_CHANGING, (wxObjectEventFunction)&SkeletonObjectEditor::OnGridPropertyChanging);
@@ -554,18 +557,34 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         imageTextCtrl->SetValue(wxString(selectedBone->GetTextureName()));
         zOrderTextCtrl->SetValue(wxString(ToString(selectedBone->GetZOrder())));
 
-        m_grid->SetPropertyValue(_(L"Identification.BoneName"), wxString(selectedBone->GetName()));
+        m_grid->SetPropertyValue(_("Identification.BoneName"), wxString(selectedBone->GetName()));
 
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneAngle"), selectedBone->GetRotation());
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneLength"), selectedBone->GetSize());
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneOffset.BoneOffsetX"), selectedBone->GetOffset().x);
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneOffset.BoneOffsetY"), selectedBone->GetOffset().y);
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneImage"), wxString(selectedBone->GetTextureName()));
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneZOrder"), selectedBone->GetZOrder());
+        m_grid->SetPropertyValue(_("Propriétés.BoneAngle"), selectedBone->GetRotation());
+        m_grid->SetPropertyValue(_("Propriétés.BoneLength"), selectedBone->GetSize());
+        m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX"), selectedBone->GetOffset().x);
+        m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY"), selectedBone->GetOffset().y);
+        m_grid->SetPropertyValue(_("Propriétés.BoneImage"), wxString(selectedBone->GetTextureName()));
+        m_grid->SetPropertyValue(_("Propriétés.BoneZOrder"), selectedBone->GetZOrder());
 
         if(mode == 1 && timeline_currentAnim)
         {
+            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current))
+            {
+                m_grid->SetPropertyValue(_("Propriétés.BoneAngle.BoneAngleKeyFrame"), true);
+            }
+            else
+            {
+                m_grid->SetPropertyValue(_("Propriétés.BoneAngle.BoneAngleKeyFrame"), false);
+            }
 
+            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current))
+            {
+                m_grid->SetPropertyValue(_("Propriétés.BoneLength.BoneLengthKeyFrame"), true);
+            }
+            else
+            {
+                m_grid->SetPropertyValue(_("Propriétés.BoneLength.BoneLengthKeyFrame"), false);
+            }
         }
     }
     else
@@ -578,14 +597,14 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         imageTextCtrl->SetValue("");
         zOrderTextCtrl->SetValue("");
 
-        m_grid->SetPropertyValue(_(L"Identification.BoneName"), wxString(""));
+        m_grid->SetPropertyValue(_("Identification.BoneName"), wxString(""));
 
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneAngle"), 0.f);
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneLength"), 0.f);
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneOffset.BoneOffsetX"), 0.f);
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneOffset.BoneOffsetY"), 0.f);
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneImage"), wxString(""));
-        m_grid->SetPropertyValue(_(L"Propriétés.BoneZOrder"), 0);
+        m_grid->SetPropertyValue(_("Propriétés.BoneAngle"), 0.f);
+        m_grid->SetPropertyValue(_("Propriétés.BoneLength"), 0.f);
+        m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX"), 0.f);
+        m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY"), 0.f);
+        m_grid->SetPropertyValue(_("Propriétés.BoneImage"), wxString(""));
+        m_grid->SetPropertyValue(_("Propriétés.BoneZOrder"), 0);
     }
 }
 
@@ -688,21 +707,21 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         lengthCreateKeyFrameBt->Enable(false);
         lengthDeleteKeyFrameBt->Enable(false);
 
-        m_grid->GetProperty(_(L"Identification.BoneName"))->Enable(true);
+        m_grid->GetProperty(_("Identification.BoneName"))->Enable(true);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneAngle.BoneAngleKeyFrame"))->Enable(false);
-        m_grid->GetProperty(_(L"Propriétés.BoneAngle.BoneAngleInterpolation"))->Enable(false);
+        m_grid->GetProperty(_("Propriétés.BoneAngle.BoneAngleKeyFrame"))->Enable(false);
+        m_grid->GetProperty(_("Propriétés.BoneAngle.BoneAngleInterpolation"))->Enable(false);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneLength.BoneLengthKeyFrame"))->Enable(false);
-        m_grid->GetProperty(_(L"Propriétés.BoneLength.BoneLengthInterpolation"))->Enable(false);
+        m_grid->GetProperty(_("Propriétés.BoneLength.BoneLengthKeyFrame"))->Enable(false);
+        m_grid->GetProperty(_("Propriétés.BoneLength.BoneLengthInterpolation"))->Enable(false);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneOffset.BoneOffsetKeyFrame"))->Enable(false);
-        m_grid->GetProperty(_(L"Propriétés.BoneOffset.BoneOffsetInterpolation"))->Enable(false);
+        m_grid->GetProperty(_("Propriétés.BoneOffset.BoneOffsetKeyFrame"))->Enable(false);
+        m_grid->GetProperty(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))->Enable(false);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneImage.BoneImageKeyFrame"))->Enable(false);
+        m_grid->GetProperty(_("Propriétés.BoneImage.BoneImageKeyFrame"))->Enable(false);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneZOrder.BoneZOrderKeyFrame"))->Enable(false);
-        m_grid->GetProperty(_(L"Propriétés.BoneZOrder.BoneZOrderInterpolation"))->Enable(false);
+        m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderKeyFrame"))->Enable(false);
+        m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderInterpolation"))->Enable(false);
     }
     else
     {
@@ -738,21 +757,21 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         lengthCreateKeyFrameBt->Enable(true);
         lengthDeleteKeyFrameBt->Enable(true);
 
-        m_grid->GetProperty(_(L"Identification.BoneName"))->Enable(false);
+        m_grid->GetProperty(_("Identification.BoneName"))->Enable(false);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneAngle.BoneAngleKeyFrame"))->Enable(true);
-        m_grid->GetProperty(_(L"Propriétés.BoneAngle.BoneAngleInterpolation"))->Enable(true);
+        m_grid->GetProperty(_("Propriétés.BoneAngle.BoneAngleKeyFrame"))->Enable(true);
+        m_grid->GetProperty(_("Propriétés.BoneAngle.BoneAngleInterpolation"))->Enable(true);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneLength.BoneLengthKeyFrame"))->Enable(true);
-        m_grid->GetProperty(_(L"Propriétés.BoneLength.BoneLengthInterpolation"))->Enable(true);
+        m_grid->GetProperty(_("Propriétés.BoneLength.BoneLengthKeyFrame"))->Enable(true);
+        m_grid->GetProperty(_("Propriétés.BoneLength.BoneLengthInterpolation"))->Enable(true);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneOffset.BoneOffsetKeyFrame"))->Enable(true);
-        m_grid->GetProperty(_(L"Propriétés.BoneOffset.BoneOffsetInterpolation"))->Enable(true);
+        m_grid->GetProperty(_("Propriétés.BoneOffset.BoneOffsetKeyFrame"))->Enable(true);
+        m_grid->GetProperty(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))->Enable(true);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneImage.BoneImageKeyFrame"))->Enable(true);
+        m_grid->GetProperty(_("Propriétés.BoneImage.BoneImageKeyFrame"))->Enable(true);
 
-        m_grid->GetProperty(_(L"Propriétés.BoneZOrder.BoneZOrderKeyFrame"))->Enable(true);
-        m_grid->GetProperty(_(L"Propriétés.BoneZOrder.BoneZOrderInterpolation"))->Enable(true);
+        m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderKeyFrame"))->Enable(true);
+        m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderInterpolation"))->Enable(true);
 
         SelectAnimation(ToString(AnimationCombobox->GetString(AnimationCombobox->GetSelection())));
     }
@@ -1223,11 +1242,11 @@ void SkeletonObjectEditor::OnGridPropertyChanging(wxPropertyGridEvent& event)
 {
     if(mode == 0 && selectedBone)
     {
-        if(event.GetProperty()->GetBaseName() == _(L"BoneName"))
+        if(event.GetProperty()->GetBaseName() == _("BoneName"))
         {
             if(skeleton.BoneNameAlreadyUsed(ToString(event.GetPropertyValue().GetString())) && ToString(event.GetPropertyValue().GetString()) != selectedBone->GetName())
             {
-                wxMessageBox("Un os ayant ce nom existe déjà.\nModifiez le nom et cliquez sur Appliquer.", "Nom de l'os");
+                wxMessageBox(_("Un os ayant ce nom existe déjà.\nModifiez le nom et cliquez sur Appliquer."), "Nom de l'os");
                 event.Veto(true);
             }
         }
@@ -1249,17 +1268,93 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
 
     if(mode == 0 && selectedBone)
     {
-        if(event.GetProperty()->GetBaseName() == _(L"BoneName"))
+        skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(0);
+
+        if(event.GetProperty()->GetBaseName() == _("BoneName"))
         {
             std::string oldName = selectedBone->GetName();
             selectedBone->SetName(ToString(event.GetPropertyValue().GetString()));
             skeleton.GetAnimator().NotifyBoneRenamed(oldName, selectedBone->GetName());
         }
+        else if(event.GetProperty()->GetBaseName() == _("BoneAngle"))
+        {
+            selectedBone->SetRotation(event.GetPropertyValue().GetDouble());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, 0, event.GetPropertyValue().GetDouble());
+        }
+        else if(event.GetProperty()->GetBaseName() == _("BoneLength"))
+        {
+            selectedBone->SetSize(event.GetPropertyValue().GetDouble());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, 0, event.GetPropertyValue().GetDouble());
+        }
+        else if(event.GetProperty()->GetBaseName() == _("BoneOffsetX") || event.GetProperty()->GetBaseName() == _("BoneOffsetY"))
+        {
+            selectedBone->SetOffset(m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX")).GetDouble(),
+                                    m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY")).GetDouble());
+        }
+        else if(event.GetProperty()->GetBaseName() == _("BoneImage"))
+        {
+            selectedBone->SetTextureName(ToString(event.GetPropertyValue().GetString()));
+        }
+        else if(event.GetProperty()->GetBaseName() == _("BoneZOrder"))
+        {
+            selectedBone->SetZOrder(event.GetPropertyValue().GetInteger());
+        }
     }
     else if(mode == 1 && selectedBone && timeline_currentAnim)
     {
+        //When angle modified
+        if(event.GetProperty()->GetBaseName() == _("BoneAngle"))
+        {
+            selectedBone->SetRotation(event.GetPropertyValue().GetDouble());
 
+            //When angle keyframe is already checked, modification applied
+            if(m_grid->GetPropertyValueAsBool(_("Propriétés.BoneAngle.BoneAngleKeyFrame")))
+            {
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
+            }
+        }
+        //When check/uncheck keyframe for angle
+        else if(event.GetProperty()->GetBaseName() == _("BoneAngleKeyFrame"))
+        {
+            if(event.GetPropertyValue().GetBool())
+            {
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current,
+                                                  m_grid->GetPropertyValueAsDouble(_("Propriétés.BoneAngle")));
+            }
+            else
+            {
+                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current);
+            }
+        }
+
+
+        //When length modified
+        if(event.GetProperty()->GetBaseName() == _("BoneLength"))
+        {
+            selectedBone->SetSize(event.GetPropertyValue().GetDouble());
+
+            //When angle keyframe is already checked, modification applied
+            if(m_grid->GetPropertyValueAsBool(_("Propriétés.BoneLength.BoneLengthKeyFrame")))
+            {
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
+            }
+        }
+        //When check/uncheck keyframe for length
+        else if(event.GetProperty()->GetBaseName() == _("BoneLengthKeyFrame"))
+        {
+            if(event.GetPropertyValue().GetBool())
+            {
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current,
+                                                  m_grid->GetPropertyValueAsDouble(_("Propriétés.BoneLength")));
+            }
+            else
+            {
+                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current);
+            }
+        }
     }
+
+    selectedBone->Update();
 
     Panel1->Refresh();
     Panel1->Update();
@@ -1275,8 +1370,8 @@ std::string SkeletonObjectEditor::ChooseInterpolationMethod(const std::string &i
     }
 
     wxSingleChoiceDialog dialog(this,
-                                "Choisissez la methode d'interpolation qui sera utilisee\nentre la frame clee selectionnee et la frame clee suivante",
-                                "Methode d'interpolation",
+                                _("Choisissez la methode d'interpolation qui sera utilisee\nentre la frame clee selectionnee et la frame clee suivante"),
+                                _("Methode d'interpolation"),
                                 listOfMethods.size(),
                                 methods);
     dialog.SetSelection(std::distance(listOfMethods.begin(), std::find(listOfMethods.begin(), listOfMethods.end(), inter)));
