@@ -206,7 +206,7 @@
 											<object class="wxFlexGridSizer" variable="FlexGridSizer2" member="yes">
 												<cols>1</cols>
 												<growablecols>0</growablecols>
-												<growablerows>3</growablerows>
+												<growablerows>0</growablerows>
 												<object class="sizeritem">
 													<object class="wxFlexGridSizer" variable="FlexGridSizer4" member="no">
 														<cols>2</cols>
@@ -504,7 +504,7 @@
 								</object>
 								<object class="sizeritem">
 									<object class="wxPanel" name="ID_PANEL4" variable="Panel3" member="yes">
-										<size>260,405</size>
+										<size>350,405</size>
 									</object>
 									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
