@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxDialog" name="SkeletonObjectEditor">
-		<title>Editer le squelette</title>
+		<title>Editeur de squelette</title>
 		<centered>1</centered>
 		<size>1089,606</size>
 		<id_arg>0</id_arg>
-		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</style>
+		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX</style>
 		<object class="wxFlexGridSizer" variable="FlexGridSizer3" member="no">
 			<cols>1</cols>
 			<rows>1</rows>
@@ -89,6 +89,7 @@
 												<handler function="OnPanel2RightDown" entry="EVT_RIGHT_DOWN" />
 												<handler function="OnPanel2RightUp" entry="EVT_RIGHT_UP" />
 												<handler function="OnPanel2MouseWheel" entry="EVT_MOUSEWHEEL" />
+												<handler function="OnPanel2Resize" entry="EVT_SIZE" />
 											</object>
 											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
@@ -208,266 +209,9 @@
 												<growablecols>0</growablecols>
 												<growablerows>0</growablerows>
 												<object class="sizeritem">
-													<object class="wxFlexGridSizer" variable="FlexGridSizer4" member="no">
-														<cols>2</cols>
-														<growablecols>1</growablecols>
-														<object class="sizeritem">
-															<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
-																<label>Nom :</label>
-															</object>
-															<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="nameTextCtrl" member="yes" />
-															<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
-																<label>Angle :</label>
-															</object>
-															<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxFlexGridSizer" variable="FlexGridSizer16" member="no">
-																<cols>5</cols>
-																<growablecols>0</growablecols>
-																<object class="sizeritem">
-																	<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="angleTextCtrl" member="yes">
-																		<value>0</value>
-																	</object>
-																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON4" variable="angleCreateKeyFrameBt" member="yes">
-																		<bitmap>res\icon-key.png</bitmap>
-																		<tooltip>Créer une frame clée pour cette valeur</tooltip>
-																		<handler function="OncreateKeyFrameBtClick" entry="EVT_BUTTON" />
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON5" variable="angleDeleteKeyFrameBt" member="yes">
-																		<bitmap>res\icon-key-delete.png</bitmap>
-																		<tooltip>Supprimer la frame clée de cette valeur</tooltip>
-																		<handler function="OnremoveKeyFrameBtClick" entry="EVT_BUTTON" />
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON8" variable="angleApplyToAllBt" member="yes">
-																		<bitmap>res\icon-apply-to-all.png</bitmap>
-																		<tooltip>Appliquer la valeur sur toutes les animations&#x0A;(supprime toute les frames clés de l&apos;os concernant cette valeur)</tooltip>
-																		<handler function="OnangleApplyToAllBtClick" entry="EVT_BUTTON" />
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON10" variable="angleInterpolationBt" member="yes">
-																		<bitmap>res\icon-interpolationtype.png</bitmap>
-																		<default>1</default>
-																		<tooltip>Changer la méthode d&apos;interpolation entre la frame clée actuelle et la suivante.</tooltip>
-																		<handler function="OnangleInterpolationBtClick" entry="EVT_BUTTON" />
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<option>1</option>
-																</object>
-															</object>
-															<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<option>1</option>
-														</object>
-														<object class="spacer">
-															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
-																<label>relatif à l&apos;os parent.</label>
-																<font>
-																	<style>italic</style>
-																</font>
-															</object>
-															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
-																<label>Longueur :</label>
-															</object>
-															<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxFlexGridSizer" variable="FlexGridSizer17" member="no">
-																<cols>5</cols>
-																<growablecols>0</growablecols>
-																<object class="sizeritem">
-																	<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="lengthTextCtrl" member="yes" />
-																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON6" variable="lengthCreateKeyFrameBt" member="yes">
-																		<bitmap>res\icon-key.png</bitmap>
-																		<tooltip>Créer une frame clée pour cette valeur</tooltip>
-																		<handler function="OnlengthCreateKeyFrameBtClick" entry="EVT_BUTTON" />
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON7" variable="lengthDeleteKeyFrameBt" member="yes">
-																		<bitmap>res\icon-key-delete.png</bitmap>
-																		<tooltip>Supprimer la frame clée de cette valeur</tooltip>
-																		<handler function="OnlengthDeleteKeyFrameBtClick" entry="EVT_BUTTON" />
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON9" variable="lengthApplyToAllBt" member="yes">
-																		<bitmap>res\icon-apply-to-all.png</bitmap>
-																		<default>1</default>
-																		<tooltip>Appliquer la valeur sur toutes les animations&#x0A;(supprime toute les frames clés de l&apos;os concernant cette valeur)</tooltip>
-																		<handler function="OnlengthApplyToAllBtClick" entry="EVT_BUTTON" />
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON11" variable="lengthInterpolationBt" member="yes">
-																		<bitmap>res\icon-interpolationtype.png</bitmap>
-																		<default>1</default>
-																		<tooltip>Changer la méthode d&apos;interpolation entre la frame clée actuelle et la suivante.</tooltip>
-																		<handler function="OnlengthInterpolationBtClick" entry="EVT_BUTTON" />
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<option>1</option>
-																</object>
-															</object>
-															<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
-																<label>Decalage :</label>
-															</object>
-															<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">
-																<cols>3</cols>
-																<object class="sizeritem">
-																	<object class="wxTextCtrl" name="ID_TEXTCTRL5" variable="offsetXTextCtrl" member="yes">
-																		<value>0</value>
-																		<size>53,27</size>
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxStaticText" name="ID_STATICTEXT7" variable="StaticText7" member="yes">
-																		<label>;</label>
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="offsetYTextCtrl" member="yes">
-																		<value>0</value>
-																		<size>52,27</size>
-																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
-																	<option>1</option>
-																</object>
-															</object>
-															<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText5" member="yes">
-																<label>Image :</label>
-															</object>
-															<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxFlexGridSizer" variable="FlexGridSizer8" member="no">
-																<cols>3</cols>
-																<growablecols>0</growablecols>
-																<object class="sizeritem">
-																	<object class="wxTextCtrl" name="ID_TEXTCTRL4" variable="imageTextCtrl" member="yes" />
-																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
-																	<option>1</option>
-																</object>
-																<object class="sizeritem">
-																	<object class="wxBitmapButton" name="ID_BITMAPBUTTON1" variable="BitmapButton1" member="yes">
-																		<bitmap>res/addfromimagebanque.png</bitmap>
-																	</object>
-																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
-																	<option>1</option>
-																</object>
-															</object>
-															<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText8" member="yes">
-																<label>Plan :</label>
-															</object>
-															<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxFlexGridSizer" variable="FlexGridSizer10" member="no">
-																<cols>2</cols>
-																<growablecols>0</growablecols>
-																<object class="sizeritem">
-																	<object class="wxTextCtrl" name="ID_TEXTCTRL6" variable="zOrderTextCtrl" member="yes" />
-																	<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																	<border>5</border>
-																	<option>1</option>
-																</object>
-															</object>
-															<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<option>1</option>
-														</object>
-														<object class="spacer">
-															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-														<object class="sizeritem">
-															<object class="wxButton" name="ID_BUTTON5" variable="Button1" member="yes">
-																<label>Appliquer</label>
-																<handler function="OnnameTextCtrlText" entry="EVT_BUTTON" />
-															</object>
-															<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
+													<object class="wxPanel" name="ID_PANEL4" variable="Panel3" member="yes">
+														<size>350,340</size>
+														<handler function="OnPanel3Resize" entry="EVT_SIZE" />
 													</object>
 													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
@@ -497,14 +241,6 @@
 											<border>5</border>
 											<option>1</option>
 										</object>
-									</object>
-									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
-								<object class="sizeritem">
-									<object class="wxPanel" name="ID_PANEL4" variable="Panel3" member="yes">
-										<size>350,405</size>
 									</object>
 									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
