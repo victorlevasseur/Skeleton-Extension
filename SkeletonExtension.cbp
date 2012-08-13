@@ -586,6 +586,7 @@
 			<debugger />
 			<lib_finder disable_auto="1" />
 			<wxsmith version="1">
+				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
 				<resources>
 					<wxDialog wxs="wxsmith/SkeletonObjectEditor.wxs" src="SkeletonObjectEditor.cpp" hdr="SkeletonObjectEditor.h" name="SkeletonObjectEditor" language="CPP" />
 				</resources>
