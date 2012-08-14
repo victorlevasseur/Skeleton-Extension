@@ -58,6 +58,7 @@ class SkeletonObjectEditor: public wxDialog
 		wxStaticText* StaticText10;
 		wxPanel* Core;
 		wxStaticText* StaticText9;
+		wxPanel* timelinePanel;
 		wxToggleButton* ToggleButton2;
 		wxTextCtrl* periodTextCtrl;
 		wxButton* ValidateButton;
@@ -85,12 +86,13 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_CHOICE1;
 		static const long ID_BITMAPBUTTON2;
 		static const long ID_BITMAPBUTTON3;
-		static const long ID_PANEL3;
 		static const long ID_STATICTEXT9;
 		static const long ID_TEXTCTRL8;
 		static const long ID_STATICTEXT10;
 		static const long ID_BUTTON9;
 		static const long ID_BUTTON10;
+		static const long ID_PANEL3;
+		static const long ID_PANEL5;
 		static const long ID_PANEL1;
 		static const long ID_PANEL4;
 		static const long ID_BUTTON2;
@@ -126,21 +128,16 @@ class SkeletonObjectEditor: public wxDialog
 		void OnBitmapButton2Click(wxCommandEvent& event);
 		void OnAnimationComboboxSelect(wxCommandEvent& event);
 		void OnPanel2LeftDown(wxMouseEvent& event);
-		void OncreateKeyFrameBtClick(wxCommandEvent& event);
 		void OnPanel2MouseWheel(wxMouseEvent& event);
 		void OnButton4Click(wxCommandEvent& event);
 		void OnButton5Click(wxCommandEvent& event);
-		void OnremoveKeyFrameBtClick(wxCommandEvent& event);
 		void OnPanel2RightDown(wxMouseEvent& event);
 		void OnPanel2RightUp(wxMouseEvent& event);
-		void OnlengthCreateKeyFrameBtClick(wxCommandEvent& event);
-		void OnlengthDeleteKeyFrameBtClick(wxCommandEvent& event);
 		void OnangleApplyToAllBtClick(wxCommandEvent& event);
 		void OnlengthApplyToAllBtClick(wxCommandEvent& event);
-		void OnangleInterpolationBtClick(wxCommandEvent& event);
-		void OnlengthInterpolationBtClick(wxCommandEvent& event);
 		void OnPanel3Resize(wxSizeEvent& event);
 		void OnPanel2Resize(wxSizeEvent& event);
+		void OnPanel1Resize(wxSizeEvent& event);
 		//*)
 		void OnGridPropertyChanging(wxPropertyGridEvent& event);
 		void OnGridPropertyChanged(wxPropertyGridEvent& event);
@@ -172,9 +169,7 @@ class SkeletonObjectEditor: public wxDialog
 
 		void UncolorizeBoneIfNecessary(Sk::Bone &bone);
 
-        Sk::Animation* timeline_currentAnim;
-
-        std::string ChooseInterpolationMethod(const std::string &inter);
+        Sk::Anim::Animation* timeline_currentAnim;
 
         float timeline_current;
 		float timeline_scale; //Size of one second

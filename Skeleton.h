@@ -31,6 +31,9 @@ class wxBufferedPaintDC;
 
 class TiXmlElement;
 
+/**
+Sk namespace contains all stuff related to the skeleton engine (base skeleton, bones, animations...).
+ */
 namespace Sk
 {
 
@@ -60,7 +63,7 @@ class Skeleton
 
         Bone* GetRoot();
 
-        SkeletonAnimator& GetAnimator() {return m_skeAnim;};
+        Anim::SkeletonAnimator& GetAnimator() {return m_skeAnim;};
         void ApplyAnimationToBones();
 
         bool BoneNameAlreadyUsed(const std::string &name);
@@ -74,7 +77,7 @@ class Skeleton
     private:
         Bone *m_root;
         std::vector<Bone*> m_bones;
-        SkeletonAnimator m_skeAnim;
+        Anim::SkeletonAnimator m_skeAnim;
 };
 
 struct ZOrderFunctor

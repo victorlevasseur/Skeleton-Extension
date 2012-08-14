@@ -8,16 +8,31 @@
 
 namespace Sk
 {
-namespace Interpolation
+namespace Anim
+{
+/**
+Interp namespace contains all stuff related to the different interpolation methods to process bones animation.
+ */
+namespace Interp
 {
 
+/**
+Base class for interpolation methods
+ */
 class InterpolationMethod
 {
 public:
     InterpolationMethod() {};
     virtual ~InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue) = 0;
+    /**
+    Function calculating the value depending of the progress
+    \param progress : progression between two keyframes (between 0.f and 1.f)
+    \param firstValue : first keyframe value
+    \param secondValue : second keyframe value
+    \return float value between firstValue and secondValue according to progress .
+     */
+    virtual float GetResult(float progress, float firstValue, float secondValue) const = 0;
     virtual std::string& GetName() const = 0;
 };
 
@@ -26,7 +41,7 @@ class Linear : public InterpolationMethod
 public:
     Linear() : InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue)
+    virtual float GetResult(float progress, float firstValue, float secondValue) const
     {
         return ((secondValue - firstValue) * progress + firstValue);
     }
@@ -39,7 +54,7 @@ class Sinusoidale : public InterpolationMethod
 public:
     Sinusoidale() : InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue)
+    virtual float GetResult(float progress, float firstValue, float secondValue) const
     {
         return ((secondValue - firstValue) * ((sin(progress * (M_PI) - M_PI/2) + 1) / 2) + firstValue);
     }
@@ -52,7 +67,7 @@ class Exponential : public InterpolationMethod
 public:
     Exponential() : InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue)
+    virtual float GetResult(float progress, float firstValue, float secondValue) const
     {
         return ((secondValue - firstValue) * (1 - exp(-progress * 5)) + firstValue);
     }
@@ -65,7 +80,7 @@ class InvertedExponential : public InterpolationMethod
 public:
     InvertedExponential() : InterpolationMethod() {};
 
-    virtual float GetResult(float progress, float firstValue, float secondValue)
+    virtual float GetResult(float progress, float firstValue, float secondValue) const
     {
         if(progress == 0)
             return firstValue;
@@ -133,6 +148,7 @@ private:
     static InvertedExponential *invertedExponentialMethod;
 };
 
+}
 }
 }
 

@@ -54,12 +54,13 @@ const long SkeletonObjectEditor::ID_TOGGLEBUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_CHOICE1 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON3 = wxNewId();
-const long SkeletonObjectEditor::ID_PANEL3 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT9 = wxNewId();
 const long SkeletonObjectEditor::ID_TEXTCTRL8 = wxNewId();
 const long SkeletonObjectEditor::ID_STATICTEXT10 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON9 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON10 = wxNewId();
+const long SkeletonObjectEditor::ID_PANEL3 = wxNewId();
+const long SkeletonObjectEditor::ID_PANEL5 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL1 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL4 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON2 = wxNewId();
@@ -83,16 +84,14 @@ skeleton(object.GetSkeleton()),
 mode(0)
 {
 	//(*Initialize(SkeletonObjectEditor)
-	wxStaticBoxSizer* StaticBoxSizer2;
 	wxFlexGridSizer* FlexGridSizer3;
 	wxFlexGridSizer* FlexGridSizer5;
 	wxFlexGridSizer* FlexGridSizer7;
 	wxFlexGridSizer* FlexGridSizer15;
 	wxFlexGridSizer* FlexGridSizer14;
-	wxFlexGridSizer* FlexGridSizer13;
+	wxBoxSizer* BoxSizer1;
 	wxFlexGridSizer* FlexGridSizer12;
 	wxFlexGridSizer* FlexGridSizer6;
-	wxStaticBoxSizer* StaticBoxSizer1;
 	wxFlexGridSizer* FlexGridSizer1;
 	wxFlexGridSizer* FlexGridSizer11;
 
@@ -108,12 +107,14 @@ mode(0)
 	FlexGridSizer5 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer5->AddGrowableCol(0);
 	FlexGridSizer5->AddGrowableRow(1);
-	FlexGridSizer11 = new wxFlexGridSizer(0, 5, 0, 0);
-	ToggleButton1 = new wxToggleButton(Core, ID_TOGGLEBUTTON1, _("Edition des os"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON1"));
+	FlexGridSizer11 = new wxFlexGridSizer(0, 6, 0, 0);
+	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
+	ToggleButton1 = new wxToggleButton(Core, ID_TOGGLEBUTTON1, _("Editeur d\'os"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON1"));
 	ToggleButton1->SetValue(true);
-	FlexGridSizer11->Add(ToggleButton1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	ToggleButton2 = new wxToggleButton(Core, ID_TOGGLEBUTTON2, _("Animation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON2"));
-	FlexGridSizer11->Add(ToggleButton2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer1->Add(ToggleButton1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, -1);
+	ToggleButton2 = new wxToggleButton(Core, ID_TOGGLEBUTTON2, _("Editeur d\'animations"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON2"));
+	BoxSizer1->Add(ToggleButton2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer11->Add(BoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	AnimationCombobox = new wxChoice(Core, ID_CHOICE1, wxDefaultPosition, wxSize(167,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
 	FlexGridSizer11->Add(AnimationCombobox, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BitmapButton2 = new wxBitmapButton(Core, ID_BITMAPBUTTON2, wxBitmap(wxImage(_T("res/addicon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
@@ -122,12 +123,6 @@ mode(0)
 	BitmapButton3 = new wxBitmapButton(Core, ID_BITMAPBUTTON3, wxBitmap(wxImage(_T("res/deleteicon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON3"));
 	BitmapButton3->SetDefault();
 	FlexGridSizer11->Add(BitmapButton3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer5->Add(FlexGridSizer11, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	FlexGridSizer12 = new wxFlexGridSizer(0, 4, 0, 0);
-	FlexGridSizer12->AddGrowableCol(0);
-	Panel2 = new wxPanel(Core, ID_PANEL3, wxDefaultPosition, wxSize(725,85), wxTAB_TRAVERSAL, _T("ID_PANEL3"));
-	FlexGridSizer12->Add(Panel2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer13 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer14 = new wxFlexGridSizer(0, 3, 0, 0);
 	StaticText9 = new wxStaticText(Core, ID_STATICTEXT9, _("Période :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
 	FlexGridSizer14->Add(StaticText9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -135,36 +130,40 @@ mode(0)
 	FlexGridSizer14->Add(periodTextCtrl, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText10 = new wxStaticText(Core, ID_STATICTEXT10, _("s"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
 	FlexGridSizer14->Add(StaticText10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	FlexGridSizer13->Add(FlexGridSizer14, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer11->Add(FlexGridSizer14, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer15 = new wxFlexGridSizer(0, 2, 0, 0);
 	Button4 = new wxButton(Core, ID_BUTTON9, _("Zoom +"), wxDefaultPosition, wxSize(64,23), 0, wxDefaultValidator, _T("ID_BUTTON9"));
 	FlexGridSizer15->Add(Button4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button5 = new wxButton(Core, ID_BUTTON10, _("-"), wxDefaultPosition, wxSize(22,23), 0, wxDefaultValidator, _T("ID_BUTTON10"));
 	FlexGridSizer15->Add(Button5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer13->Add(FlexGridSizer15, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	FlexGridSizer12->Add(FlexGridSizer13, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer5->Add(FlexGridSizer12, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	FlexGridSizer6->Add(FlexGridSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer11->Add(FlexGridSizer15, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer5->Add(FlexGridSizer11, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	timelinePanel = new wxPanel(Core, ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL5"));
+	FlexGridSizer12 = new wxFlexGridSizer(0, 4, 0, 0);
+	FlexGridSizer12->AddGrowableCol(0);
+	Panel2 = new wxPanel(timelinePanel, ID_PANEL3, wxDefaultPosition, wxSize(725,85), wxTAB_TRAVERSAL, _T("ID_PANEL3"));
+	FlexGridSizer12->Add(Panel2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	timelinePanel->SetSizer(FlexGridSizer12);
+	FlexGridSizer12->Fit(timelinePanel);
+	FlexGridSizer12->SetSizeHints(timelinePanel);
+	FlexGridSizer5->Add(timelinePanel, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer6->Add(FlexGridSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer1 = new wxFlexGridSizer(1, 3, 0, 0);
 	FlexGridSizer1->AddGrowableCol(0);
 	FlexGridSizer1->AddGrowableRow(0);
-	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Aperçu"));
 	Panel1 = new wxPanel(Core, ID_PANEL1, wxDefaultPosition, wxSize(457,373), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
-	StaticBoxSizer1->Add(Panel1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer1->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Os sélectionné"));
+	FlexGridSizer1->Add(Panel1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer2 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer2->AddGrowableCol(0);
 	FlexGridSizer2->AddGrowableRow(0);
 	Panel3 = new wxPanel(Core, ID_PANEL4, wxDefaultPosition, wxSize(350,340), wxTAB_TRAVERSAL, _T("ID_PANEL4"));
-	FlexGridSizer2->Add(Panel3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer2->Add(Panel3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	addChildBoneBt = new wxButton(Core, ID_BUTTON2, _("Ajouter un os enfant"), wxDefaultPosition, wxSize(292,23), 0, wxDefaultValidator, _T("ID_BUTTON2"));
-	FlexGridSizer2->Add(addChildBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer2->Add(addChildBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	deleteBoneBt = new wxButton(Core, ID_BUTTON4, _("Supprimer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
-	FlexGridSizer2->Add(deleteBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizer2->Add(FlexGridSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer1->Add(StaticBoxSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer6->Add(FlexGridSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer2->Add(deleteBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer1->Add(FlexGridSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer6->Add(FlexGridSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer7 = new wxFlexGridSizer(0, 4, 0, 0);
 	Button3 = new wxButton(Core, ID_BUTTON6, _("Banque d\'image"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
 	FlexGridSizer7->Add(Button3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -185,6 +184,10 @@ mode(0)
 	Connect(ID_TOGGLEBUTTON2,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton2Toggle);
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&SkeletonObjectEditor::OnAnimationComboboxSelect);
 	Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton2Click);
+	Connect(ID_TEXTCTRL8,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&SkeletonObjectEditor::OnTextCtrl1TextEnter);
+	Connect(ID_TEXTCTRL8,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&SkeletonObjectEditor::OnTextCtrl1TextEnter);
+	Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton4Click);
+	Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton5Click);
 	Panel2->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2Paint,0,this);
 	Panel2->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2EraseBackground,0,this);
 	Panel2->Connect(wxEVT_LEFT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2LeftDown,0,this);
@@ -192,16 +195,13 @@ mode(0)
 	Panel2->Connect(wxEVT_RIGHT_UP,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2RightUp,0,this);
 	Panel2->Connect(wxEVT_MOUSEWHEEL,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2MouseWheel,0,this);
 	Panel2->Connect(wxEVT_SIZE,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2Resize,0,this);
-	Connect(ID_TEXTCTRL8,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&SkeletonObjectEditor::OnTextCtrl1TextEnter);
-	Connect(ID_TEXTCTRL8,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&SkeletonObjectEditor::OnTextCtrl1TextEnter);
-	Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton4Click);
-	Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton5Click);
 	Panel1->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1Paint,0,this);
 	Panel1->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1EraseBackground,0,this);
 	Panel1->Connect(wxEVT_LEFT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1LeftDown,0,this);
 	Panel1->Connect(wxEVT_RIGHT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1RightDown,0,this);
 	Panel1->Connect(wxEVT_RIGHT_UP,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1RightUp,0,this);
 	Panel1->Connect(wxEVT_MOTION,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1MouseMove,0,this);
+	Panel1->Connect(wxEVT_SIZE,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1Resize,0,this);
 	Panel3->Connect(wxEVT_SIZE,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel3Resize,0,this);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnaddChildBoneBtClick);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OndeleteBoneBtClick);
@@ -260,7 +260,7 @@ void SkeletonObjectEditor::PreparePropertyGrid()
     //FlexGridSizer2->Add(, 1, wxALL|wxEXPAND, 5);
 
     //Create some stuff for property grid
-    std::vector<std::string> listOfMethods = Sk::Interpolation::Get::Methods();
+    std::vector<std::string> listOfMethods = Sk::Anim::Interp::Get::Methods();
     wxArrayString interMethods;
     for(unsigned int a = 0; a < listOfMethods.size(); a++)
     {
@@ -302,6 +302,8 @@ void SkeletonObjectEditor::PreparePropertyGrid()
         m_grid->AppendIn("BoneZOrder", new wxBoolProperty(_("Frame clée"), "BoneZOrderKeyFrame", false));
         m_grid->AppendIn("BoneZOrder", new wxEnumProperty(_("Type d'interpolation"), "BoneZOrderInterpolation", interMethods));
     }
+
+    m_grid->SetPropertyAttributeAll(wxPG_BOOL_USE_CHECKBOX, true);
 
     Connect(GRIDID, wxEVT_PG_CHANGING, (wxObjectEventFunction)&SkeletonObjectEditor::OnGridPropertyChanging);
     Connect(GRIDID, wxEVT_PG_CHANGED, (wxObjectEventFunction)&SkeletonObjectEditor::OnGridPropertyChanged);
@@ -439,20 +441,20 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
 
         if(mode == 1 && timeline_currentAnim)
         {
-            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current))
+            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current))
             {
                 m_grid->SetPropertyValue(_("Propriétés.BoneAngle.BoneAngleKeyFrame"), true);
-                m_grid->SetPropertyValue(_("Propriétés.BoneAngle.BoneAngleInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current).c_str()));
+                m_grid->SetPropertyValue(_("Propriétés.BoneAngle.BoneAngleInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current).c_str()));
             }
             else
             {
                 m_grid->SetPropertyValue(_("Propriétés.BoneAngle.BoneAngleKeyFrame"), false);
             }
 
-            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current))
+            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current))
             {
                 m_grid->SetPropertyValue(_("Propriétés.BoneLength.BoneLengthKeyFrame"), true);
-                m_grid->SetPropertyValue(_("Propriétés.BoneLength.BoneLengthInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current).c_str()));
+                m_grid->SetPropertyValue(_("Propriétés.BoneLength.BoneLengthInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current).c_str()));
             }
             else
             {
@@ -486,52 +488,6 @@ Sk::Bone* SkeletonObjectEditor::FindBoneOnPosition(sf::Vector2f position, Sk::Bo
     }
 
     return 0;
-}
-
-void SkeletonObjectEditor::OnnameTextCtrlText(wxCommandEvent& event)
-{
-    /*if(mode == 0)
-    {
-        if(selectedBone)
-        {
-            std::string oldname = selectedBone->GetName();
-
-            if(skeleton.BoneNameAlreadyUsed(ToString(nameTextCtrl->GetValue())) && ToString(nameTextCtrl->GetValue()) != oldname)
-            {
-                wxMessageBox("Un os ayant ce nom existe déjà.\nModifiez le nom et cliquez sur Appliquer.", "Nom de l'os");
-                return;
-            }
-
-            selectedBone->SetName(ToString(nameTextCtrl->GetValue()));
-            skeleton.GetAnimator().NotifyBoneRenamed(oldname, selectedBone->GetName());
-
-            selectedBone->SetRotation(ToFloat(ToString(angleTextCtrl->GetValue())));
-            selectedBone->SetSize(ToFloat(ToString(lengthTextCtrl->GetValue())));
-            selectedBone->SetTextureName(ToString(imageTextCtrl->GetValue()));
-            selectedBone->SetOffset(ToFloat(ToString(offsetXTextCtrl->GetValue())),
-                                    ToFloat(ToString(offsetYTextCtrl->GetValue())));
-            selectedBone->SetZOrder(ToFloat(ToString(zOrderTextCtrl->GetValue())));
-
-            selectedBone->Update();
-
-            skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(0);
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, 0, ToFloat(ToString(angleTextCtrl->GetValue())));
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, 0, ToFloat(ToString(lengthTextCtrl->GetValue())));
-        }
-    }
-    else
-    {
-        if(selectedBone)
-        {
-            selectedBone->SetRotation(ToFloat(ToString(angleTextCtrl->GetValue())));
-            selectedBone->SetSize(ToFloat(ToString(lengthTextCtrl->GetValue())));
-            selectedBone->SetColor(wxColour(255, 0, 0));
-            selectedBone->Update();
-        }
-    }
-
-    Panel1->Refresh(); //Refresh
-    Panel1->Update();*/
 }
 
 void SkeletonObjectEditor::ToggleMode(char _mode)
@@ -579,8 +535,8 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(0);
         for(std::vector<Sk::Bone*>::const_iterator it = skeleton.GetListOfBones().begin(); it != skeleton.GetListOfBones().end(); it++)
         {
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::AngleKeyFrame, 0, (*it)->GetRotation());
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::LengthKeyFrame, 0, (*it)->GetSize());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::AngleKeyFrame, 0, (*it)->GetRotation());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::LengthKeyFrame, 0, (*it)->GetSize());
         }
         skeleton.GetAnimator().Seek(0);
 
@@ -703,10 +659,10 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     {
         //Draw angle keyframes
         {
-        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::AngleKeyFrame);
+        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::Anim::AngleKeyFrame);
         for(unsigned int a = 0; a < keyFrames.size(); a++)
         {
-            if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, keyFrames.at(a)))
+            if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, keyFrames.at(a)))
             {
                 dc.SetPen(wxColour(0, 148, 255));
             }
@@ -724,10 +680,10 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
 
         //Draw length keyframes
         {
-        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::LengthKeyFrame);
+        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::Anim::LengthKeyFrame);
         for(unsigned int a = 0; a < keyFrames.size(); a++)
         {
-            if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, keyFrames.at(a)))
+            if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, keyFrames.at(a)))
             {
                 dc.SetPen(wxColour(255, 0, 0));
             }
@@ -889,8 +845,8 @@ void SkeletonObjectEditor::Seek(float time)
 
     for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
     {
-        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), Sk::AngleKeyFrame, timeline_current) ||
-           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), Sk::LengthKeyFrame, timeline_current))
+        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), Sk::Anim::AngleKeyFrame, timeline_current) ||
+           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), Sk::Anim::LengthKeyFrame, timeline_current))
         {
             skeleton.GetListOfBones().at(a)->SetColor(wxColour(0, 255, 0));
         }
@@ -946,73 +902,7 @@ void SkeletonObjectEditor::UncolorizeBoneIfNecessary(Sk::Bone &bone)
     selectedBone->SetColor(wxColour(0, 255, 0));
 }
 
-void SkeletonObjectEditor::OncreateKeyFrameBtClick(wxCommandEvent& event)
-{
-    if(mode != 1)
-        return;
-
-    if(!timeline_currentAnim || !selectedBone)
-        return;
-
-    timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current, selectedBone->GetRotation());
-    UncolorizeBoneIfNecessary(*selectedBone);
-
-    Seek(timeline_current);
-
-    Panel2->Refresh(); //Refresh
-    Panel2->Update();
-}
-
-void SkeletonObjectEditor::OnremoveKeyFrameBtClick(wxCommandEvent& event)
-{
-    if(mode != 1)
-        return;
-
-    if(!timeline_currentAnim || !selectedBone)
-        return;
-
-    timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current);
-
-    Seek(timeline_current);
-
-    Panel2->Refresh(); //Refresh
-    Panel2->Update();
-}
-
-void SkeletonObjectEditor::OnlengthCreateKeyFrameBtClick(wxCommandEvent& event)
-{
-    if(mode != 1)
-        return;
-
-    if(!timeline_currentAnim || !selectedBone)
-        return;
-
-    timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current, selectedBone->GetSize());
-    UncolorizeBoneIfNecessary(*selectedBone);
-
-    Seek(timeline_current);
-
-    Panel2->Refresh(); //Refresh
-    Panel2->Update();
-}
-
-void SkeletonObjectEditor::OnlengthDeleteKeyFrameBtClick(wxCommandEvent& event)
-{
-    if(mode != 1)
-        return;
-
-    if(!timeline_currentAnim || !selectedBone)
-        return;
-
-    timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current);
-
-    Seek(timeline_current);
-
-    Panel2->Refresh(); //Refresh
-    Panel2->Update();
-}
-
-void SkeletonObjectEditor::OnangleApplyToAllBtClick(wxCommandEvent& event)
+/*void SkeletonObjectEditor::OnangleApplyToAllBtClick(wxCommandEvent& event)
 {
     if(mode != 0 || !selectedBone)
         return;
@@ -1037,38 +927,7 @@ void SkeletonObjectEditor::OnlengthApplyToAllBtClick(wxCommandEvent& event)
         skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, 0, selectedBone->GetSize());
     }
 }
-
-void SkeletonObjectEditor::OnangleInterpolationBtClick(wxCommandEvent& event)
-{
-    if(mode != 1)
-        return;
-
-    if(!selectedBone && !timeline_currentAnim)
-        return;
-
-    if(!timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current))
-        return;
-
-    std::string inter = ChooseInterpolationMethod(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current));
-
-    timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current, inter);
-}
-
-void SkeletonObjectEditor::OnlengthInterpolationBtClick(wxCommandEvent& event)
-{
-    if(mode != 1)
-        return;
-
-    if(!selectedBone && !timeline_currentAnim)
-        return;
-
-    if(!timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current))
-        return;
-
-    std::string inter = ChooseInterpolationMethod(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current));
-
-    timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current, inter);
-}
+*/
 
 void SkeletonObjectEditor::OnGridPropertyChanging(wxPropertyGridEvent& event)
 {
@@ -1111,12 +970,12 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         else if(event.GetProperty()->GetBaseName() == _("BoneAngle"))
         {
             selectedBone->SetRotation(event.GetPropertyValue().GetDouble());
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, 0, event.GetPropertyValue().GetDouble());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, 0, event.GetPropertyValue().GetDouble());
         }
         else if(event.GetProperty()->GetBaseName() == _("BoneLength"))
         {
             selectedBone->SetSize(event.GetPropertyValue().GetDouble());
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, 0, event.GetPropertyValue().GetDouble());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, 0, event.GetPropertyValue().GetDouble());
         }
         else if(event.GetProperty()->GetBaseName() == _("BoneOffsetX") || event.GetProperty()->GetBaseName() == _("BoneOffsetY"))
         {
@@ -1142,8 +1001,8 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
             //When angle keyframe is already checked, modification applied
             if(m_grid->GetPropertyValueAsBool(_("Propriétés.BoneAngle.BoneAngleKeyFrame")))
             {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current,
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
+                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
                                                                ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneAngle.BoneAngleInterpolation"))));
             }
         }
@@ -1152,20 +1011,20 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         {
             if(event.GetPropertyValue().GetBool())
             {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current,
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
                                                   m_grid->GetPropertyValueAsDouble(_("Propriétés.BoneAngle")));
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current,
+                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
                                                                ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneAngle.BoneAngleInterpolation"))));
             }
             else
             {
-                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current);
+                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current);
             }
         }
         //When we change keyframe interpolation
         else if(event.GetProperty()->GetBaseName() == _("BoneAngleInterpolation"))
         {
-            timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::AngleKeyFrame, timeline_current,
+            timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
                                                            ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneAngle.BoneAngleInterpolation"))));
         }
 
@@ -1178,8 +1037,8 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
             //When angle keyframe is already checked, modification applied
             if(m_grid->GetPropertyValueAsBool(_("Propriétés.BoneLength.BoneLengthKeyFrame")))
             {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current,
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
+                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
                                                                ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneLength.BoneLengthInterpolation"))));
             }
         }
@@ -1188,20 +1047,20 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         {
             if(event.GetPropertyValue().GetBool())
             {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current,
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
                                                   m_grid->GetPropertyValueAsDouble(_("Propriétés.BoneLength")));
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current,
+                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
                                                                ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneLength.BoneLengthInterpolation"))));
             }
             else
             {
-                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current);
+                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current);
             }
         }
         //When we change keyframe interpolation
         else if(event.GetProperty()->GetBaseName() == _("BoneLengthInterpolation"))
         {
-            timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::LengthKeyFrame, timeline_current,
+            timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
                                                            ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneLength.BoneLengthInterpolation"))));
         }
     }
@@ -1217,31 +1076,16 @@ void SkeletonObjectEditor::OnPanel3Resize(wxSizeEvent& event)
     m_grid->SetSize(Panel3->GetSize().x, Panel3->GetSize().y);
 }
 
-std::string SkeletonObjectEditor::ChooseInterpolationMethod(const std::string &inter)
-{
-    std::vector<std::string> listOfMethods = Sk::Interpolation::Get::Methods();
-    wxString methods[listOfMethods.size()];
-    for(unsigned int a = 0; a < listOfMethods.size(); a++)
-    {
-        methods[a] = wxString(listOfMethods.at(a).c_str());
-    }
-
-    wxSingleChoiceDialog dialog(this,
-                                _("Choisissez la methode d'interpolation qui sera utilisee\nentre la frame clee selectionnee et la frame clee suivante"),
-                                _("Methode d'interpolation"),
-                                listOfMethods.size(),
-                                methods);
-    dialog.SetSelection(std::distance(listOfMethods.begin(), std::find(listOfMethods.begin(), listOfMethods.end(), inter)));
-
-    dialog.ShowModal();
-
-    return std::string(ToString(dialog.GetStringSelection()));
-}
-
 void SkeletonObjectEditor::OnPanel2Resize(wxSizeEvent& event)
 {
     Panel2->Refresh();
     Panel2->Update();
+}
+
+void SkeletonObjectEditor::OnPanel1Resize(wxSizeEvent& event)
+{
+    Panel1->Refresh();
+    Panel1->Update();
 }
 
 #endif

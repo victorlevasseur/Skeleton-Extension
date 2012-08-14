@@ -41,13 +41,15 @@ class wxBufferedPaintDC;
 namespace Sk
 {
 
+namespace Anim{class Animation;}
+
 class Skeleton;
 
 class Bone
 {
     friend struct ZOrderFunctor;
     friend class Skeleton;
-    friend class Animation;
+    friend class Sk::Anim::Animation;
 
     public:
 
@@ -71,8 +73,10 @@ class Bone
         void UnColorize();
         #endif
 
-        void SaveBone(TiXmlElement &saveIn); ///Save the bone as a subnode of "saveIn"
-        void LoadBone(TiXmlElement &boneElement); /// "boneElement" is the node representing the bone.
+        ///Save the bone as a subnode of "saveIn"
+        void SaveBone(TiXmlElement &saveIn);
+        /// "boneElement" is the node representing the bone.
+        void LoadBone(TiXmlElement &boneElement);
 
         bool IsOnPosition(sf::Vector2f position);
 
