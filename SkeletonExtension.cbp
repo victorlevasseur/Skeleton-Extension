@@ -576,10 +576,17 @@
 		<Unit filename="SkeletonObject.h" />
 		<Unit filename="SkeletonObjectEditor.cpp" />
 		<Unit filename="SkeletonObjectEditor.h" />
+		<Unit filename="animation.cpp" />
+		<Unit filename="animation.h" />
+		<Unit filename="boneanimation.cpp" />
+		<Unit filename="boneanimation.h" />
+		<Unit filename="globaldefs.h" />
 		<Unit filename="interpolationMethods.cpp" />
 		<Unit filename="interpolationMethods.h" />
 		<Unit filename="skeletonanimator.cpp" />
 		<Unit filename="skeletonanimator.h" />
+		<Unit filename="timefloat.cpp" />
+		<Unit filename="timefloat.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
