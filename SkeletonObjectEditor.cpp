@@ -84,6 +84,7 @@ skeleton(object.GetSkeleton()),
 mode(0)
 {
 	//(*Initialize(SkeletonObjectEditor)
+	wxFlexGridSizer* FlexGridSizer4;
 	wxFlexGridSizer* FlexGridSizer3;
 	wxFlexGridSizer* FlexGridSizer5;
 	wxFlexGridSizer* FlexGridSizer7;
@@ -147,7 +148,7 @@ mode(0)
 	FlexGridSizer12->Fit(timelinePanel);
 	FlexGridSizer12->SetSizeHints(timelinePanel);
 	FlexGridSizer5->Add(timelinePanel, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	FlexGridSizer6->Add(FlexGridSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer6->Add(FlexGridSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
 	FlexGridSizer1 = new wxFlexGridSizer(1, 3, 0, 0);
 	FlexGridSizer1->AddGrowableCol(0);
 	FlexGridSizer1->AddGrowableRow(0);
@@ -158,12 +159,14 @@ mode(0)
 	FlexGridSizer2->AddGrowableRow(0);
 	Panel3 = new wxPanel(Core, ID_PANEL4, wxDefaultPosition, wxSize(350,340), wxTAB_TRAVERSAL, _T("ID_PANEL4"));
 	FlexGridSizer2->Add(Panel3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer4 = new wxFlexGridSizer(1, 2, 0, 0);
 	addChildBoneBt = new wxButton(Core, ID_BUTTON2, _("Ajouter un os enfant"), wxDefaultPosition, wxSize(292,23), 0, wxDefaultValidator, _T("ID_BUTTON2"));
-	FlexGridSizer2->Add(addChildBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer4->Add(addChildBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	deleteBoneBt = new wxButton(Core, ID_BUTTON4, _("Supprimer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
-	FlexGridSizer2->Add(deleteBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	FlexGridSizer1->Add(FlexGridSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	FlexGridSizer6->Add(FlexGridSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer4->Add(deleteBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer2->Add(FlexGridSizer4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer1->Add(FlexGridSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+	FlexGridSizer6->Add(FlexGridSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
 	FlexGridSizer7 = new wxFlexGridSizer(0, 4, 0, 0);
 	Button3 = new wxButton(Core, ID_BUTTON6, _("Banque d\'image"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
 	FlexGridSizer7->Add(Button3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -175,7 +178,7 @@ mode(0)
 	Core->SetSizer(FlexGridSizer6);
 	FlexGridSizer6->Fit(Core);
 	FlexGridSizer6->SetSizeHints(Core);
-	FlexGridSizer3->Add(Core, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer3->Add(Core, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	SetSizer(FlexGridSizer3);
 	FlexGridSizer3->SetSizeHints(this);
 	Center();
@@ -184,6 +187,7 @@ mode(0)
 	Connect(ID_TOGGLEBUTTON2,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton2Toggle);
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&SkeletonObjectEditor::OnAnimationComboboxSelect);
 	Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton2Click);
+	Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton3Click);
 	Connect(ID_TEXTCTRL8,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&SkeletonObjectEditor::OnTextCtrl1TextEnter);
 	Connect(ID_TEXTCTRL8,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&SkeletonObjectEditor::OnTextCtrl1TextEnter);
 	Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton4Click);
@@ -335,8 +339,25 @@ void SkeletonObjectEditor::OnPanel1Paint(wxPaintEvent& event)
     wxSize panelSize = Panel1->GetSize();
 
     //Draw background
-    dc.SetBrush(gd::CommonBitmapManager::GetInstance()->transparentBg);
+    dc.SetBrush(wxColour(255, 255, 255));
     dc.DrawRectangle(0,0, panelSize.GetWidth(), panelSize.GetHeight());
+
+    {
+        dc.SetPen(wxColour(180, 180, 180));
+        int colsBegin = (int(offset.x) % 100);
+        for(unsigned int a = 0; a < panelSize.GetWidth() / 100 + 1; a++)
+        {
+            dc.DrawLine(colsBegin + a * 100, 0,
+                        colsBegin + a * 100, panelSize.GetHeight());
+        }
+
+        int rowsBegin = (int(offset.y) % 100);
+        for(unsigned int b = 0; b < panelSize.GetHeight() / 100 + 1; b++)
+        {
+            dc.DrawLine(0, rowsBegin + b * 100,
+                        panelSize.GetWidth(), rowsBegin + b * 100);
+        }
+    }
 
     skeleton.DrawWx(dc, offset);
 }
@@ -848,7 +869,7 @@ void SkeletonObjectEditor::Seek(float time)
         if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), Sk::Anim::AngleKeyFrame, timeline_current) ||
            skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), Sk::Anim::LengthKeyFrame, timeline_current))
         {
-            skeleton.GetListOfBones().at(a)->SetColor(wxColour(0, 255, 0));
+            skeleton.GetListOfBones().at(a)->SetColor(wxColour(0, 148, 255));
         }
     }
 
@@ -895,6 +916,17 @@ void SkeletonObjectEditor::OnBitmapButton2Click(wxCommandEvent& event)
     SelectAnimation(std::string(dialog.GetValue().c_str()));
 
     UpdateAnimationsList();
+}
+
+void SkeletonObjectEditor::OnBitmapButton3Click(wxCommandEvent& event)
+{
+    if(AnimationCombobox->GetSelection() == -1)
+        return;
+
+    int ret = wxMessageBox(_("Êtes-vous sûr(e) de vouloir supprimer l'animation sélectionnée ?"), _("Confirmation de suppression"), wxYES_NO);
+
+    if(ret == wxYES)
+        skeleton.GetAnimator().DeleteAnimation(ToString(AnimationCombobox->GetString(AnimationCombobox->GetSelection())));
 }
 
 void SkeletonObjectEditor::UncolorizeBoneIfNecessary(Sk::Bone &bone)

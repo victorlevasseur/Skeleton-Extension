@@ -120,13 +120,13 @@ void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset)
 {
     dc.SetPen(wxPen(m_selected ? wxColour(0, 0, 255) : m_color));
 
-    dc.DrawLine(offset.x + m_tmp_position.x,
-                offset.y + m_tmp_position.y,
-                offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x,
-                offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y);
+    dc.DrawLine(floor(offset.x + m_tmp_position.x),
+                floor(offset.y + m_tmp_position.y),
+                floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x),
+                floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y));
 
-    dc.DrawCircle(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x,
-                  offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y,
+    dc.DrawCircle(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x),
+                  floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y),
                   4);
 
     dc.DrawRotatedText(m_name, offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x / 2.5,

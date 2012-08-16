@@ -73,6 +73,7 @@
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON3" variable="BitmapButton3" member="yes">
 												<bitmap>res/deleteicon.png</bitmap>
 												<default>1</default>
+												<handler function="OnBitmapButton3Click" entry="EVT_BUTTON" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
@@ -168,6 +169,7 @@
 								</object>
 							</object>
 							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>1</border>
 							<option>1</option>
 						</object>
 						<object class="sizeritem">
@@ -204,28 +206,38 @@
 											<option>1</option>
 										</object>
 										<object class="sizeritem">
-											<object class="wxButton" name="ID_BUTTON2" variable="addChildBoneBt" member="yes">
-												<label>Ajouter un os enfant</label>
-												<size>292,23</size>
-												<handler function="OnaddChildBoneBtClick" entry="EVT_BUTTON" />
+											<object class="wxFlexGridSizer" variable="FlexGridSizer4" member="no">
+												<cols>2</cols>
+												<rows>1</rows>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON2" variable="addChildBoneBt" member="yes">
+														<label>Ajouter un os enfant</label>
+														<size>292,23</size>
+														<handler function="OnaddChildBoneBtClick" entry="EVT_BUTTON" />
+													</object>
+													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON4" variable="deleteBoneBt" member="yes">
+														<label>Supprimer</label>
+														<handler function="OndeleteBoneBtClick" entry="EVT_BUTTON" />
+													</object>
+													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<option>1</option>
+												</object>
 											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-											<option>1</option>
-										</object>
-										<object class="sizeritem">
-											<object class="wxButton" name="ID_BUTTON4" variable="deleteBoneBt" member="yes">
-												<label>Supprimer</label>
-												<handler function="OndeleteBoneBtClick" entry="EVT_BUTTON" />
-											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<option>1</option>
 										</object>
 									</object>
 									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>1</border>
 									<option>1</option>
 								</object>
 							</object>
 							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>1</border>
 							<option>1</option>
 						</object>
 						<object class="sizeritem">
@@ -266,6 +278,7 @@
 					</object>
 				</object>
 				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>2</border>
 				<option>1</option>
 			</object>
 		</object>
