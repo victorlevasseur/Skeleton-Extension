@@ -97,7 +97,6 @@ mode(0)
 	wxFlexGridSizer* FlexGridSizer11;
 
 	Create(parent, wxID_ANY, _("Editeur de squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX, _T("wxID_ANY"));
-	SetClientSize(wxSize(1089,606));
 	FlexGridSizer3 = new wxFlexGridSizer(1, 1, 0, 0);
 	FlexGridSizer3->AddGrowableCol(0);
 	FlexGridSizer3->AddGrowableRow(0);
@@ -180,6 +179,7 @@ mode(0)
 	FlexGridSizer6->SetSizeHints(Core);
 	FlexGridSizer3->Add(Core, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	SetSizer(FlexGridSizer3);
+	FlexGridSizer3->Fit(this);
 	FlexGridSizer3->SetSizeHints(this);
 	Center();
 
@@ -587,6 +587,7 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderKeyFrame"))->Enable(true);
         m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderInterpolation"))->Enable(true);
 
+        UpdateAnimationsList();
         SelectAnimation(ToString(AnimationCombobox->GetString(AnimationCombobox->GetSelection())));
     }
     mode = _mode;
@@ -803,7 +804,7 @@ void SkeletonObjectEditor::UpdateAnimationsList()
     for(unsigned int a = 0; a < animations.size(); a++)
     {
         if(animations.at(a) != "Initial")
-            AnimationCombobox->AppendString(animations.at(a).c_str());
+            AnimationCombobox->Append(animations.at(a).c_str());
     }
 
     if(AnimationCombobox->FindString(selected, true) != -1)
@@ -1105,6 +1106,10 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
 
 void SkeletonObjectEditor::OnPanel3Resize(wxSizeEvent& event)
 {
+    #if defined(LINUX)
+    return;
+    #endif
+
     m_grid->SetSize(Panel3->GetSize().x, Panel3->GetSize().y);
 }
 
