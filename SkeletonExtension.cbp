@@ -7,8 +7,8 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\..\Runtime\bin\debug\SkeletonObject.xgdw" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Debug\" />
+				<Option output="../../Runtime/bin/debug/SkeletonObject.xgdw" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -33,12 +33,12 @@
 					<Add option="-lsfml-system-d" />
 					<Add library="opengl32" />
 					<Add library="glu32" />
-					<Add directory="..\..\Runtime\bin\debug" />
+					<Add directory="../../Runtime/bin/debug" />
 				</Linker>
 			</Target>
 			<Target title="Debug - Edittime">
-				<Option output="..\..\IDE\bin\debug\Extensions\SkeletonObject.xgdwe" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Debug Edittime\" />
+				<Option output="../../IDE/bin/debug/Extensions/SkeletonObject.xgdwe" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Debug Edittime/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -57,8 +57,8 @@
 					<Add option="-DwxUSE_UNICODE=1" />
 					<Add option="-D__WXDEBUG__" />
 					<Add option="-DWXUSINGDLL" />
-					<Add directory="..\..\ExtLibs\wxwidgets\lib\gcc_dll\mswd" />
-					<Add directory="..\..\ExtLibs\wxwidgets\include" />
+					<Add directory="../../ExtLibs/wxwidgets/lib/gcc_dll/mswd" />
+					<Add directory="../../ExtLibs/wxwidgets/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -103,14 +103,14 @@
 					<Add option="-loleaut32" />
 					<Add library="opengl32" />
 					<Add library="glu32" />
-					<Add directory="..\..\IDE\bin\debug" />
-					<Add directory="..\..\ExtLibs\wxwidgets\lib\gcc_dll\mswd" />
-					<Add directory="..\..\ExtLibs\wxwidgets\lib\gcc_dll\" />
+					<Add directory="../../IDE/bin/debug" />
+					<Add directory="../../ExtLibs/wxwidgets/lib/gcc_dll/mswd" />
+					<Add directory="../../ExtLibs/wxwidgets/lib/gcc_dll/" />
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="..\..\Runtime\bin\release\SkeletonObject.xgdw" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Release\" />
+				<Option output="../../Runtime/bin/release/SkeletonObject.xgdw" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -135,12 +135,12 @@
 					<Add option="-lsfml-system" />
 					<Add library="opengl32" />
 					<Add library="glu32" />
-					<Add directory="..\..\Runtime\bin\release" />
+					<Add directory="../../Runtime/bin/release" />
 				</Linker>
 			</Target>
 			<Target title="Release - Edittime">
-				<Option output="..\..\IDE\bin\release\Extensions\SkeletonObject.xgdwe" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Release Edittime\" />
+				<Option output="../../IDE/bin/release/Extensions/SkeletonObject.xgdwe" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release Edittime/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -158,8 +158,8 @@
 					<Add option="-DwxUSE_UNICODE=1" />
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-DBOOST_DISABLE_ASSERTS" />
-					<Add directory="..\..\ExtLibs\wxwidgets\lib\gcc_dll\mswu" />
-					<Add directory="..\..\ExtLibs\wxwidgets\include" />
+					<Add directory="../../ExtLibs/wxwidgets/lib/gcc_dll/mswu" />
+					<Add directory="../../ExtLibs/wxwidgets/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -204,14 +204,14 @@
 					<Add option="-loleaut32" />
 					<Add library="opengl32" />
 					<Add library="glu32" />
-					<Add directory="..\..\IDE\bin\release" />
-					<Add directory="..\..\ExtLibs\wxwidgets\lib\gcc_dll\mswu" />
-					<Add directory="..\..\ExtLibs\wxwidgets\lib\gcc_dll\" />
+					<Add directory="../../IDE/bin/release" />
+					<Add directory="../../ExtLibs/wxwidgets/lib/gcc_dll/mswu" />
+					<Add directory="../../ExtLibs/wxwidgets/lib/gcc_dll/" />
 				</Linker>
 			</Target>
 			<Target title="Development">
-				<Option output="..\..\Runtime\bin\dev\SkeletonObject.xgdw" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Dev\" />
+				<Option output="../../Runtime/bin/dev/SkeletonObject.xgdw" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Dev/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -236,12 +236,12 @@
 					<Add option="-lsfml-system" />
 					<Add library="opengl32" />
 					<Add library="glu32" />
-					<Add directory="..\..\Runtime\bin\dev" />
+					<Add directory="../../Runtime/bin/dev" />
 				</Linker>
 			</Target>
 			<Target title="Development - Edittime">
-				<Option output="..\..\IDE\bin\dev\Extensions\SkeletonObject.xgdwe" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Dev Edittime\" />
+				<Option output="../../IDE/bin/dev/Extensions/SkeletonObject.xgdwe" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Dev Edittime/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -260,8 +260,8 @@
 					<Add option="-DwxUSE_UNICODE=1" />
 					<Add option="-DWXUSINGDLL" />
 					<Add option="-DBOOST_DISABLE_ASSERTS" />
-					<Add directory="..\..\ExtLibs\wxwidgets\lib\gcc_dll\msw" />
-					<Add directory="..\..\ExtLibs\wxwidgets\include" />
+					<Add directory="../../ExtLibs/wxwidgets/lib/gcc_dll/msw" />
+					<Add directory="../../ExtLibs/wxwidgets/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -306,14 +306,14 @@
 					<Add option="-loleaut32" />
 					<Add library="opengl32" />
 					<Add library="glu32" />
-					<Add directory="..\..\IDE\bin\dev" />
-					<Add directory="..\..\ExtLibs\wxwidgets\lib\gcc_dll\msw" />
-					<Add directory="..\..\ExtLibs\wxwidgets\lib\gcc_dll\" />
+					<Add directory="../../IDE/bin/dev" />
+					<Add directory="../../ExtLibs/wxwidgets/lib/gcc_dll/msw" />
+					<Add directory="../../ExtLibs/wxwidgets/lib/gcc_dll/" />
 				</Linker>
 			</Target>
 			<Target title="Linux - Release">
-				<Option output="..\..\Runtime\bin\release\SkeletonObject.xgdl" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Release\" />
+				<Option output="../../Runtime/bin/release/SkeletonObject.xgdl" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -342,16 +342,16 @@
 					<Add option="-lXrender" />
 					<Add option="-lGL" />
 					<Add option="-lpthread" />
-					<Add library="..\..\ExtLibs\Others\libFLAC.so.7" />
-					<Add library="..\..\ExtLibs\Others\libopenal.so.1" />
-					<Add library="..\..\ExtLibs\Others\libsndfile.so.1" />
-					<Add directory="..\..\Runtime\bin\release" />
-					<Add directory="..\..\ExtLibs\SFML\build-linux\lib" />
+					<Add library="../../ExtLibs/Others/libFLAC.so.7" />
+					<Add library="../../ExtLibs/Others/libopenal.so.1" />
+					<Add library="../../ExtLibs/Others/libsndfile.so.1" />
+					<Add directory="../../Runtime/bin/release" />
+					<Add directory="../../ExtLibs/SFML/build-linux/lib" />
 				</Linker>
 			</Target>
 			<Target title="Linux - Release - Edittime">
-				<Option output="..\..\IDE\bin\release\Extensions\SkeletonObject.xgdle" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Release Edittime\" />
+				<Option output="../../IDE/bin/release/Extensions/SkeletonObject.xgdle" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release Edittime/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -359,7 +359,6 @@
 					<Add option="-O2" />
 					<Add option="-Wall" />
 					<Add option="-fno-stack-protector" />
-					<Add option="-finput-charset=iso-8859-1" />
 					<Add option="-m32" />
 					<Add option="`wx-config --cppflags`" />
 					<Add option="`pkg-config gtk+-2.0 --cflags`" />
@@ -387,16 +386,16 @@
 					<Add option="-lXrender" />
 					<Add option="-lGL" />
 					<Add option="-lpthread" />
-					<Add library="..\..\ExtLibs\Others\libFLAC.so.7" />
-					<Add library="..\..\ExtLibs\Others\libopenal.so.1" />
-					<Add library="..\..\ExtLibs\Others\libsndfile.so.1" />
-					<Add directory="..\..\IDE\bin\release" />
-					<Add directory="..\..\ExtLibs\SFML\build-linux\lib" />
+					<Add library="../../ExtLibs/Others/libFLAC.so.7" />
+					<Add library="../../ExtLibs/Others/libopenal.so.1" />
+					<Add library="../../ExtLibs/Others/libsndfile.so.1" />
+					<Add directory="../../IDE/bin/release" />
+					<Add directory="../../ExtLibs/SFML/build-linux/lib" />
 				</Linker>
 			</Target>
 			<Target title="Linux - Debug - Edittime">
-				<Option output="..\..\IDE\bin\debug\Extensions\SkeletonObject.xgdle" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Debug Edittime\" />
+				<Option output="../../IDE/bin/debug/Extensions/SkeletonObject.xgdle" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Debug Edittime/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -433,13 +432,13 @@
 					<Add option="-lFLAC" />
 					<Add option="-lGL" />
 					<Add option="-lpthread" />
-					<Add directory="..\..\IDE\bin\debug" />
-					<Add directory="..\..\ExtLibs\SFML\build-linux\lib" />
+					<Add directory="../../IDE/bin/debug" />
+					<Add directory="../../ExtLibs/SFML/build-linux/lib" />
 				</Linker>
 			</Target>
 			<Target title="Linux - Debug">
-				<Option output="..\..\Runtime\bin\debug\SkeletonObject.xgdl" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Debug\" />
+				<Option output="../../Runtime/bin/debug/SkeletonObject.xgdl" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -471,13 +470,13 @@
 					<Add option="-lFLAC" />
 					<Add option="-lGL" />
 					<Add option="-lpthread" />
-					<Add directory="..\..\Runtime\bin\debug" />
-					<Add directory="..\..\ExtLibs\SFML\build-linux\lib" />
+					<Add directory="../../Runtime/bin/debug" />
+					<Add directory="../../ExtLibs/SFML/build-linux/lib" />
 				</Linker>
 			</Target>
 			<Target title="Mac - Release">
-				<Option output="..\..\Runtime\bin\release\SkeletonObject.xgdm" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Release\" />
+				<Option output="../../Runtime/bin/release/SkeletonObject.xgdm" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -492,8 +491,8 @@
 					<Add option="-DMAC" />
 					<Add option="-DSFML_DYNAMIC" />
 					<Add option="-DBOOST_DISABLE_ASSERTS" />
-					<Add directory="..\..\ExtLibs\boost" />
-					<Add directory="..\..\ExtLibs\SFML\include" />
+					<Add directory="../../ExtLibs/boost" />
+					<Add directory="../../ExtLibs/SFML/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -504,11 +503,11 @@
 					<Add option="-lsfml-system" />
 					<Add option="-framework OpenGL" />
 					<Add option="-dynamiclib" />
-					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\Frameworks\sndfile.framework\sndfile" />
-					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\lib\libGLEW.a" />
-					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\lib\libjpeg.a" />
-					<Add directory="..\..\Runtime\bin\release" />
-					<Add directory="..\..\ExtLibs\SFML\build-mac\lib" />
+					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/Frameworks/sndfile.framework/sndfile" />
+					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/lib/libGLEW.a" />
+					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/lib/libjpeg.a" />
+					<Add directory="../../Runtime/bin/release" />
+					<Add directory="../../ExtLibs/SFML/build-mac/lib" />
 				</Linker>
 				<ExtraCommands>
 					<Add after="install_name_tool -change ../Runtime/bin/release/libgdl.dylib libgdl.dylib ../../Runtime/bin/release/SkeletonObject.xgdm" />
@@ -516,8 +515,8 @@
 				</ExtraCommands>
 			</Target>
 			<Target title="Mac - Debug">
-				<Option output="..\..\Runtime\bin\debug\SkeletonObject.xgdm" prefix_auto="1" extension_auto="0" />
-				<Option object_output="obj\Debug\" />
+				<Option output="../../Runtime/bin/debug/SkeletonObject.xgdm" prefix_auto="1" extension_auto="0" />
+				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -532,8 +531,8 @@
 					<Add option="-DDEBUG" />
 					<Add option="-DMAC" />
 					<Add option="-DSFML_DYNAMIC" />
-					<Add directory="..\..\ExtLibs\boost" />
-					<Add directory="..\..\ExtLibs\SFML\include" />
+					<Add directory="../../ExtLibs/boost" />
+					<Add directory="../../ExtLibs/SFML/include" />
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon" />
@@ -545,11 +544,11 @@
 					<Add option="-lsfml-system-d" />
 					<Add option="-framework OpenGL" />
 					<Add option="-dynamiclib" />
-					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\Frameworks\sndfile.framework\sndfile" />
-					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\lib\libGLEW.a" />
-					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\lib\libjpeg.a" />
-					<Add directory="..\..\Runtime\bin\debug" />
-					<Add directory="..\..\ExtLibs\SFML\build-mac\lib" />
+					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/Frameworks/sndfile.framework/sndfile" />
+					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/lib/libGLEW.a" />
+					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/lib/libjpeg.a" />
+					<Add directory="../../Runtime/bin/debug" />
+					<Add directory="../../ExtLibs/SFML/build-mac/lib" />
 				</Linker>
 				<ExtraCommands>
 					<Add after="install_name_tool -change ../Runtime/bin/release/libgdl.dylib libgdl.dylib ../../Runtime/bin/debug/SkeletonObject.xgdm" />
@@ -558,14 +557,14 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add directory="..\..\GDL" />
-			<Add directory="..\..\ExtLibs\SFML\include" />
-			<Add directory="..\..\ExtLibs\boost" />
-			<Add directory="..\..\Core" />
+			<Add directory="../../GDL" />
+			<Add directory="../../ExtLibs/SFML/include" />
+			<Add directory="../../ExtLibs/boost" />
+			<Add directory="../../Core" />
 		</Compiler>
 		<Linker>
-			<Add directory="..\..\ExtLibs\SFML\build-mingw-debug\lib" />
-			<Add directory="..\..\ExtLibs\SFML\build-mingw-release\lib" />
+			<Add directory="../../ExtLibs/SFML/build-mingw-debug/lib" />
+			<Add directory="../../ExtLibs/SFML/build-mingw-release/lib" />
 		</Linker>
 		<Unit filename="Bone.cpp" />
 		<Unit filename="Bone.h" />
