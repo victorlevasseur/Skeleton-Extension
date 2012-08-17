@@ -51,7 +51,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxChoice" name="ID_CHOICE1" variable="AnimationCombobox" member="yes">
-												<size>167,21</size>
+												<size>163,-1</size>
 												<handler function="OnAnimationComboboxSelect" entry="EVT_CHOICE" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -61,7 +61,6 @@
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON2" variable="BitmapButton2" member="yes">
 												<bitmap>res/addicon.png</bitmap>
-												<default>1</default>
 												<handler function="OnBitmapButton2Click" entry="EVT_BUTTON" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -71,7 +70,6 @@
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON3" variable="BitmapButton3" member="yes">
 												<bitmap>res/deleteicon.png</bitmap>
-												<default>1</default>
 												<handler function="OnBitmapButton3Click" entry="EVT_BUTTON" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -254,6 +252,7 @@
 								<object class="sizeritem">
 									<object class="wxButton" name="ID_BUTTON1" variable="ValidateButton" member="yes">
 										<label>Valider</label>
+										<default>1</default>
 										<handler function="OnValidateButtonClick" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

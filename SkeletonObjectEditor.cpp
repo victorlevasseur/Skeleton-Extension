@@ -115,13 +115,11 @@ mode(0)
 	ToggleButton2 = new wxToggleButton(Core, ID_TOGGLEBUTTON2, _("Editeur d\'animations"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON2"));
 	BoxSizer1->Add(ToggleButton2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer11->Add(BoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	AnimationCombobox = new wxChoice(Core, ID_CHOICE1, wxDefaultPosition, wxSize(167,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
+	AnimationCombobox = new wxChoice(Core, ID_CHOICE1, wxDefaultPosition, wxSize(163,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
 	FlexGridSizer11->Add(AnimationCombobox, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BitmapButton2 = new wxBitmapButton(Core, ID_BITMAPBUTTON2, wxBitmap(wxImage(_T("res/addicon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
-	BitmapButton2->SetDefault();
 	FlexGridSizer11->Add(BitmapButton2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BitmapButton3 = new wxBitmapButton(Core, ID_BITMAPBUTTON3, wxBitmap(wxImage(_T("res/deleteicon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON3"));
-	BitmapButton3->SetDefault();
 	FlexGridSizer11->Add(BitmapButton3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer14 = new wxFlexGridSizer(0, 3, 0, 0);
 	StaticText9 = new wxStaticText(Core, ID_STATICTEXT9, _("Période :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
@@ -170,6 +168,7 @@ mode(0)
 	Button3 = new wxButton(Core, ID_BUTTON6, _("Banque d\'image"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
 	FlexGridSizer7->Add(Button3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	ValidateButton = new wxButton(Core, ID_BUTTON1, _("Valider"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	ValidateButton->SetDefault();
 	FlexGridSizer7->Add(ValidateButton, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button2 = new wxButton(Core, ID_BUTTON3, _("Annuler"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	FlexGridSizer7->Add(Button2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -342,6 +341,25 @@ void SkeletonObjectEditor::OnPanel1Paint(wxPaintEvent& event)
     dc.SetBrush(wxColour(255, 255, 255));
     dc.DrawRectangle(0,0, panelSize.GetWidth(), panelSize.GetHeight());
 
+    //Draw a line each 50px (on X and Y)
+    {
+        dc.SetPen(wxColour(210, 210, 210));
+        int colsBegin = (int(offset.x) % 50);
+        for(unsigned int a = 0; a < panelSize.GetWidth() / 50 + 1; a++)
+        {
+            dc.DrawLine(colsBegin + a * 50, 0,
+                        colsBegin + a * 50, panelSize.GetHeight());
+        }
+
+        int rowsBegin = (int(offset.y) % 50);
+        for(unsigned int b = 0; b < panelSize.GetHeight() / 50 + 1; b++)
+        {
+            dc.DrawLine(0, rowsBegin + b * 50,
+                        panelSize.GetWidth(), rowsBegin + b * 50);
+        }
+    }
+
+    //Draw a line each 100px (on X and Y)
     {
         dc.SetPen(wxColour(180, 180, 180));
         int colsBegin = (int(offset.x) % 100);
