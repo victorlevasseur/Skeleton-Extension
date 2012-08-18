@@ -4,7 +4,7 @@
 		<title>Editeur de squelette</title>
 		<centered>1</centered>
 		<id_arg>0</id_arg>
-		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX</style>
+		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX</style>
 		<object class="wxFlexGridSizer" variable="FlexGridSizer3" member="no">
 			<cols>1</cols>
 			<rows>1</rows>

@@ -96,7 +96,7 @@ mode(0)
 	wxFlexGridSizer* FlexGridSizer1;
 	wxFlexGridSizer* FlexGridSizer11;
 
-	Create(parent, wxID_ANY, _("Editeur de squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX, _T("wxID_ANY"));
+	Create(parent, wxID_ANY, _("Editeur de squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX, _T("wxID_ANY"));
 	FlexGridSizer3 = new wxFlexGridSizer(1, 1, 0, 0);
 	FlexGridSizer3->AddGrowableCol(0);
 	FlexGridSizer3->AddGrowableRow(0);
@@ -345,14 +345,14 @@ void SkeletonObjectEditor::OnPanel1Paint(wxPaintEvent& event)
     {
         dc.SetPen(wxColour(210, 210, 210));
         int colsBegin = (int(offset.x) % 50);
-        for(unsigned int a = 0; a < panelSize.GetWidth() / 50 + 1; a++)
+        for(unsigned int a = 0; a < (unsigned int)(panelSize.GetWidth() / 50 + 1); a++)
         {
             dc.DrawLine(colsBegin + a * 50, 0,
                         colsBegin + a * 50, panelSize.GetHeight());
         }
 
         int rowsBegin = (int(offset.y) % 50);
-        for(unsigned int b = 0; b < panelSize.GetHeight() / 50 + 1; b++)
+        for(unsigned int b = 0; b < (unsigned int)(panelSize.GetHeight() / 50 + 1); b++)
         {
             dc.DrawLine(0, rowsBegin + b * 50,
                         panelSize.GetWidth(), rowsBegin + b * 50);
@@ -363,14 +363,14 @@ void SkeletonObjectEditor::OnPanel1Paint(wxPaintEvent& event)
     {
         dc.SetPen(wxColour(180, 180, 180));
         int colsBegin = (int(offset.x) % 100);
-        for(unsigned int a = 0; a < panelSize.GetWidth() / 100 + 1; a++)
+        for(unsigned int a = 0; a < (unsigned int)(panelSize.GetWidth() / 100 + 1); a++)
         {
             dc.DrawLine(colsBegin + a * 100, 0,
                         colsBegin + a * 100, panelSize.GetHeight());
         }
 
         int rowsBegin = (int(offset.y) % 100);
-        for(unsigned int b = 0; b < panelSize.GetHeight() / 100 + 1; b++)
+        for(unsigned int b = 0; b < (unsigned int)(panelSize.GetHeight() / 100 + 1); b++)
         {
             dc.DrawLine(0, rowsBegin + b * 100,
                         panelSize.GetWidth(), rowsBegin + b * 100);
