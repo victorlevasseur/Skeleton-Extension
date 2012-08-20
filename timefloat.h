@@ -13,9 +13,9 @@ namespace Anim
 Represents a keyframe for one bone.
 It's a combination of a time, a value and an interpolation method.
  */
-struct TimeFloat
+struct KeyFrame
 {
-    TimeFloat() : time(0), interpolation("Linear") {};
+    KeyFrame() : time(0), interpolation("Linear") {};
 
     float time; ///< Time (position) of the keyframe in the animation's timeline
     float value; ///< Value associated with the keyframe (can be an angle, a length, depending of the keyframe type)

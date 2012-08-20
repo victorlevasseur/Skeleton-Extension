@@ -89,9 +89,9 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_STATICTEXT9;
 		static const long ID_TEXTCTRL8;
 		static const long ID_STATICTEXT10;
+		static const long ID_PANEL3;
 		static const long ID_BUTTON9;
 		static const long ID_BUTTON10;
-		static const long ID_PANEL3;
 		static const long ID_PANEL5;
 		static const long ID_PANEL1;
 		static const long ID_PANEL4;

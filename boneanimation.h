@@ -5,7 +5,7 @@
 #include <map>
 #include "globaldefs.h"
 
-namespace Sk{namespace Anim{struct TimeFloat;}}
+namespace Sk{namespace Anim{struct KeyFrame;}}
 
 namespace Sk
 {
@@ -27,7 +27,7 @@ class BoneAnimation
     std::map<KeyFrameType, float> tmp_angleValue;
     std::map<KeyFrameType, float> progress;
 
-    std::map<KeyFrameType, std::vector<TimeFloat> > keyFrames;
+    std::map<KeyFrameType, std::vector<KeyFrame> > keyFrames;
 };
 
 }

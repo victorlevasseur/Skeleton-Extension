@@ -10,12 +10,12 @@ namespace Anim
 
 BoneAnimation::BoneAnimation()
 {
-    keyFrames[AngleKeyFrame].push_back(TimeFloat());
+    keyFrames[AngleKeyFrame].push_back(KeyFrame());
 
-    TimeFloat lengthTimeFloat;
+    KeyFrame lengthTimeFloat;
     lengthTimeFloat.time = 0;
     lengthTimeFloat.value = 100;
-    keyFrames[LengthKeyFrame].push_back(TimeFloat());
+    keyFrames[LengthKeyFrame].push_back(KeyFrame());
 };
 
 }

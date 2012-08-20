@@ -23,7 +23,7 @@ Animation::~Animation()
 
 }
 
-void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, TimeFloat &keyframe)
+void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, KeyFrame &keyframe)
 {
     for(unsigned int a = 0; a < m_keyFrames[boneName].keyFrames[type].size(); a++)
     {
@@ -41,7 +41,7 @@ void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, Time
 
 void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, float value)
 {
-    TimeFloat timefloat;
+    KeyFrame timefloat;
     timefloat.time = time;
     timefloat.value = value;
 
@@ -117,9 +117,11 @@ void Animation::UpdateTime(float timeToAdd)
 
     UpdateTimeOfSmoothedType(timeToAdd, AngleKeyFrame);
     UpdateTimeOfSmoothedType(timeToAdd, LengthKeyFrame);
+    UpdateTimeOfSmoothedType(timeToAdd, PositionXKeyFrame);
+    UpdateTimeOfSmoothedType(timeToAdd, PositionYKeyFrame);
 }
 
-float Animation::GetTimeDelta(const TimeFloat &frame1, const TimeFloat &frame2)
+float Animation::GetTimeDelta(const KeyFrame &frame1, const KeyFrame &frame2)
 {
     return frame1.time <= frame2.time ? frame2.time - frame1.time : frame2.time + m_period - frame1.time;
 }
@@ -153,6 +155,8 @@ void Animation::Seek(float time)
 
     SeekOfSmoothedType(time, AngleKeyFrame);
     SeekOfSmoothedType(time, LengthKeyFrame);
+    SeekOfSmoothedType(time, PositionXKeyFrame);
+    SeekOfSmoothedType(time, PositionYKeyFrame);
 }
 
 void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
@@ -160,13 +164,13 @@ void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
     std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin();
     for(; it != m_keyFrames.end(); it++)
     {
-        std::vector<TimeFloat> *keyFrames = &(it->second.keyFrames[type]);
+        std::vector<KeyFrame> *keyFrames = &(it->second.keyFrames[type]);
 
         if(keyFrames->size() == 0)
             continue;
 
 
-        TimeFloat *key = &(keyFrames->at(it->second.currentIndex[type]));
+        KeyFrame *key = &(keyFrames->at(it->second.currentIndex[type]));
 
         if(m_period == 0)
         {
@@ -174,7 +178,7 @@ void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
             continue;
         }
 
-        TimeFloat *nextKey = &(keyFrames->at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
+        KeyFrame *nextKey = &(keyFrames->at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
 
 
         while(((m_time > nextKey->time) && (key->time < nextKey->time)) ||
@@ -206,7 +210,7 @@ void Animation::SeekOfSmoothedType(float time, KeyFrameType type)
             it->second.currentIndex[type] = a;
         }
 
-        TimeFloat *key = &(it->second.keyFrames[type].at(it->second.currentIndex[type]));
+        KeyFrame *key = &(it->second.keyFrames[type].at(it->second.currentIndex[type]));
 
         if(m_period == 0)
         {
@@ -214,7 +218,7 @@ void Animation::SeekOfSmoothedType(float time, KeyFrameType type)
             continue;
         }
 
-        TimeFloat *nextKey = &(it->second.keyFrames[type].at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
+        KeyFrame *nextKey = &(it->second.keyFrames[type].at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
 
         it->second.progress[type] = GetTimeDelta(*key, *nextKey) != 0 ? ((((m_time >= key->time) ? m_time - key->time : m_time + m_period - key->time)) / GetTimeDelta(*key, *nextKey)) : 1;
         it->second.tmp_angleValue[type] = Sk::Anim::Interp::Get::Method(key->interpolation)->GetResult(it->second.progress[type], key->value, nextKey->value);
@@ -230,6 +234,8 @@ void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)
 
         boneVec[a]->m_relativeRotation = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[AngleKeyFrame];
         boneVec[a]->m_size = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[LengthKeyFrame];
+        boneVec[a]->m_offset.x = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[PositionXKeyFrame];
+        boneVec[a]->m_offset.y = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[PositionYKeyFrame];
     }
 }
 
@@ -244,7 +250,7 @@ void Animation::NotifyBoneRenamed(const std::string &oldName, const std::string 
 
 void Animation::ReorderKeys(const std::string &boneName)
 {
-    for(std::map<KeyFrameType, std::vector<TimeFloat> >::iterator it = m_keyFrames[boneName].keyFrames.begin(); it != m_keyFrames[boneName].keyFrames.end(); it++)
+    for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it = m_keyFrames[boneName].keyFrames.begin(); it != m_keyFrames[boneName].keyFrames.end(); it++)
     {
         std::sort(it->second.begin(), it->second.end(), TimeOrderFunctor());
     }
@@ -260,7 +266,7 @@ std::vector<float> Animation::GetListOfKeyFramesTime(const std::string &bone, Ke
         {
             if(type == AnyKeyFrame)
             {
-                for(std::map<KeyFrameType, std::vector<TimeFloat> >::iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
+                for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
                 {
                     for(unsigned int a = 0; a < it2->second.size(); a++)
                     {
@@ -281,7 +287,7 @@ std::vector<float> Animation::GetListOfKeyFramesTime(const std::string &bone, Ke
     {
         if(type == AnyKeyFrame)
         {
-            for(std::map<KeyFrameType, std::vector<TimeFloat> >::iterator it2 = m_keyFrames[bone].keyFrames.begin(); it2 != m_keyFrames[bone].keyFrames.end(); it2++)
+            for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = m_keyFrames[bone].keyFrames.begin(); it2 != m_keyFrames[bone].keyFrames.end(); it2++)
             {
                 for(unsigned int a = 0; a < it2->second.size(); a++)
                 {
@@ -339,7 +345,7 @@ void Animation::LoadFromXml(TiXmlElement *ele)
                 {
                     if(keyframe->ToElement())
                     {
-                        TimeFloat timefloat;
+                        KeyFrame timefloat;
                         keyframe->ToElement()->QueryFloatAttribute("time", &timefloat.time);
                         keyframe->ToElement()->QueryFloatAttribute("value", &timefloat.value);
                         if(keyframe->ToElement()->Attribute("interpolation"))
@@ -364,7 +370,7 @@ void Animation::SaveToXml(TiXmlElement *ele)
         TiXmlElement *boneEle = new TiXmlElement("Bone");
         boneEle->SetAttribute("name", it->first.c_str());
 
-        for(std::map<KeyFrameType, std::vector<TimeFloat> >::iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
+        for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
         {
             TiXmlElement *keyframetypeEle = new TiXmlElement("Type");
             keyframetypeEle->SetDoubleAttribute("type", static_cast<int>(it2->first));
@@ -385,7 +391,7 @@ void Animation::SaveToXml(TiXmlElement *ele)
     }
 }
 
-bool TimeOrderFunctor::operator() (TimeFloat left, TimeFloat right)
+bool TimeOrderFunctor::operator() (KeyFrame left, KeyFrame right)
 {
     return (left.time < right.time);
 }
