@@ -25,8 +25,6 @@ Copyright (C) 2012 Victor Levasseur
 
 //(*Headers(SkeletonObjectEditor)
 #include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
 #include <wx/tglbtn.h>
 #include <wx/panel.h>
 #include <wx/choice.h>
@@ -55,18 +53,16 @@ class SkeletonObjectEditor: public wxDialog
 		virtual ~SkeletonObjectEditor();
 
 		//(*Declarations(SkeletonObjectEditor)
-		wxStaticText* StaticText10;
 		wxPanel* Core;
-		wxStaticText* StaticText9;
 		wxPanel* timelinePanel;
 		wxToggleButton* ToggleButton2;
-		wxTextCtrl* periodTextCtrl;
 		wxButton* ValidateButton;
 		wxButton* Button4;
 		wxToggleButton* ToggleButton1;
 		wxPanel* Panel1;
 		wxBitmapButton* BitmapButton2;
 		wxFlexGridSizer* FlexGridSizer2;
+		wxBitmapButton* BitmapButton1;
 		wxButton* Button2;
 		wxPanel* Panel3;
 		wxButton* Button5;
@@ -85,10 +81,8 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_TOGGLEBUTTON2;
 		static const long ID_CHOICE1;
 		static const long ID_BITMAPBUTTON2;
+		static const long ID_BITMAPBUTTON1;
 		static const long ID_BITMAPBUTTON3;
-		static const long ID_STATICTEXT9;
-		static const long ID_TEXTCTRL8;
-		static const long ID_STATICTEXT10;
 		static const long ID_PANEL3;
 		static const long ID_BUTTON9;
 		static const long ID_BUTTON10;
@@ -124,7 +118,6 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel1EraseBackground(wxEraseEvent& event);
 		void OnPanel2Paint(wxPaintEvent& event);
 		void OnPanel2EraseBackground(wxEraseEvent& event);
-		void OnTextCtrl1TextEnter(wxCommandEvent& event);
 		void OnBitmapButton2Click(wxCommandEvent& event);
 		void OnAnimationComboboxSelect(wxCommandEvent& event);
 		void OnPanel2LeftDown(wxMouseEvent& event);
@@ -140,6 +133,7 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel1Resize(wxSizeEvent& event);
 		void OnBitmapButton3Click(wxCommandEvent& event);
 		void OnInit(wxInitDialogEvent& event);
+		void OnBitmapButton1Click(wxCommandEvent& event);
 		//*)
 		void OnGridPropertyChanging(wxPropertyGridEvent& event);
 		void OnGridPropertyChanged(wxPropertyGridEvent& event);
