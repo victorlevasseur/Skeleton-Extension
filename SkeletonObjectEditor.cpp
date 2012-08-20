@@ -124,15 +124,15 @@ mode(0)
 	FlexGridSizer14 = new wxFlexGridSizer(0, 3, 0, 0);
 	StaticText9 = new wxStaticText(Core, ID_STATICTEXT9, _("Période :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
 	FlexGridSizer14->Add(StaticText9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	periodTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL8, _("0"), wxDefaultPosition, wxSize(39,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
+	periodTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL8, _("0"), wxDefaultPosition, wxSize(39,-1), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
 	FlexGridSizer14->Add(periodTextCtrl, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText10 = new wxStaticText(Core, ID_STATICTEXT10, _("s"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
 	FlexGridSizer14->Add(StaticText10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer11->Add(FlexGridSizer14, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer15 = new wxFlexGridSizer(0, 2, 0, 0);
-	Button4 = new wxButton(Core, ID_BUTTON9, _("Zoom +"), wxDefaultPosition, wxSize(64,23), 0, wxDefaultValidator, _T("ID_BUTTON9"));
+	Button4 = new wxButton(Core, ID_BUTTON9, _("Zoom +"), wxDefaultPosition, wxSize(64,-1), 0, wxDefaultValidator, _T("ID_BUTTON9"));
 	FlexGridSizer15->Add(Button4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button5 = new wxButton(Core, ID_BUTTON10, _("-"), wxDefaultPosition, wxSize(22,23), 0, wxDefaultValidator, _T("ID_BUTTON10"));
+	Button5 = new wxButton(Core, ID_BUTTON10, _("-"), wxDefaultPosition, wxSize(22,-1), 0, wxDefaultValidator, _T("ID_BUTTON10"));
 	FlexGridSizer15->Add(Button5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer11->Add(FlexGridSizer15, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer5->Add(FlexGridSizer11, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
@@ -211,6 +211,7 @@ mode(0)
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton3Click);
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnValidateButtonClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton2Click);
+	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&SkeletonObjectEditor::OnInit);
 	//*)
 
 	resourcesEditor = new ResourcesEditor( this, game, mainEditorCommand );
@@ -1144,3 +1145,7 @@ void SkeletonObjectEditor::OnPanel1Resize(wxSizeEvent& event)
 }
 
 #endif
+
+void SkeletonObjectEditor::OnInit(wxInitDialogEvent& event)
+{
+}

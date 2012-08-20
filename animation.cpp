@@ -160,11 +160,13 @@ void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
     std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin();
     for(; it != m_keyFrames.end(); it++)
     {
-        if(it->second.keyFrames[type].size() == 0)
+        std::vector<TimeFloat> *keyFrames = &(it->second.keyFrames[type]);
+
+        if(keyFrames->size() == 0)
             continue;
 
 
-        TimeFloat *key = &(it->second.keyFrames[type].at(it->second.currentIndex[type]));
+        TimeFloat *key = &(keyFrames->at(it->second.currentIndex[type]));
 
         if(m_period == 0)
         {
@@ -172,7 +174,7 @@ void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
             continue;
         }
 
-        TimeFloat *nextKey = &(it->second.keyFrames[type].at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
+        TimeFloat *nextKey = &(keyFrames->at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
 
 
         while(((m_time > nextKey->time) && (key->time < nextKey->time)) ||
@@ -181,7 +183,7 @@ void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
             it->second.currentIndex[type] = GetNextIndex(it->first, type, it->second.currentIndex[type]);
             key = nextKey;
 
-            nextKey = &(it->second.keyFrames[type].at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
+            nextKey = &(keyFrames->at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
         }
 
         it->second.progress[type] = GetTimeDelta(*key, *nextKey) != 0 ? ((((m_time >= key->time) ? m_time - key->time : m_time + m_period - key->time)) / GetTimeDelta(*key, *nextKey)) : 1;

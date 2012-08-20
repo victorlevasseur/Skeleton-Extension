@@ -139,6 +139,7 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel2Resize(wxSizeEvent& event);
 		void OnPanel1Resize(wxSizeEvent& event);
 		void OnBitmapButton3Click(wxCommandEvent& event);
+		void OnInit(wxInitDialogEvent& event);
 		//*)
 		void OnGridPropertyChanging(wxPropertyGridEvent& event);
 		void OnGridPropertyChanged(wxPropertyGridEvent& event);

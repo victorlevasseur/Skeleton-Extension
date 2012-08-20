@@ -5,6 +5,7 @@
 		<centered>1</centered>
 		<id_arg>0</id_arg>
 		<style>wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX</style>
+		<handler function="OnInit" entry="EVT_INIT_DIALOG" />
 		<object class="wxFlexGridSizer" variable="FlexGridSizer3" member="no">
 			<cols>1</cols>
 			<rows>1</rows>
@@ -90,7 +91,7 @@
 												<object class="sizeritem">
 													<object class="wxTextCtrl" name="ID_TEXTCTRL8" variable="periodTextCtrl" member="yes">
 														<value>0</value>
-														<size>39,21</size>
+														<size>39,-1</size>
 														<handler function="OnTextCtrl1TextEnter" entry="EVT_TEXT" />
 														<handler function="OnTextCtrl1TextEnter" entry="EVT_TEXT_ENTER" />
 													</object>
@@ -115,7 +116,7 @@
 												<object class="sizeritem">
 													<object class="wxButton" name="ID_BUTTON9" variable="Button4" member="yes">
 														<label>Zoom +</label>
-														<size>64,23</size>
+														<size>64,-1</size>
 														<handler function="OnButton4Click" entry="EVT_BUTTON" />
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -125,7 +126,7 @@
 												<object class="sizeritem">
 													<object class="wxButton" name="ID_BUTTON10" variable="Button5" member="yes">
 														<label>-</label>
-														<size>22,23</size>
+														<size>22,-1</size>
 														<handler function="OnButton5Click" entry="EVT_BUTTON" />
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

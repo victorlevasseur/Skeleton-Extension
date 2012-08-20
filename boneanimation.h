@@ -5,7 +5,7 @@
 #include <map>
 #include "globaldefs.h"
 
-namespace Sk{namespace Anim{class TimeFloat;}}
+namespace Sk{namespace Anim{struct TimeFloat;}}
 
 namespace Sk
 {
