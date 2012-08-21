@@ -14,7 +14,7 @@ namespace Sk
 namespace Anim
 {
 
-SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial")
+SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial"), m_isRunning(true), m_isStopped(false), m_speedRatio(1.f)
 {
     //ctor
     CreateAnimation("Initial");
@@ -32,8 +32,10 @@ const std::string& SkeletonAnimator::GetCurrentAnimation() const
 
 void SkeletonAnimator::SetCurrentAnimation(const std::string &animName)
 {
+    Stop();
     m_currentAnimation = animName;
     GetAnimation(m_currentAnimation).Reset();
+    Play();
 }
 
 void SkeletonAnimator::CreateAnimation(const std::string &name, const std::string &asACopyOf)
@@ -69,7 +71,10 @@ std::vector<std::string> SkeletonAnimator::GetListOfAnimations() const
 
 void SkeletonAnimator::UpdateTime(float timeToAdd)
 {
-    GetAnimation(m_currentAnimation).UpdateTime(timeToAdd);
+    if(!m_isRunning)
+        return;
+
+    GetAnimation(m_currentAnimation).UpdateTime(timeToAdd * m_speedRatio);
 }
 
 void SkeletonAnimator::Seek(float time)
@@ -80,6 +85,54 @@ void SkeletonAnimator::Seek(float time)
 void SkeletonAnimator::Reset()
 {
     GetAnimation(m_currentAnimation).Reset();
+}
+
+void SkeletonAnimator::Play()
+{
+    m_isRunning = true;
+
+    if(m_isStopped)
+    {
+        m_isStopped = false;
+        Reset();
+    }
+}
+
+void SkeletonAnimator::Pause()
+{
+    m_isRunning = false;
+}
+
+void SkeletonAnimator::Stop()
+{
+    m_isRunning = false;
+    m_isStopped = true;
+}
+
+void SkeletonAnimator::SetSpeedRatio(float ratio)
+{
+    if(ratio > 0)
+        m_speedRatio = ratio;
+}
+
+bool SkeletonAnimator::IsPlaying() const
+{
+    return m_isRunning;
+}
+
+bool SkeletonAnimator::IsPausing() const
+{
+    return (!m_isRunning) && (!m_isStopped);
+}
+
+bool SkeletonAnimator::IsStopped() const
+{
+    return (!m_isRunning) && m_isStopped;
+}
+
+float SkeletonAnimator::GetSpeedRatio() const
+{
+    return m_speedRatio;
 }
 
 void SkeletonAnimator::ApplyToSkeleton(std::vector<Bone*> &boneVec)

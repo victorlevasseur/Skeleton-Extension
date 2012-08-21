@@ -37,7 +37,7 @@ class Extension : public ExtensionBase
         {
             DECLARE_THE_EXTENSION("SkeletonObject",
                                   _("Objet Squelette"),
-                                  _("Extension permettant de gérer les animations sous forme d'une squelette."),
+                                  _("Extension permettant de gÃ©rer les animations sous forme d'une squelette."),
                                   "Victor Levasseur",
                                   "zlib")
 
@@ -45,7 +45,7 @@ class Extension : public ExtensionBase
             //Declaration of all objects available
             DECLARE_OBJECT("Skeleton",
                            _("Squelette"),
-                           _("Squelette déformable selon des animations."),
+                           _("Squelette dÃ©formable selon des animations."),
                            "res/Skeleton24.png",
                            &CreateSkeletonObject,
                            &DestroySkeletonObject,
@@ -55,11 +55,137 @@ class Extension : public ExtensionBase
 
                 objInfos.SetIncludeFile("SkeletonObject/SkeletonObject.h");
 
+                /**
+                Actions/Conditions de lecture
+                */
+
+                DECLARE_OBJECT_ACTION("Play",
+                               _("Jouer l'animation"),
+                               _("Joue l'animation en cours."),
+                               _("Jouer l'animation de _PARAM0_"),
+                               _("Lecture"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("Play").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_ACTION()
+
+                DECLARE_OBJECT_CONDITION("IsPlaying",
+                               _("L'animation se joue"),
+                               _("Teste si l'animation se joue."),
+                               _("L'animation de _PARAM0_ se joue"),
+                               _("Lecture"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("IsPlaying").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_CONDITION()
+
+                DECLARE_OBJECT_ACTION("Pause",
+                               _("Mettre en pause l'animation"),
+                               _("Met en pause l'animation en cours."),
+                               _("Mettre en pause l'animation de _PARAM0_"),
+                               _("Lecture"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("Pause").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_ACTION()
+
+                DECLARE_OBJECT_CONDITION("IsPausing",
+                               _("L'animation est en pause"),
+                               _("Teste si l'animation est en pause."),
+                               _("L'animation de _PARAM0_ est en pause"),
+                               _("Lecture"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("IsPausing").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_CONDITION()
+
+                DECLARE_OBJECT_ACTION("Stop",
+                               _("ArrÃªter l'animation"),
+                               _("ArrÃªte l'animation en cours."),
+                               _("ArrÃªter l'animation de _PARAM0_"),
+                               _("Lecture"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("Stop").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_ACTION()
+
+                DECLARE_OBJECT_CONDITION("IsStopped",
+                               _(L"L'animation est arrÃªtÃ©e"),
+                               _(L"Teste si l'animation est arrÃªtÃ©e."),
+                               _(L"L'animation de _PARAM0_ est arrÃªtÃ©e"),
+                               _("Lecture"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("IsStopped").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_CONDITION()
+
+                DECLARE_OBJECT_ACTION("SetSpeedRatio",
+                               _("Changer la vitesse de l'animation"),
+                               _(L"Change la vitesse de l'animation.\n1 = Vitesse normale, 1< = Ralentit, >1 = AccÃ©lÃ©rÃ©"),
+                               _(L"Mettre la vitesse de l'animation de _PARAM0_ Ã  _PARAM2__PARAM1_"),
+                               _("Lecture"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("expression", _("Valeur"), "", false);
+                    instrInfo.AddParameter("operator", _("Signe de la modification"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("SetSpeedRatio").SetManipulatedType("number").SetAssociatedGetter("GetSpeedRatio").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_ACTION()
+
+                DECLARE_OBJECT_CONDITION("TestSpeedRatio",
+                               _("Tester la vitesse de l'animation"),
+                               _("Teste la vitesse de l'animation."),
+                               _("La vitesse de l'animation de _PARAM0_ est _PARAM2__PARAM1_"),
+                               _("Lecture"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("expression", _("Valeur"), "", false);
+                    instrInfo.AddParameter("relationalOperator", _("Signe de comparaison"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetSpeedRatio").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_CONDITION()
+
+                DECLARE_OBJECT_EXPRESSION("GetSpeedRatio", _("Vitesse de l'animation"), _("Vitesse de l'animation"), _("Lecture"), "res/actions/son.png")
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetSpeedRatio").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+                DECLARE_END_OBJECT_EXPRESSION()
+
                 /*DECLARE_OBJECT_ACTION("Volume",
                                _("Volume"),
                                _("Modifie le volume d'un objet son."),
                                _("Faire _PARAM2__PARAM1_ au volume de _PARAM0_"),
-                               _("Paramètres"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
@@ -77,7 +203,7 @@ class Extension : public ExtensionBase
                                _("Pitch"),
                                _("Modifie le pitch d'un objet son."),
                                _("Faire _PARAM2__PARAM1_ au pitch de _PARAM0_"),
-                               _("Paramètres"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
@@ -92,10 +218,10 @@ class Extension : public ExtensionBase
 
 
                 DECLARE_OBJECT_ACTION("Attenuation",
-                               _("Atténuation"),
-                               _("Modifie l'atténuation d'un objet son."),
-                               _("Faire _PARAM2__PARAM1_ à l'atténuation de _PARAM0_"),
-                               _("Paramètres"),
+                               _("AttÃ©nuation"),
+                               _("Modifie l'attÃ©nuation d'un objet son."),
+                               _("Faire _PARAM2__PARAM1_ Ã  l'attÃ©nuation de _PARAM0_"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
@@ -129,9 +255,9 @@ class Extension : public ExtensionBase
 
                 DECLARE_OBJECT_ACTION("Loop",
                                _("Bouclage"),
-                               _("Active ou désactive le bouclage d'un son."),
+                               _("Active ou dÃ©sactive le bouclage d'un son."),
                                _("Jouer _PARAM0_ en boucle : _PARAM1_"),
-                               _("Paramètres"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
@@ -144,15 +270,15 @@ class Extension : public ExtensionBase
 
 
                 DECLARE_OBJECT_ACTION("RelativeToListener",
-                               _("Relativité à l'écouteur"),
-                               _("Active ou désactive la relativité d'un son à l'écouteur."),
-                               _("Faire _PARAM0_ relatif à l'écouteur : _PARAM1_"),
-                               _("Paramètres"),
+                               _("RelativitÃ© Ã  l'Ã©couteur"),
+                               _("Active ou dÃ©sactive la relativitÃ© d'un son Ã  l'Ã©couteur."),
+                               _("Faire _PARAM0_ relatif Ã  l'Ã©couteur : _PARAM1_"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
-                    instrInfo.AddParameter("yesorno", _("Relatif à l'écouteur"), "", false);
+                    instrInfo.AddParameter("yesorno", _("Relatif Ã  l'Ã©couteur"), "", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("SetRelativeToListener").SetIncludeFile("SkeletonObject/SkeletonObject.h");
 
@@ -175,9 +301,9 @@ class Extension : public ExtensionBase
 
 
                 DECLARE_OBJECT_ACTION("Stop",
-                               _("Arrêter"),
-                               _("Arrêter de jouer un son."),
-                               _("Arrêter de jouer le son _PARAM0_"),
+                               _("ArrÃªter"),
+                               _("ArrÃªter de jouer un son."),
+                               _("ArrÃªter de jouer le son _PARAM0_"),
                                _("Lecture"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
@@ -207,13 +333,13 @@ class Extension : public ExtensionBase
                 DECLARE_OBJECT_CONDITION("Volume",
                                _("Volume"),
                                _("Teste le volume d'un son."),
-                               _("Le volume de _PARAM0_ est _PARAM2_ à _PARAM1_"),
-                               _("Paramètres"),
+                               _("Le volume de _PARAM0_ est _PARAM2_ Ã  _PARAM1_"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
-                    instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                    instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                     instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
 
@@ -225,13 +351,13 @@ class Extension : public ExtensionBase
                 DECLARE_OBJECT_CONDITION("Pitch",
                                _("Pitch"),
                                _("Teste le pitch d'un son."),
-                               _("Le pitch de _PARAM0_ est _PARAM2_ à _PARAM1_"),
-                               _("Paramètres"),
+                               _("Le pitch de _PARAM0_ est _PARAM2_ Ã  _PARAM1_"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
-                    instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                    instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                     instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
 
@@ -241,15 +367,15 @@ class Extension : public ExtensionBase
 
 
                 DECLARE_OBJECT_CONDITION("Attenuation",
-                               _("Atténuation"),
-                               _("Teste l'atténuation d'un son."),
-                               _("L'atténuation de _PARAM0_ est _PARAM2_ à _PARAM1_"),
-                               _("Paramètres"),
+                               _("AttÃ©nuation"),
+                               _("Teste l'attÃ©nuation d'un son."),
+                               _("L'attÃ©nuation de _PARAM0_ est _PARAM2_ Ã  _PARAM1_"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
-                    instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                    instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                     instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
 
@@ -261,13 +387,13 @@ class Extension : public ExtensionBase
                 DECLARE_OBJECT_CONDITION("MinDistance",
                                _("Distance minimale"),
                                _("Teste la distance minimale d'un son."),
-                               _("La distance minimale de _PARAM0_ est _PARAM2_ à _PARAM1_"),
-                               _("Paramètres"),
+                               _("La distance minimale de _PARAM0_ est _PARAM2_ Ã  _PARAM1_"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
-                    instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                    instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                     instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
 
@@ -279,13 +405,13 @@ class Extension : public ExtensionBase
                 DECLARE_OBJECT_CONDITION("ZPos",
                                _("Position Z"),
                                _("Teste la position Z d'un son."),
-                               _("La position Z de _PARAM0_ est _PARAM2_ à _PARAM1_"),
-                               _("Paramètres"),
+                               _("La position Z de _PARAM0_ est _PARAM2_ Ã  _PARAM1_"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
-                    instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                    instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                     instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetZPos").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonObject.h");
@@ -295,9 +421,9 @@ class Extension : public ExtensionBase
 
                 DECLARE_OBJECT_CONDITION("Loop",
                                _("Bouclage"),
-                               _("Teste si un son est joué en boucle."),
-                               _("_PARAM0_ est joué en boucle"),
-                               _("Paramètres"),
+                               _("Teste si un son est jouÃ© en boucle."),
+                               _("_PARAM0_ est jouÃ© en boucle"),
+                               _("ParamÃ¨tres"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
 
@@ -309,9 +435,9 @@ class Extension : public ExtensionBase
 
 
                 DECLARE_OBJECT_CONDITION("Playing",
-                               _("En train d'être joué"),
-                               _("Teste si un son est en train d'être joué."),
-                               _("_PARAM0_ est en train d'être joué"),
+                               _("En train d'Ãªtre jouÃ©"),
+                               _("Teste si un son est en train d'Ãªtre jouÃ©."),
+                               _("_PARAM0_ est en train d'Ãªtre jouÃ©"),
                                _("Lecture"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
@@ -339,9 +465,9 @@ class Extension : public ExtensionBase
 
 
                 DECLARE_OBJECT_CONDITION("Stopped",
-                               _("Arrêté"),
-                               _("Teste si un son est arrêté."),
-                               _("_PARAM0_ est arrêté"),
+                               _("ArrÃªtÃ©"),
+                               _("Teste si un son est arrÃªtÃ©."),
+                               _("_PARAM0_ est arrÃªtÃ©"),
                                _("Lecture"),
                                "res/actions/son24.png",
                                "res/actions/son.png");
@@ -354,10 +480,10 @@ class Extension : public ExtensionBase
 
 
                 DECLARE_OBJECT_CONDITION("RelativeToListener",
-                               _("Relativité à l'écouteur"),
-                               _("Teste si un son est relatif à l'écouteur."),
-                               _("_PARAM0_ est relatif à l'écouteur"),
-                               _("Paramètres"),
+                               _("RelativitÃ© Ã  l'Ã©couteur"),
+                               _("Teste si un son est relatif Ã  l'Ã©couteur."),
+                               _("_PARAM0_ est relatif Ã  l'Ã©couteur"),
+                               _("ParamÃ¨tres"),
                                "res/conditions/son24.png",
                                "res/conditions/son.png");
 
@@ -368,28 +494,28 @@ class Extension : public ExtensionBase
                 DECLARE_END_OBJECT_CONDITION()
 
 
-                DECLARE_OBJECT_EXPRESSION("Volume", _("Volume"), _("Volume"), _("Paramètres"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("Volume", _("Volume"), _("Volume"), _("ParamÃ¨tres"), "res/actions/son.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetVolume").SetIncludeFile("SkeletonObject/SkeletonObject.h");
                 DECLARE_END_OBJECT_EXPRESSION()
 
 
-                DECLARE_OBJECT_EXPRESSION("Pitch", _("Pitch"), _("Pitch"), _("Paramètres"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("Pitch", _("Pitch"), _("Pitch"), _("ParamÃ¨tres"), "res/actions/son.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetPitch").SetIncludeFile("SkeletonObject/SkeletonObject.h");
                 DECLARE_END_OBJECT_EXPRESSION()
 
 
-                DECLARE_OBJECT_EXPRESSION("Attenuation", _("Atténuation"), _("Atténuation"), _("Paramètres"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("Attenuation", _("AttÃ©nuation"), _("AttÃ©nuation"), _("ParamÃ¨tres"), "res/actions/son.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetAttenuation").SetIncludeFile("SkeletonObject/SkeletonObject.h");
                 DECLARE_END_OBJECT_EXPRESSION()
 
 
-                DECLARE_OBJECT_EXPRESSION("MinDistance", _("Distance minimale"), _("Distance minimale"), _("Paramètres"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("MinDistance", _("Distance minimale"), _("Distance minimale"), _("ParamÃ¨tres"), "res/actions/son.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetMinDistance").SetIncludeFile("SkeletonObject/SkeletonObject.h");
@@ -405,12 +531,12 @@ class Extension : public ExtensionBase
             #endif
             DECLARE_END_OBJECT()
 
-            // Actions liées à l'écouteur
+            // Actions liÃ©es Ã  l'Ã©couteur
             #if defined(GD_IDE_ONLY)
             /*DECLARE_ACTION("ListenerX",
                            _("Position x"),
-                           _("Modifier la position x de l'écouteur."),
-                           _("Faire _PARAM0__PARAM1_ à la position x de l'écouteur"),
+                           _("Modifier la position x de l'Ã©couteur."),
+                           _("Faire _PARAM0__PARAM1_ Ã  la position x de l'Ã©couteur"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
@@ -425,8 +551,8 @@ class Extension : public ExtensionBase
 
             DECLARE_ACTION("ListenerY",
                            _("Position y"),
-                           _("Modifier la position y de l'écouteur."),
-                           _("Faire _PARAM0__PARAM1_ à la position y de l'écouteur"),
+                           _("Modifier la position y de l'Ã©couteur."),
+                           _("Faire _PARAM0__PARAM1_ Ã  la position y de l'Ã©couteur"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
@@ -441,8 +567,8 @@ class Extension : public ExtensionBase
 
             DECLARE_ACTION("ListenerZ",
                            _("Position z"),
-                           _("Modifier la position z de l'écouteur."),
-                           _("Faire _PARAM0__PARAM1_ à la position z de l'écouteur"),
+                           _("Modifier la position z de l'Ã©couteur."),
+                           _("Faire _PARAM0__PARAM1_ Ã  la position z de l'Ã©couteur"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
@@ -457,8 +583,8 @@ class Extension : public ExtensionBase
 
             DECLARE_ACTION("ListenerDirectionX",
                            _("Direction en x"),
-                           _("Modifier la direction vers laquelle est tourné l'écouteur en x."),
-                           _("Faire _PARAM0__PARAM1_ à la direction en x de l'écouteur"),
+                           _("Modifier la direction vers laquelle est tournÃ© l'Ã©couteur en x."),
+                           _("Faire _PARAM0__PARAM1_ Ã  la direction en x de l'Ã©couteur"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
@@ -473,8 +599,8 @@ class Extension : public ExtensionBase
 
             DECLARE_ACTION("ListenerDirectionY",
                            _("Direction en y"),
-                           _("Modifier la direction vers laquelle est tourné l'écouteur en y."),
-                           _("Faire _PARAM0__PARAM1_ à la direction en y de l'écouteur"),
+                           _("Modifier la direction vers laquelle est tournÃ© l'Ã©couteur en y."),
+                           _("Faire _PARAM0__PARAM1_ Ã  la direction en y de l'Ã©couteur"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
@@ -489,8 +615,8 @@ class Extension : public ExtensionBase
 
             DECLARE_ACTION("ListenerDirectionZ",
                            _("Direction en z"),
-                           _("Modifier la direction vers laquelle est tourné l'écouteur en z."),
-                           _("Faire _PARAM0__PARAM1_ à la direction en z de l'écouteur"),
+                           _("Modifier la direction vers laquelle est tournÃ© l'Ã©couteur en z."),
+                           _("Faire _PARAM0__PARAM1_ Ã  la direction en z de l'Ã©couteur"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
@@ -503,16 +629,16 @@ class Extension : public ExtensionBase
             DECLARE_END_ACTION()
 
 
-            // Conditions liées à l'écouteur
+            // Conditions liÃ©es Ã  l'Ã©couteur
             DECLARE_CONDITION("ListenerX",
                            _("Position x"),
-                           _("Tester la position x de l'écouteur."),
-                           _("La position x de l'écouteur est _PARAM1_ à _PARAM0_"),
+                           _("Tester la position x de l'Ã©couteur."),
+                           _("La position x de l'Ã©couteur est _PARAM1_ Ã  _PARAM0_"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
 
-                instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                 instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerX").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonListener.h");
@@ -522,13 +648,13 @@ class Extension : public ExtensionBase
 
             DECLARE_CONDITION("ListenerY",
                            _("Position y"),
-                           _("Tester la position y de l'écouteur."),
-                           _("La position y de l'écouteur est _PARAM1_ à _PARAM0_"),
+                           _("Tester la position y de l'Ã©couteur."),
+                           _("La position y de l'Ã©couteur est _PARAM1_ Ã  _PARAM0_"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
 
-                instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                 instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerY").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonListener.h");
@@ -538,13 +664,13 @@ class Extension : public ExtensionBase
 
             DECLARE_CONDITION("ListenerZ",
                            _("Position z"),
-                           _("Tester la position z de l'écouteur."),
-                           _("La position z de l'écouteur est _PARAM1_ à _PARAM0_"),
+                           _("Tester la position z de l'Ã©couteur."),
+                           _("La position z de l'Ã©couteur est _PARAM1_ Ã  _PARAM0_"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
 
-                instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                 instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerZ").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonListener.h");
@@ -554,13 +680,13 @@ class Extension : public ExtensionBase
 
             DECLARE_CONDITION("ListenerDirectionX",
                            _("Direction x"),
-                           _("Tester la direction vers laquelle est tourné l'écouteur en x."),
-                           _("La direction en x de l'écouteur est _PARAM1_ à _PARAM0_"),
+                           _("Tester la direction vers laquelle est tournÃ© l'Ã©couteur en x."),
+                           _("La direction en x de l'Ã©couteur est _PARAM1_ Ã  _PARAM0_"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
 
-                instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                 instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerDirectionX").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonListener.h");
@@ -570,13 +696,13 @@ class Extension : public ExtensionBase
 
             DECLARE_CONDITION("ListenerDirectionY",
                            _("Direction y"),
-                           _("Tester la direction vers laquelle est tourné l'écouteur en y."),
-                           _("La direction en y de l'écouteur est _PARAM1_ à _PARAM0_"),
+                           _("Tester la direction vers laquelle est tournÃ© l'Ã©couteur en y."),
+                           _("La direction en y de l'Ã©couteur est _PARAM1_ Ã  _PARAM0_"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
 
-                instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                 instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerDirectionY").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonListener.h");
@@ -586,13 +712,13 @@ class Extension : public ExtensionBase
 
             DECLARE_CONDITION("ListenerDirectionZ",
                            _("Direction z"),
-                           _("Tester la direction vers laquelle est tourné l'écouteur en z."),
-                           _("La direction en z de l'écouteur est _PARAM1_ à _PARAM0_"),
+                           _("Tester la direction vers laquelle est tournÃ© l'Ã©couteur en z."),
+                           _("La direction en z de l'Ã©couteur est _PARAM1_ Ã  _PARAM0_"),
                            _("Ecouteur"),
                            "res/actions/son24.png",
                            "res/actions/son.png");
 
-                instrInfo.AddParameter("expression", _("Valeur à tester"), "", false);
+                instrInfo.AddParameter("expression", _("Valeur Ã  tester"), "", false);
                 instrInfo.AddParameter("relationalOperator", _("Signe du test"), "", false);
 
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerDirectionZ").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonListener.h");
@@ -600,27 +726,27 @@ class Extension : public ExtensionBase
             DECLARE_END_CONDITION()
 
 
-            DECLARE_EXPRESSION("ListenerX", _("Position x"), _("Position x de l'écouteur"), _("Ecouteur"), "res/actions/son.png")
+            DECLARE_EXPRESSION("ListenerX", _("Position x"), _("Position x de l'Ã©couteur"), _("Ecouteur"), "res/actions/son.png")
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerX").SetIncludeFile("SkeletonObject/SkeletonListener.h");
             DECLARE_END_EXPRESSION()
 
-            DECLARE_EXPRESSION("ListenerY", _("Position y"), _("Position y de l'écouteur"), _("Ecouteur"), "res/actions/son.png")
+            DECLARE_EXPRESSION("ListenerY", _("Position y"), _("Position y de l'Ã©couteur"), _("Ecouteur"), "res/actions/son.png")
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerY").SetIncludeFile("SkeletonObject/SkeletonListener.h");
             DECLARE_END_EXPRESSION()
 
-            DECLARE_EXPRESSION("ListenerZ", _("Position z"), _("Position z de l'écouteur"), _("Ecouteur"), "res/actions/son.png")
+            DECLARE_EXPRESSION("ListenerZ", _("Position z"), _("Position z de l'Ã©couteur"), _("Ecouteur"), "res/actions/son.png")
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerZ").SetIncludeFile("SkeletonObject/SkeletonListener.h");
             DECLARE_END_EXPRESSION()
 
-            DECLARE_EXPRESSION("ListenerDirectionX", _("Direction en x"), _("Direction en x de l'écouteur"), _("Ecouteur"), "res/actions/son.png")
+            DECLARE_EXPRESSION("ListenerDirectionX", _("Direction en x"), _("Direction en x de l'Ã©couteur"), _("Ecouteur"), "res/actions/son.png")
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerDirectionX").SetIncludeFile("SkeletonObject/SkeletonListener.h");
             DECLARE_END_EXPRESSION()
 
-            DECLARE_EXPRESSION("ListenerDirectionY", _("Direction en y"), _("Direction en y de l'écouteur"), _("Ecouteur"), "res/actions/son.png")
+            DECLARE_EXPRESSION("ListenerDirectionY", _("Direction en y"), _("Direction en y de l'Ã©couteur"), _("Ecouteur"), "res/actions/son.png")
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerDirectionY").SetIncludeFile("SkeletonObject/SkeletonListener.h");
             DECLARE_END_EXPRESSION()
 
-            DECLARE_EXPRESSION("ListenerDirectionZ", _("Direction en z"), _("Direction en z de l'écouteur"), _("Ecouteur"), "res/actions/son.png")
+            DECLARE_EXPRESSION("ListenerDirectionZ", _("Direction en z"), _("Direction en z de l'Ã©couteur"), _("Ecouteur"), "res/actions/son.png")
                 instrInfo.cppCallingInformation.SetFunctionName("GetListenerDirectionZ").SetIncludeFile("SkeletonObject/SkeletonListener.h");
             DECLARE_END_EXPRESSION()*/
             #endif

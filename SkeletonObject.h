@@ -23,8 +23,6 @@ Copyright (C) 2012 Victor Levasseur
 
 #include "GDL/Object.h"
 #include "GDL/ResourceWrapper.h"
-#include "Skeleton.h"
-#include "Bone.h"
 
 #if defined(GD_IDE_ONLY)
 namespace gd {class ArbitraryResourceWorker;}
@@ -48,6 +46,11 @@ class wxBitmap;
 class Game;
 class wxWindow;
 #endif
+
+namespace Sk
+{
+    class Skeleton;
+}
 
 class GD_EXTENSION_API SkeletonObject : public Object
 {
@@ -108,11 +111,23 @@ class GD_EXTENSION_API SkeletonObject : public Object
         Sk::Skeleton GetSkeleton();
         void SetSkeleton(Sk::Skeleton _ske);
 
+        void Play();
+        void Pause();
+        void Stop();
+
+        void SetSpeedRatio(float ratio);
+
+        bool IsPlaying();
+        bool IsPausing();
+        bool IsStopped();
+
+        float GetSpeedRatio();
+
     protected:
         void Init(const SkeletonObject &other);
 
     private:
-        Sk::Skeleton skeleton;
+        Sk::Skeleton *skeleton;
 };
 
 void DestroySkeletonObject(Object * object);

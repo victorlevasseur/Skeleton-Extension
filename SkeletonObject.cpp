@@ -31,6 +31,9 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/Position.h"
 #include "GDL/CommonTools.h"
 
+#include "Skeleton.h"
+#include "Bone.h"
+
 #if defined(GD_IDE_ONLY)
 #include "GDCore/IDE/Dialogs/MainFrameWrapper.h"
 #include "GDCore/IDE/ArbitraryResourceWorker.h"
@@ -39,19 +42,19 @@ Copyright (C) 2012 Victor Levasseur
 #endif
 
 SkeletonObject::SkeletonObject(std::string name_) :
-Object(name_), skeleton()
+Object(name_), skeleton(new Sk::Skeleton())
 {
 
 }
 
 SkeletonObject::~SkeletonObject()
 {
-
+    delete skeleton;
 }
 
 void SkeletonObject::Init(const SkeletonObject &other)
 {
-    skeleton = Sk::Skeleton(other.skeleton);
+    skeleton = new Sk::Skeleton(*other.skeleton);
 }
 
 Object* SkeletonObject::Clone() const
@@ -73,28 +76,28 @@ SkeletonObject& SkeletonObject::operator=(const SkeletonObject &other)
 
 void SkeletonObject::LoadFromXml(const TiXmlElement * elem)
 {
-    skeleton.Load(*elem);
+    skeleton->Load(*elem);
 }
 
 #if defined(GD_IDE_ONLY)
 void SkeletonObject::SaveToXml(TiXmlElement * elem)
 {
-    skeleton.Save(*elem);
+    skeleton->Save(*elem);
 }
 #endif
 
 bool SkeletonObject::LoadResources(const RuntimeScene & scene, const ImageManager & imageMgr )
 {
-    skeleton.GetRoot()->LoadTexture(imageMgr);
-    skeleton.GetAnimator().Reset();
+    skeleton->GetRoot()->LoadTexture(imageMgr);
+    skeleton->GetAnimator().Reset();
 
     return true;
 }
 
 bool SkeletonObject::LoadRuntimeResources(const RuntimeScene & scene, const ImageManager & imageMgr )
 {
-    skeleton.GetRoot()->LoadTexture(imageMgr);
-    skeleton.GetAnimator().Reset();
+    skeleton->GetRoot()->LoadTexture(imageMgr);
+    skeleton->GetAnimator().Reset();
 
     return true;
 }
@@ -106,7 +109,7 @@ bool SkeletonObject::Draw( sf::RenderTarget& renderTarget )
         return true;
     }
 
-    skeleton.Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
+    skeleton->Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
     return true;
 }
 
@@ -117,7 +120,7 @@ bool SkeletonObject::Draw( sf::RenderTarget& renderTarget )
  */
 bool SkeletonObject::DrawEdittime( sf::RenderTarget &renderTarget )
 {
-    skeleton.Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
+    skeleton->Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
     return true;
 }
 
@@ -165,8 +168,8 @@ void SkeletonObject::OnPositionChanged()
 
 void SkeletonObject::UpdateTime(float time)
 {
-    skeleton.GetAnimator().UpdateTime(time);
-    skeleton.ApplyAnimationToBones();
+    skeleton->GetAnimator().UpdateTime(time);
+    skeleton->ApplyAnimationToBones();
 }
 
 float SkeletonObject::GetDrawableX() const
@@ -201,12 +204,52 @@ float SkeletonObject::GetCenterY() const
 
 Sk::Skeleton SkeletonObject::GetSkeleton()
 {
-    return skeleton;
+    return *skeleton;
 }
 
 void SkeletonObject::SetSkeleton(Sk::Skeleton _ske)
 {
-    skeleton = Sk::Skeleton(_ske);
+    skeleton = new Sk::Skeleton(_ske);
+}
+
+void SkeletonObject::Play()
+{
+    skeleton->GetAnimator().Play();
+}
+
+void SkeletonObject::Pause()
+{
+    skeleton->GetAnimator().Pause();
+}
+
+void SkeletonObject::Stop()
+{
+    skeleton->GetAnimator().Stop();
+}
+
+void SkeletonObject::SetSpeedRatio(float ratio)
+{
+    skeleton->GetAnimator().SetSpeedRatio(ratio);
+}
+
+bool SkeletonObject::IsPlaying()
+{
+    return skeleton->GetAnimator().IsPlaying();
+}
+
+bool SkeletonObject::IsPausing()
+{
+    return skeleton->GetAnimator().IsPausing();
+}
+
+bool SkeletonObject::IsStopped()
+{
+    return skeleton->GetAnimator().IsStopped();
+}
+
+float SkeletonObject::GetSpeedRatio()
+{
+    return skeleton->GetAnimator().GetSpeedRatio();
 }
 
 void DestroySkeletonObject(Object * object)

@@ -66,6 +66,7 @@ class Animation
         float m_time;
         float m_period;
         bool m_autoRepeat;
+
         std::map<std::string, BoneAnimation> m_keyFrames;
 };
 

@@ -45,6 +45,18 @@ class SkeletonAnimator
         void Seek(float time);
         void Reset();
 
+        void Play();
+        void Pause();
+        void Stop();
+
+        void SetSpeedRatio(float ratio);
+
+        bool IsPlaying() const;
+        bool IsPausing() const;
+        bool IsStopped() const;
+
+        float GetSpeedRatio() const;
+
         void ApplyToSkeleton(std::vector<Bone*> &boneVec);
 
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
@@ -56,6 +68,11 @@ class SkeletonAnimator
     private:
         std::map<std::string, Animation> m_animations;
         std::string m_currentAnimation;
+
+        bool m_isRunning;
+        bool m_isStopped;
+
+        float m_speedRatio;
 };
 
 inline Animation& SkeletonAnimator::GetAnimation(const std::string &name)
