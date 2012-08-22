@@ -56,7 +56,7 @@ class Extension : public ExtensionBase
                 objInfos.SetIncludeFile("SkeletonObject/SkeletonObject.h");
 
                 /**
-                Actions/Conditions de lecture
+                Actions/Conditions for reading
                 */
 
                 DECLARE_OBJECT_ACTION("Play",
@@ -180,6 +180,25 @@ class Extension : public ExtensionBase
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetSpeedRatio").SetIncludeFile("SkeletonObject/SkeletonObject.h");
                 DECLARE_END_OBJECT_EXPRESSION()
+
+                /**
+                Actions/Conditions for changing animations
+                */
+
+                DECLARE_OBJECT_ACTION("SetAnimation",
+                               _("Changer d'animation"),
+                               _("Change l'animation en cours."),
+                               _("Mettre l'animation _PARAM1_ à _PARAM0_"),
+                               _("Animation"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("SetAnimation").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_ACTION()
 
                 /*DECLARE_OBJECT_ACTION("Volume",
                                _("Volume"),

@@ -1111,6 +1111,7 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         else if(event.GetProperty()->GetBaseName() == _("BoneImage"))
         {
             selectedBone->SetTextureName(ToString(event.GetPropertyValue().GetString()));
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, 0, ToString(event.GetPropertyValue().GetString()));
         }
         else if(event.GetProperty()->GetBaseName() == _("BoneZOrder"))
         {

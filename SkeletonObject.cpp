@@ -256,6 +256,11 @@ float SkeletonObject::GetSpeedRatio()
     return skeleton->GetAnimator().GetSpeedRatio();
 }
 
+void SkeletonObject::SetAnimation(const std::string &anim)
+{
+    skeleton->GetAnimator().SetCurrentAnimation(anim);
+}
+
 void DestroySkeletonObject(Object * object)
 {
     delete object;

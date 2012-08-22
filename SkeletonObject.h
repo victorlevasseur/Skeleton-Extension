@@ -123,6 +123,8 @@ class GD_EXTENSION_API SkeletonObject : public Object
 
         float GetSpeedRatio();
 
+        void SetAnimation(const std::string &anim);
+
     protected:
         void Init(const SkeletonObject &other);
 

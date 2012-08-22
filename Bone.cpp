@@ -179,6 +179,8 @@ void Bone::Update()
     {
         m_tmp_position = sf::Vector2f(0, 0);
         m_tmp_absoluteRotation = m_relativeRotation;
+
+        m_tmp_position += sf::Vector2f(m_offset.x, m_offset.y);
     }
 
     for(std::vector<Bone*>::iterator it = m_childBones.begin(); it != m_childBones.end(); it++)
