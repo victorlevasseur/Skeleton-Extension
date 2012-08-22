@@ -26,6 +26,7 @@ Copyright (C) 2012 Victor Levasseur
 
 #include "Bone.h"
 #include "skeletonanimator.h"
+#include "imagemanager.h"
 
 class wxBufferedPaintDC;
 
@@ -66,6 +67,10 @@ class Skeleton
         Anim::SkeletonAnimator& GetAnimator() {return m_skeAnim;};
         void ApplyAnimationToBones();
 
+        Res::SkImageManager& GetImageManager() {return m_imageMan;};
+        void ExposeResources();
+        void LoadResources(const RuntimeScene & scene, const ImageManager & imageMgr);
+
         bool BoneNameAlreadyUsed(const std::string &name);
 
         const std::vector<Bone*>& GetListOfBones() const {return m_bones;};
@@ -77,7 +82,9 @@ class Skeleton
     private:
         Bone *m_root;
         std::vector<Bone*> m_bones;
+
         Anim::SkeletonAnimator m_skeAnim;
+        Res::SkImageManager m_imageMan;
 };
 
 struct ZOrderFunctor

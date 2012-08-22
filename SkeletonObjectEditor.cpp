@@ -504,6 +504,25 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
             {
                 m_grid->SetPropertyValue(_("Propriétés.BoneLength.BoneLengthKeyFrame"), false);
             }
+
+            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current))
+            {
+                m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetKeyFrame"), true);
+                m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current).c_str()));
+            }
+            else
+            {
+                m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetKeyFrame"), false);
+            }
+
+            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current))
+            {
+                m_grid->SetPropertyValue(_("Propriétés.BoneImage.BoneImageKeyFrame"), true);
+            }
+            else
+            {
+                m_grid->SetPropertyValue(_("Propriétés.BoneImage.BoneImageKeyFrame"), false);
+            }
         }
     }
     else
@@ -586,6 +605,8 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
 
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::PositionXKeyFrame, 0, (*it)->GetOffset().x);
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::PositionYKeyFrame, 0, (*it)->GetOffset().y);
+
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::ImageKeyFrame, 0, (*it)->GetTextureName());
         }
         skeleton.GetAnimator().Seek(0);
 
@@ -657,6 +678,7 @@ void SkeletonObjectEditor::OnPanel1EraseBackground(wxEraseEvent& event)
 #define LENGTH_RIBBON_HEIGHT 16 + int((panelSize.GetHeight() - 16)/5) + 1
 #define OFFSET_RIBBON_HEIGHT 16 + int((panelSize.GetHeight() - 16)/5)*2 + 1
 #define IMAGE_RIBBON_HEIGHT 16 + int((panelSize.GetHeight() - 16)/5)*3 + 1
+#define ZORDER_RIBBON_HEIGHT 16 + int((panelSize.GetHeight() - 16)/5)*4 + 1
 
 void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
 {
@@ -768,6 +790,27 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
                         GetPositionFromTimeToPixel(keyFrames.at(a)) - 1, IMAGE_RIBBON_HEIGHT);
             dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)), OFFSET_RIBBON_HEIGHT,
                         GetPositionFromTimeToPixel(keyFrames.at(a)), IMAGE_RIBBON_HEIGHT);
+        }
+        }
+
+        //Draw image keyframes
+        {
+        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::Anim::ImageKeyFrame);
+        for(unsigned int a = 0; a < keyFrames.size(); a++)
+        {
+            if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, keyFrames.at(a)))
+            {
+                dc.SetPen(wxColour(178, 0, 255));
+            }
+            else
+            {
+                dc.SetPen(wxColour(202, 90, 255));
+            }
+
+            dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)) - 1, IMAGE_RIBBON_HEIGHT,
+                        GetPositionFromTimeToPixel(keyFrames.at(a)) - 1, ZORDER_RIBBON_HEIGHT);
+            dc.DrawLine(GetPositionFromTimeToPixel(keyFrames.at(a)), IMAGE_RIBBON_HEIGHT,
+                        GetPositionFromTimeToPixel(keyFrames.at(a)), ZORDER_RIBBON_HEIGHT);
         }
         }
     }
@@ -1192,6 +1235,31 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
                                                            ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))));
             timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current,
                                                            ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))));
+        }
+
+        //When image modified
+        if(event.GetProperty()->GetBaseName() == _("BoneImage"))
+        {
+            selectedBone->SetTextureName(ToString(event.GetPropertyValue().GetString()));
+
+            //When angle keyframe is already checked, modification applied
+            if(m_grid->GetPropertyValueAsBool(_("Propriétés.BoneImage.BoneImageKeyFrame")))
+            {
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current, ToString(event.GetPropertyValue().GetString()));
+            }
+        }
+        //When check/uncheck keyframe for image
+        else if(event.GetProperty()->GetBaseName() == _("BoneImageKeyFrame"))
+        {
+            if(event.GetPropertyValue().GetBool())
+            {
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current,
+                                                  ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneImage"))));
+            }
+            else
+            {
+                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current);
+            }
         }
     }
 

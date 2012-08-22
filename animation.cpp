@@ -6,6 +6,7 @@
 #include "interpolationMethods.h"
 #include "timefloat.h"
 #include "Bone.h"
+#include "imagemanager.h"
 
 namespace Sk
 {
@@ -44,6 +45,15 @@ void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, floa
     KeyFrame timefloat;
     timefloat.time = time;
     timefloat.value = value;
+
+    SetKeyFrame(boneName, type, timefloat);
+}
+
+void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, std::string value)
+{
+    KeyFrame timefloat;
+    timefloat.time = time;
+    timefloat.valueStr = value;
 
     SetKeyFrame(boneName, type, timefloat);
 }
@@ -119,6 +129,7 @@ void Animation::UpdateTime(float timeToAdd)
     UpdateTimeOfSmoothedType(timeToAdd, LengthKeyFrame);
     UpdateTimeOfSmoothedType(timeToAdd, PositionXKeyFrame);
     UpdateTimeOfSmoothedType(timeToAdd, PositionYKeyFrame);
+    UpdateTimeOfStringType(timeToAdd, ImageKeyFrame);
 }
 
 float Animation::GetTimeDelta(const KeyFrame &frame1, const KeyFrame &frame2)
@@ -157,6 +168,7 @@ void Animation::Seek(float time)
     SeekOfSmoothedType(time, LengthKeyFrame);
     SeekOfSmoothedType(time, PositionXKeyFrame);
     SeekOfSmoothedType(time, PositionYKeyFrame);
+    SeekOfStringType(time, ImageKeyFrame);
 }
 
 void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
@@ -225,7 +237,68 @@ void Animation::SeekOfSmoothedType(float time, KeyFrameType type)
     }
 }
 
-void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)
+void Animation::UpdateTimeOfStringType(float timeToAdd, KeyFrameType type)
+{
+    std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin();
+    for(; it != m_keyFrames.end(); it++)
+    {
+        std::vector<KeyFrame> *keyFrames = &(it->second.keyFrames[type]);
+
+        if(keyFrames->size() == 0)
+            continue;
+
+        KeyFrame *key = &(keyFrames->at(it->second.currentIndex[type]));
+
+        if(m_period == 0)
+        {
+            it->second.tmp_string[type] = key->valueStr;
+            continue;
+        }
+
+        KeyFrame *nextKey = &(keyFrames->at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
+
+
+        while(((m_time > nextKey->time) && (key->time < nextKey->time)) ||
+              ((key->time > nextKey->time) && (m_time > nextKey->time) && (m_time < key->time)))
+        {
+            it->second.currentIndex[type] = GetNextIndex(it->first, type, it->second.currentIndex[type]);
+            key = nextKey;
+
+            nextKey = &(keyFrames->at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
+        }
+
+        it->second.tmp_string[type] = key->valueStr;
+    }
+}
+
+void Animation::SeekOfStringType(float time, KeyFrameType type)
+{
+    std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin();
+    for(; it != m_keyFrames.end(); it++)
+    {
+        if(it->second.keyFrames[type].size() == 0)
+            continue;
+
+        for(unsigned int a = 0; a < it->second.keyFrames[type].size(); a++)
+        {
+            if(it->second.keyFrames[type].at(a).time > m_time)
+                break;
+            it->second.currentIndex[type] = a;
+        }
+
+        KeyFrame *key = &(it->second.keyFrames[type].at(it->second.currentIndex[type]));
+
+        if(m_period == 0)
+        {
+            it->second.tmp_string[type] = key->valueStr;
+            continue;
+        }
+
+        it->second.tmp_string[type] = key->valueStr;
+    }
+}
+
+void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec, Sk::Res::SkImageManager & imageMgr)
 {
     for(unsigned int a = 0; a < boneVec.size(); a++)
     {
@@ -236,6 +309,12 @@ void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec)
         boneVec[a]->m_size = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[LengthKeyFrame];
         boneVec[a]->m_offset.x = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[PositionXKeyFrame];
         boneVec[a]->m_offset.y = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[PositionYKeyFrame];
+
+        if(boneVec[a]->GetTextureName() != m_keyFrames[boneVec[a]->GetName()].tmp_string[ImageKeyFrame])
+        {
+            boneVec[a]->SetTextureName(m_keyFrames[boneVec[a]->GetName()].tmp_string[ImageKeyFrame]);
+            boneVec[a]->LoadTexture(imageMgr);
+        }
     }
 }
 
@@ -348,6 +427,9 @@ void Animation::LoadFromXml(TiXmlElement *ele)
                         KeyFrame timefloat;
                         keyframe->ToElement()->QueryFloatAttribute("time", &timefloat.time);
                         keyframe->ToElement()->QueryFloatAttribute("value", &timefloat.value);
+                        if(keyframe->ToElement()->Attribute("valueStr") != 0)
+                            timefloat.valueStr = std::string(keyframe->ToElement()->Attribute("valueStr"));
+
                         if(keyframe->ToElement()->Attribute("interpolation"))
                             timefloat.interpolation = std::string(keyframe->ToElement()->Attribute("interpolation"));
                         else
@@ -380,6 +462,7 @@ void Animation::SaveToXml(TiXmlElement *ele)
                 TiXmlElement *timefloatEle = new TiXmlElement("Keyframe");
                 timefloatEle->SetDoubleAttribute("time", it2->second.at(a).time);
                 timefloatEle->SetDoubleAttribute("value", it2->second.at(a).value);
+                timefloatEle->SetAttribute("valueStr", it2->second.at(a).valueStr.c_str());
                 timefloatEle->SetAttribute("interpolation", it2->second.at(a).interpolation.c_str());
 
                 keyframetypeEle->LinkEndChild(timefloatEle);

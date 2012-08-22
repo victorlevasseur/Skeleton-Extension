@@ -28,7 +28,7 @@ Copyright (C) 2012 Victor Levasseur
 namespace Sk
 {
 
-Skeleton::Skeleton() : m_root(new Bone("root", this))
+Skeleton::Skeleton() : m_root(new Bone("root", this)), m_imageMan()
 {
     RegisterBone(m_root);
 }
@@ -41,6 +41,7 @@ Skeleton::Skeleton(const Skeleton &other)
     m_root->ResetOwner(this);
 
     m_skeAnim = other.m_skeAnim;
+    m_imageMan = Res::SkImageManager();
 
     //m_root->Update();
 }
@@ -129,8 +130,26 @@ void Skeleton::ReorderByZOrder()
 
 void Skeleton::ApplyAnimationToBones()
 {
-    m_skeAnim.ApplyToSkeleton(m_bones);
+    m_skeAnim.ApplyToSkeleton(m_bones, m_imageMan);
     m_root->Update();
+}
+
+void Skeleton::ExposeResources()
+{
+    for(unsigned int a = 0; a < m_bones.size(); a++)
+    {
+        m_imageMan.ExposeImage(m_bones.at(a)->GetTextureName());
+    }
+}
+
+void Skeleton::LoadResources(const RuntimeScene & scene, const ImageManager & imageMgr)
+{
+    m_imageMan.LoadResources(scene, imageMgr);
+
+    for(unsigned int a = 0; a < m_bones.size(); a++)
+    {
+        m_bones[a]->LoadTexture(m_imageMan);
+    }
 }
 
 void Skeleton::Save(TiXmlElement &elem)

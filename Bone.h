@@ -42,6 +42,7 @@ namespace Sk
 {
 
 namespace Anim{class Animation;}
+namespace Res{class SkImageManager;}
 
 class Skeleton;
 
@@ -103,7 +104,7 @@ class Bone
 
         void SetTextureName(const std::string &textureName);
         std::string GetTextureName() const;
-        void LoadTexture(const ImageManager & imageMgr);
+        void LoadTexture(Res::SkImageManager & imageMgr);
 
         std::vector<Bone*> const & GetChildrenBones() const;
 

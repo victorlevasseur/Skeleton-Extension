@@ -7,6 +7,7 @@
 
 #include "Bone.h"
 #include "interpolationMethods.h"
+#include "imagemanager.h"
 
 namespace Sk
 {
@@ -135,9 +136,9 @@ float SkeletonAnimator::GetSpeedRatio() const
     return m_speedRatio;
 }
 
-void SkeletonAnimator::ApplyToSkeleton(std::vector<Bone*> &boneVec)
+void SkeletonAnimator::ApplyToSkeleton(std::vector<Bone*> &boneVec, Sk::Res::SkImageManager & imageMgr)
 {
-    GetAnimation(m_currentAnimation).ApplyToSkeleton(boneVec);
+    GetAnimation(m_currentAnimation).ApplyToSkeleton(boneVec, imageMgr);
 }
 
 void SkeletonAnimator::NotifyBoneRenamed(const std::string &oldName, const std::string &newName)

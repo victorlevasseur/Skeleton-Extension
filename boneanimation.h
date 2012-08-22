@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include <string>
 #include "globaldefs.h"
 
 namespace Sk{namespace Anim{struct KeyFrame;}}
@@ -25,6 +26,8 @@ class BoneAnimation
     std::map<KeyFrameType, unsigned int> currentIndex;
 
     std::map<KeyFrameType, float> tmp_angleValue;
+    std::map<KeyFrameType, std::string> tmp_string;
+
     std::map<KeyFrameType, float> progress;
 
     std::map<KeyFrameType, std::vector<KeyFrame> > keyFrames;

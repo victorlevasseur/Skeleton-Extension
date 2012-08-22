@@ -9,6 +9,7 @@
 #include "animation.h"
 
 class TiXmlElement;
+namespace Sk{namespace Res{class SkImageManager;}}
 
 namespace Sk
 {
@@ -57,7 +58,7 @@ class SkeletonAnimator
 
         float GetSpeedRatio() const;
 
-        void ApplyToSkeleton(std::vector<Bone*> &boneVec);
+        void ApplyToSkeleton(std::vector<Bone*> &boneVec, Sk::Res::SkImageManager & imageMgr);
 
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
 

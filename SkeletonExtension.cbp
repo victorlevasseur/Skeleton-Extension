@@ -582,6 +582,8 @@
 		<Unit filename="boneanimation.cpp" />
 		<Unit filename="boneanimation.h" />
 		<Unit filename="globaldefs.h" />
+		<Unit filename="imagemanager.cpp" />
+		<Unit filename="imagemanager.h" />
 		<Unit filename="interpolationMethods.cpp" />
 		<Unit filename="interpolationMethods.h" />
 		<Unit filename="skeletonanimator.cpp" />

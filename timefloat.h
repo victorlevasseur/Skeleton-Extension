@@ -15,7 +15,7 @@ It's a combination of a time, a value and an interpolation method.
  */
 struct KeyFrame
 {
-    KeyFrame() : time(0), interpolation("Linear") {};
+    KeyFrame() : time(0), value(0), valueStr(""), interpolation("Linear") {};
 
     float time; ///< Time (position) of the keyframe in the animation's timeline
     float value; ///< Value associated with the keyframe (can be an angle, a length, depending of the keyframe type)

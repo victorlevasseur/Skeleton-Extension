@@ -28,6 +28,7 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/ImageManager.h"
 #include <SFML/Graphics.hpp>
 #include "Skeleton.h"
+#include "imagemanager.h"
 
 namespace Sk
 {
@@ -301,22 +302,9 @@ std::string Bone::GetTextureName() const
     return m_textureName;
 }
 
-void Bone::LoadTexture(const ImageManager & imageMgr)
+void Bone::LoadTexture(Res::SkImageManager & imageMgr)
 {
-    if(imageMgr.HasImage(m_textureName))
-    {
-        m_texture = imageMgr.GetSFMLTexture(m_textureName);
-    }
-    else
-    {
-        m_texture = boost::shared_ptr<SFMLTextureWrapper>();
-    }
-    UpdateTextureTransform();
-
-    for(unsigned int a = 0; a < m_childBones.size(); a++)
-    {
-        m_childBones.at(a)->LoadTexture(imageMgr);
-    }
+    m_texture = imageMgr.GetImage(m_textureName);
 }
 
 bool Bone::IsOnPosition(sf::Vector2f position)

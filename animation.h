@@ -8,6 +8,7 @@
 
 class TiXmlElement;
 namespace Sk{class Bone;}
+namespace Sk{namespace Res{class SkImageManager;}}
 
 namespace Sk
 {
@@ -35,7 +36,10 @@ class Animation
         void SetPeriod(float value) {m_period = value;};
 
         void SetKeyFrame(const std::string &boneName, KeyFrameType type, KeyFrame &keyframe);
+
         void SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, float value);
+        void SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, std::string value);
+
         bool HasKeyFrame(const std::string &boneName, KeyFrameType type, float time);
         void RemoveKeyFrame(const std::string &boneName, KeyFrameType type, float time);
         void ClearKeyFrame(const std::string &boneName, KeyFrameType type);
@@ -49,7 +53,7 @@ class Animation
 
         std::vector<float> GetListOfKeyFramesTime(const std::string &bone = "", KeyFrameType type = AnyKeyFrame);
 
-        void ApplyToSkeleton(std::vector<Bone*> &boneVec);
+        void ApplyToSkeleton(std::vector<Bone*> &boneVec, Sk::Res::SkImageManager & imageMgr);
 
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
 
@@ -62,6 +66,9 @@ class Animation
 
         void UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type);
         void SeekOfSmoothedType(float time, KeyFrameType type);
+
+        void UpdateTimeOfStringType(float timeToAdd, KeyFrameType type);
+        void SeekOfStringType(float time, KeyFrameType type);
 
         float m_time;
         float m_period;
