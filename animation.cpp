@@ -474,6 +474,17 @@ void Animation::SaveToXml(TiXmlElement *ele)
     }
 }
 
+void Animation::ExposeResources(Sk::Res::SkImageManager & manager)
+{
+    for(std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin(); it != m_keyFrames.end(); it++)
+    {
+        for(unsigned int a = 0; a < it->second.keyFrames[ImageKeyFrame].size(); a++)
+        {
+            manager.ExposeImage(it->second.keyFrames[ImageKeyFrame].at(a).valueStr);
+        }
+    }
+}
+
 bool TimeOrderFunctor::operator() (KeyFrame left, KeyFrame right)
 {
     return (left.time < right.time);

@@ -65,6 +65,8 @@ class SkeletonAnimator
         void LoadFromXml(TiXmlElement *ele);
         void SaveToXml(TiXmlElement *ele);
 
+        void ExposeResources(Sk::Res::SkImageManager & manager);
+
     protected:
     private:
         std::map<std::string, Animation> m_animations;

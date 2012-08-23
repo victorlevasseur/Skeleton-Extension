@@ -12,6 +12,8 @@ class RuntimeScene;
 class ImageManager;
 class SFMLTextureWrapper;
 
+namespace gd {class ArbitraryResourceWorker;}
+
 namespace Sk
 {
 
@@ -30,6 +32,10 @@ class SkImageManager
         void LoadResources(const RuntimeScene & scene, const ImageManager & imageMgr);
 
         boost::shared_ptr<SFMLTextureWrapper> GetImage(const std::string &name);
+
+        #ifdef GD_IDE_ONLY
+        void ShowResourcesToGD(gd::ArbitraryResourceWorker & worker);
+        #endif
 
     protected:
     private:

@@ -55,6 +55,7 @@ const long SkeletonObjectEditor::ID_TOGGLEBUTTON1 = wxNewId();
 const long SkeletonObjectEditor::ID_TOGGLEBUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_CHOICE1 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON2 = wxNewId();
+const long SkeletonObjectEditor::ID_BITMAPBUTTON4 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON1 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON3 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL3 = wxNewId();
@@ -117,13 +118,16 @@ mode(0)
 	ToggleButton2->SetToolTip(_("L\'éditeur d\'animation permet de gérer et de créer des animations en utilisant les os du squelette."));
 	BoxSizer1->Add(ToggleButton2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer11->Add(BoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer8 = new wxFlexGridSizer(0, 4, 0, 0);
+	FlexGridSizer8 = new wxFlexGridSizer(0, 5, 0, 0);
 	AnimationCombobox = new wxChoice(Core, ID_CHOICE1, wxDefaultPosition, wxSize(163,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
 	FlexGridSizer8->Add(AnimationCombobox, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BitmapButton2 = new wxBitmapButton(Core, ID_BITMAPBUTTON2, wxBitmap(wxImage(_T("res/addicon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
 	BitmapButton2->SetToolTip(_("Ajouter une animation"));
 	BitmapButton2->SetHelpText(_("Ajouter une animation"));
 	FlexGridSizer8->Add(BitmapButton2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	BitmapButton4 = new wxBitmapButton(Core, ID_BITMAPBUTTON4, wxBitmap(wxImage(_T("res/copyIcon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON4"));
+	BitmapButton4->SetDefault();
+	FlexGridSizer8->Add(BitmapButton4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BitmapButton1 = new wxBitmapButton(Core, ID_BITMAPBUTTON1, wxBitmap(wxImage(_T("res/paraJeu16.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON1"));
 	BitmapButton1->SetDefault();
 	BitmapButton1->SetToolTip(_("Configurer l\'animation"));
@@ -191,6 +195,7 @@ mode(0)
 	Connect(ID_TOGGLEBUTTON2,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton2Toggle);
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&SkeletonObjectEditor::OnAnimationComboboxSelect);
 	Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton2Click);
+	Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton4Click);
 	Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton1Click);
 	Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton3Click);
 	Panel2->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2Paint,0,this);
@@ -993,9 +998,24 @@ void SkeletonObjectEditor::OnBitmapButton2Click(wxCommandEvent& event)
     dialog.ShowModal();
 
     skeleton.GetAnimator().CreateAnimation(std::string(dialog.GetValue().c_str()), "Initial");
-    SelectAnimation(std::string(dialog.GetValue().c_str()));
 
     UpdateAnimationsList();
+    SelectAnimation(std::string(dialog.GetValue().c_str()));
+}
+
+void SkeletonObjectEditor::OnBitmapButton4Click(wxCommandEvent& event)
+{
+    if(AnimationCombobox->GetSelection() == -1)
+        return;
+
+    //Add an animation
+    wxTextEntryDialog dialog(this, _("Nom de l'animation copiée"), _("Nouvelle animation"), "New Animation");
+    dialog.ShowModal();
+
+    skeleton.GetAnimator().CreateAnimation(std::string(dialog.GetValue().c_str()), ToString(AnimationCombobox->GetString(AnimationCombobox->GetSelection())));
+
+    UpdateAnimationsList();
+    SelectAnimation(std::string(dialog.GetValue().c_str()));
 }
 
 void SkeletonObjectEditor::OnBitmapButton1Click(wxCommandEvent& event)

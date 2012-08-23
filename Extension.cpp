@@ -188,7 +188,7 @@ class Extension : public ExtensionBase
                 DECLARE_OBJECT_ACTION("SetAnimation",
                                _("Changer d'animation"),
                                _("Change l'animation en cours."),
-                               _("Mettre l'animation _PARAM1_ à _PARAM0_"),
+                               _(L"Mettre l'animation _PARAM1_ à _PARAM0_"),
                                _("Animation"),
                                "res/actions/son24.png",
                                "res/actions/son.png");

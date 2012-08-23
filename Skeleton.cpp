@@ -140,6 +140,8 @@ void Skeleton::ExposeResources()
     {
         m_imageMan.ExposeImage(m_bones.at(a)->GetTextureName());
     }
+
+    m_skeAnim.ExposeResources(m_imageMan);
 }
 
 void Skeleton::LoadResources(const RuntimeScene & scene, const ImageManager & imageMgr)

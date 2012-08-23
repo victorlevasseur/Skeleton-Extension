@@ -68,6 +68,7 @@ class SkeletonObjectEditor: public wxDialog
 		wxButton* Button5;
 		wxButton* Button3;
 		wxChoice* AnimationCombobox;
+		wxBitmapButton* BitmapButton4;
 		wxBitmapButton* BitmapButton3;
 		wxPanel* Panel2;
 		wxButton* addChildBoneBt;
@@ -81,6 +82,7 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_TOGGLEBUTTON2;
 		static const long ID_CHOICE1;
 		static const long ID_BITMAPBUTTON2;
+		static const long ID_BITMAPBUTTON4;
 		static const long ID_BITMAPBUTTON1;
 		static const long ID_BITMAPBUTTON3;
 		static const long ID_PANEL3;
@@ -134,6 +136,7 @@ class SkeletonObjectEditor: public wxDialog
 		void OnBitmapButton3Click(wxCommandEvent& event);
 		void OnInit(wxInitDialogEvent& event);
 		void OnBitmapButton1Click(wxCommandEvent& event);
+		void OnBitmapButton4Click(wxCommandEvent& event);
 		//*)
 		void OnGridPropertyChanging(wxPropertyGridEvent& event);
 		void OnGridPropertyChanged(wxPropertyGridEvent& event);

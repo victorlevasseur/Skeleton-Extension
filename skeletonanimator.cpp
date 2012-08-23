@@ -180,6 +180,14 @@ void SkeletonAnimator::SaveToXml(TiXmlElement *ele)
     }
 }
 
+void SkeletonAnimator::ExposeResources(Sk::Res::SkImageManager & manager)
+{
+    for(std::map<std::string, Animation>::iterator it = m_animations.begin(); it != m_animations.end(); it++)
+    {
+        it->second.ExposeResources(manager);
+    }
+}
+
 }
 
 }

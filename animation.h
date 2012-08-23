@@ -60,6 +60,8 @@ class Animation
         void LoadFromXml(TiXmlElement *ele);
         void SaveToXml(TiXmlElement *ele);
 
+        void ExposeResources(Sk::Res::SkImageManager & manager);
+
     private:
         int GetNextIndex(const std::string &boneName, KeyFrameType type, unsigned int index);
         float GetTimeDelta(const KeyFrame &frame1, const KeyFrame &frame2);

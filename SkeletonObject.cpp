@@ -135,7 +135,7 @@ wxPanel * SkeletonObject::CreateInitialPositionPanel( wxWindow* parent, const Ga
 
 void SkeletonObject::ExposeResources(gd::ArbitraryResourceWorker & worker)
 {
-
+    skeleton->GetImageManager().ShowResourcesToGD(worker);
 }
 
 bool SkeletonObject::GenerateThumbnail(const gd::Project & project, wxBitmap & thumbnail)

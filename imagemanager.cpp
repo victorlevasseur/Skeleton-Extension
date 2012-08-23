@@ -3,6 +3,10 @@
 #include "GDL/ImageManager.h"
 #include "GDL/RuntimeScene.h"
 
+#if defined(GD_IDE_ONLY)
+#include "GDCore/IDE/ArbitraryResourceWorker.h"
+#endif
+
 namespace Sk
 {
 
@@ -48,6 +52,27 @@ boost::shared_ptr<SFMLTextureWrapper> SkImageManager::GetImage(const std::string
 {
     return m_images[name];
 }
+
+#ifdef GD_IDE_ONLY
+void SkImageManager::ShowResourcesToGD(gd::ArbitraryResourceWorker & worker)
+{
+    std::map<std::string, boost::shared_ptr<SFMLTextureWrapper> >::iterator it = m_images.begin();
+
+    for(; it != m_images.end(); it++)
+    {
+        worker.ExposeImage(const_cast<std::string&>(it->first));
+    }
+
+    for(unsigned int a = 0; a < m_needToBeLoaded.size(); a++)
+    {
+        std::string value = m_needToBeLoaded.front();
+        m_needToBeLoaded.pop();
+        m_needToBeLoaded.push(value);
+
+        worker.ExposeImage(value);
+    }
+}
+#endif
 
 }
 
