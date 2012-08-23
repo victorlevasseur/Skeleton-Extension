@@ -77,6 +77,7 @@
 													<object class="wxBitmapButton" name="ID_BITMAPBUTTON4" variable="BitmapButton4" member="yes">
 														<bitmap>res/copyIcon.png</bitmap>
 														<default>1</default>
+														<tooltip>Dupliquer l&apos;animation sélectionnée</tooltip>
 														<handler function="OnBitmapButton4Click" entry="EVT_BUTTON" />
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -86,7 +87,7 @@
 													<object class="wxBitmapButton" name="ID_BITMAPBUTTON1" variable="BitmapButton1" member="yes">
 														<bitmap>res/paraJeu16.png</bitmap>
 														<default>1</default>
-														<tooltip>Configurer l&apos;animation</tooltip>
+														<tooltip>Configurer l&apos;animation...</tooltip>
 														<help>Configurer l&apos;animation</help>
 														<handler function="OnBitmapButton1Click" entry="EVT_BUTTON" />
 													</object>
@@ -241,6 +242,15 @@
 									<object class="wxButton" name="ID_BUTTON6" variable="Button3" member="yes">
 										<label>Banque d&apos;image</label>
 										<handler function="OnButton3Click" entry="EVT_BUTTON" />
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxButton" name="ID_BUTTON5" variable="Button1" member="yes">
+										<label>Paramètres du squelette...</label>
+										<handler function="OnButton1Click1" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>

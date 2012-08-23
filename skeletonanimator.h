@@ -58,6 +58,9 @@ class SkeletonAnimator
 
         float GetSpeedRatio() const;
 
+        void SetDelayBetweenCalculations(float delay) {m_calculationDelay = delay;};
+        float GetDelayBetweenCalculations() const {return m_calculationDelay;};
+
         void ApplyToSkeleton(std::vector<Bone*> &boneVec, Sk::Res::SkImageManager & imageMgr);
 
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
@@ -76,6 +79,9 @@ class SkeletonAnimator
         bool m_isStopped;
 
         float m_speedRatio;
+
+        float m_calculationDelay;
+        float m_tmpTime;
 };
 
 inline Animation& SkeletonAnimator::GetAnimation(const std::string &name)

@@ -37,6 +37,7 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/arrstr.h>
 
 #include "SkeletonAnimationSettings.h"
+#include "SkeletonSettings.h"
 
 #include "GDL/Game.h"
 #include "SkeletonObject.h"
@@ -67,6 +68,7 @@ const long SkeletonObjectEditor::ID_PANEL4 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON4 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON6 = wxNewId();
+const long SkeletonObjectEditor::ID_BUTTON5 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON1 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON3 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL2 = wxNewId();
@@ -127,10 +129,11 @@ mode(0)
 	FlexGridSizer8->Add(BitmapButton2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BitmapButton4 = new wxBitmapButton(Core, ID_BITMAPBUTTON4, wxBitmap(wxImage(_T("res/copyIcon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON4"));
 	BitmapButton4->SetDefault();
+	BitmapButton4->SetToolTip(_("Dupliquer l\'animation sélectionnée"));
 	FlexGridSizer8->Add(BitmapButton4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BitmapButton1 = new wxBitmapButton(Core, ID_BITMAPBUTTON1, wxBitmap(wxImage(_T("res/paraJeu16.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON1"));
 	BitmapButton1->SetDefault();
-	BitmapButton1->SetToolTip(_("Configurer l\'animation"));
+	BitmapButton1->SetToolTip(_("Configurer l\'animation..."));
 	BitmapButton1->SetHelpText(_("Configurer l\'animation"));
 	FlexGridSizer8->Add(BitmapButton1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BitmapButton3 = new wxBitmapButton(Core, ID_BITMAPBUTTON3, wxBitmap(wxImage(_T("res/deleteicon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON3"));
@@ -176,6 +179,8 @@ mode(0)
 	FlexGridSizer7 = new wxFlexGridSizer(0, 4, 0, 0);
 	Button3 = new wxButton(Core, ID_BUTTON6, _("Banque d\'image"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
 	FlexGridSizer7->Add(Button3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	Button1 = new wxButton(Core, ID_BUTTON5, _("Paramètres du squelette..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON5"));
+	FlexGridSizer7->Add(Button1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	ValidateButton = new wxButton(Core, ID_BUTTON1, _("Valider"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	ValidateButton->SetDefault();
 	FlexGridSizer7->Add(ValidateButton, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -218,6 +223,7 @@ mode(0)
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnaddChildBoneBtClick);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OndeleteBoneBtClick);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton3Click);
+	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton1Click1);
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnValidateButtonClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton2Click);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&SkeletonObjectEditor::OnInit);
@@ -579,8 +585,10 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         deleteBoneBt->Enable(true);
 
         BitmapButton2->Enable(false);
+        BitmapButton4->Enable(false);
         BitmapButton1->Enable(false);
         BitmapButton3->Enable(false);
+
         AnimationCombobox->Enable(false);
 
         m_grid->GetProperty(_("Identification.BoneName"))->Enable(true);
@@ -622,6 +630,7 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         deleteBoneBt->Enable(false);
 
         BitmapButton2->Enable(true);
+        BitmapButton4->Enable(true);
         BitmapButton1->Enable(true);
         BitmapButton3->Enable(true);
         AnimationCombobox->Enable(true);
@@ -1309,6 +1318,12 @@ void SkeletonObjectEditor::OnPanel1Resize(wxSizeEvent& event)
 {
     Panel1->Refresh();
     Panel1->Update();
+}
+
+void SkeletonObjectEditor::OnButton1Click1(wxCommandEvent& event)
+{
+    SkeletonSettings dialog(this, &skeleton.GetAnimator());
+    dialog.ShowModal();
 }
 
 void SkeletonObjectEditor::OnInit(wxInitDialogEvent& event)

@@ -577,6 +577,8 @@
 		<Unit filename="SkeletonObject.h" />
 		<Unit filename="SkeletonObjectEditor.cpp" />
 		<Unit filename="SkeletonObjectEditor.h" />
+		<Unit filename="SkeletonSettings.cpp" />
+		<Unit filename="SkeletonSettings.h" />
 		<Unit filename="animation.cpp" />
 		<Unit filename="animation.h" />
 		<Unit filename="boneanimation.cpp" />
@@ -600,6 +602,7 @@
 				<resources>
 					<wxDialog wxs="wxsmith/SkeletonObjectEditor.wxs" src="SkeletonObjectEditor.cpp" hdr="SkeletonObjectEditor.h" name="SkeletonObjectEditor" language="CPP" />
 					<wxDialog wxs="wxsmith/SkeletonAnimationSettings.wxs" src="SkeletonAnimationSettings.cpp" hdr="SkeletonAnimationSettings.h" name="SkeletonAnimationSettings" language="CPP" />
+					<wxDialog wxs="wxsmith/SkeletonSettings.wxs" src="SkeletonSettings.cpp" hdr="SkeletonSettings.h" name="SkeletonSettings" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

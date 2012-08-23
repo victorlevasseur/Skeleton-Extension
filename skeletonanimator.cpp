@@ -15,7 +15,7 @@ namespace Sk
 namespace Anim
 {
 
-SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial"), m_isRunning(true), m_isStopped(false), m_speedRatio(1.f)
+SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial"), m_isRunning(true), m_isStopped(false), m_speedRatio(1.f), m_calculationDelay(0.f), m_tmpTime(0.f)
 {
     //ctor
     CreateAnimation("Initial");
@@ -75,7 +75,19 @@ void SkeletonAnimator::UpdateTime(float timeToAdd)
     if(!m_isRunning)
         return;
 
-    GetAnimation(m_currentAnimation).UpdateTime(timeToAdd * m_speedRatio);
+    if(m_calculationDelay > 0.f)
+    {
+        m_tmpTime += timeToAdd;
+        if(m_tmpTime > m_calculationDelay)
+        {
+            m_tmpTime -= m_calculationDelay;
+            GetAnimation(m_currentAnimation).UpdateTime(m_calculationDelay * m_speedRatio);
+        }
+    }
+    else
+    {
+        GetAnimation(m_currentAnimation).UpdateTime(timeToAdd * m_speedRatio);
+    }
 }
 
 void SkeletonAnimator::Seek(float time)
@@ -158,6 +170,8 @@ void SkeletonAnimator::LoadFromXml(TiXmlElement *ele)
 {
     m_animations.clear();
 
+    ele->QueryFloatAttribute("calculationDelay", &m_calculationDelay);
+
     TiXmlNode *child;
     for( child = ele->FirstChild(); child; child = child->NextSibling() )
     {
@@ -171,6 +185,8 @@ void SkeletonAnimator::LoadFromXml(TiXmlElement *ele)
 
 void SkeletonAnimator::SaveToXml(TiXmlElement *ele)
 {
+    ele->SetDoubleAttribute("calculationDelay", m_calculationDelay);
+
     for(std::map<std::string, Animation>::iterator it = m_animations.begin(); it != m_animations.end(); it++)
     {
         TiXmlElement *newEle = new TiXmlElement("Animation");
