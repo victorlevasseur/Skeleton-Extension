@@ -11,6 +11,9 @@
 #include "SkeletonAnimator.h"
 #include "GDL/CommonTools.h"
 
+#undef _
+#define _(s)                     wxGetTranslation((L##s))
+
 //(*IdInit(SkeletonSettings)
 const long SkeletonSettings::ID_STATICTEXT1 = wxNewId();
 const long SkeletonSettings::ID_TEXTCTRL1 = wxNewId();
@@ -30,13 +33,13 @@ SkeletonSettings::SkeletonSettings(wxWindow* parent, Sk::Skeleton *ske, wxWindow
 	wxFlexGridSizer* FlexGridSizer2;
 	wxFlexGridSizer* FlexGridSizer1;
 
-	Create(parent, id, _("Paramètre du squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+	Create(parent, id, _("ParamÃ¨tre du squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(301,84));
 	Move(wxDefaultPosition);
 	FlexGridSizer1 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer2 = new wxFlexGridSizer(0, 2, 0, 0);
 	FlexGridSizer2->AddGrowableCol(1);
-	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Délai entre calculs :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("DÃ©lai entre calculs :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	FlexGridSizer2->Add(StaticText1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	delayCalculationTextCtrl = new wxTextCtrl(this, ID_TEXTCTRL1, _("0"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
 	FlexGridSizer2->Add(delayCalculationTextCtrl, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);

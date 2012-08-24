@@ -62,6 +62,7 @@ const long SkeletonObjectEditor::ID_BITMAPBUTTON3 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL3 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON9 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON10 = wxNewId();
+const long SkeletonObjectEditor::ID_BUTTON7 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL5 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL1 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL4 = wxNewId();
@@ -148,10 +149,12 @@ mode(0)
 	Panel2 = new wxPanel(timelinePanel, ID_PANEL3, wxDefaultPosition, wxSize(725,85), wxTAB_TRAVERSAL, _T("ID_PANEL3"));
 	FlexGridSizer12->Add(Panel2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
-	Button4 = new wxButton(timelinePanel, ID_BUTTON9, _("Zoomer"), wxDefaultPosition, wxSize(64,-1), 0, wxDefaultValidator, _T("ID_BUTTON9"));
-	BoxSizer2->Add(Button4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	Button5 = new wxButton(timelinePanel, ID_BUTTON10, _("Dézoomer"), wxDefaultPosition, wxSize(22,-1), 0, wxDefaultValidator, _T("ID_BUTTON10"));
+	Button4 = new wxButton(timelinePanel, ID_BUTTON9, _("Zoomer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON9"));
+	BoxSizer2->Add(Button4, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	Button5 = new wxButton(timelinePanel, ID_BUTTON10, _("Dézoomer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON10"));
 	BoxSizer2->Add(Button5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	Button6 = new wxButton(timelinePanel, ID_BUTTON7, _("Aller à..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON7"));
+	BoxSizer2->Add(Button6, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer12->Add(BoxSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	timelinePanel->SetSizer(FlexGridSizer12);
 	FlexGridSizer12->Fit(timelinePanel);
@@ -212,6 +215,7 @@ mode(0)
 	Panel2->Connect(wxEVT_SIZE,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2Resize,0,this);
 	Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton4Click);
 	Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton5Click);
+	Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton6Click);
 	Panel1->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1Paint,0,this);
 	Panel1->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1EraseBackground,0,this);
 	Panel1->Connect(wxEVT_LEFT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1LeftDown,0,this);
@@ -896,6 +900,19 @@ void SkeletonObjectEditor::OnButton4Click(wxCommandEvent& event)
 void SkeletonObjectEditor::OnButton5Click(wxCommandEvent& event)
 {
     timeline_scale /= 2;
+
+    Panel2->Refresh(); //Refresh
+    Panel2->Update();
+}
+
+void SkeletonObjectEditor::OnButton6Click(wxCommandEvent& event)
+{
+    wxTextEntryDialog dialog(this, _("Aller à..."), _("Aller à un moment précis (secondes)"), "0");
+    dialog.ShowModal();
+
+    float time = ToFloat(ToString(dialog.GetValue()));
+
+    Seek(time);
 
     Panel2->Refresh(); //Refresh
     Panel2->Update();
