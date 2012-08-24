@@ -1,6 +1,4 @@
-#include "skeletonanimator.h"
-
-
+#include "SkeletonAnimator.h"
 
 #include "GDL/tinyxml/tinyxml.h"
 #include "GDL/CommonTools.h"

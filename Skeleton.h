@@ -25,7 +25,7 @@ Copyright (C) 2012 Victor Levasseur
 #include <vector>
 
 #include "Bone.h"
-#include "skeletonanimator.h"
+#include "SkeletonAnimator.h"
 #include "ImageManager.h"
 
 class wxBufferedPaintDC;

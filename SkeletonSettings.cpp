@@ -8,7 +8,7 @@
 //*)
 
 #include "Skeleton.h"
-#include "skeletonanimator.h"
+#include "SkeletonAnimator.h"
 #include "GDL/CommonTools.h"
 
 //(*IdInit(SkeletonSettings)
