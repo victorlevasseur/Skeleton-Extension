@@ -7,6 +7,7 @@
 #include <wx/string.h>
 //*)
 
+#include "Skeleton.h"
 #include "skeletonanimator.h"
 #include "GDL/CommonTools.h"
 
@@ -22,7 +23,7 @@ BEGIN_EVENT_TABLE(SkeletonSettings,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-SkeletonSettings::SkeletonSettings(wxWindow* parent, Sk::Anim::SkeletonAnimator *skeAnim, wxWindowID id,const wxPoint& pos,const wxSize& size)
+SkeletonSettings::SkeletonSettings(wxWindow* parent, Sk::Skeleton *ske, wxWindowID id,const wxPoint& pos,const wxSize& size)
 {
 	//(*Initialize(SkeletonSettings)
 	wxFlexGridSizer* FlexGridSizer3;
@@ -55,9 +56,9 @@ SkeletonSettings::SkeletonSettings(wxWindow* parent, Sk::Anim::SkeletonAnimator 
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonSettings::OnButton2Click);
 	//*)
 
-	skeletonAnimator = skeAnim;
+	skeleton = ske;
 
-	delayCalculationTextCtrl->SetValue(ToString(skeletonAnimator->GetDelayBetweenCalculations()));
+	delayCalculationTextCtrl->SetValue(ToString(skeleton->GetAnimator().GetDelayBetweenCalculations()));
 }
 
 SkeletonSettings::~SkeletonSettings()
@@ -69,7 +70,7 @@ SkeletonSettings::~SkeletonSettings()
 
 void SkeletonSettings::OnButton1Click(wxCommandEvent& event)
 {
-    skeletonAnimator->SetDelayBetweenCalculations(ToFloat(ToString(delayCalculationTextCtrl->GetValue())));
+    skeleton->GetAnimator().SetDelayBetweenCalculations(ToFloat(ToString(delayCalculationTextCtrl->GetValue())));
 
     EndModal(1);
 }

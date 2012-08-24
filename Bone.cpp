@@ -28,7 +28,7 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/ImageManager.h"
 #include <SFML/Graphics.hpp>
 #include "Skeleton.h"
-#include "imagemanager.h"
+#include "ImageManager.h"
 
 namespace Sk
 {

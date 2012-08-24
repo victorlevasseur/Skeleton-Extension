@@ -41,7 +41,7 @@ Copyright (C) 2012 Victor Levasseur
 
 #include "GDL/Game.h"
 #include "SkeletonObject.h"
-#include "interpolationMethods.h"
+#include "InterpolationMethods.h"
 #include "GDL/IDE/MainEditorCommand.h"
 #include "GDCore/IDE/CommonBitmapManager.h"
 #include "GDL/CommonTools.h"
@@ -1322,7 +1322,7 @@ void SkeletonObjectEditor::OnPanel1Resize(wxSizeEvent& event)
 
 void SkeletonObjectEditor::OnButton1Click1(wxCommandEvent& event)
 {
-    SkeletonSettings dialog(this, &skeleton.GetAnimator());
+    SkeletonSettings dialog(this, &skeleton);
     dialog.ShowModal();
 }
 

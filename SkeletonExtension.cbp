@@ -579,19 +579,19 @@
 		<Unit filename="SkeletonObjectEditor.h" />
 		<Unit filename="SkeletonSettings.cpp" />
 		<Unit filename="SkeletonSettings.h" />
-		<Unit filename="animation.cpp" />
-		<Unit filename="animation.h" />
-		<Unit filename="boneanimation.cpp" />
-		<Unit filename="boneanimation.h" />
-		<Unit filename="globaldefs.h" />
-		<Unit filename="imagemanager.cpp" />
-		<Unit filename="imagemanager.h" />
-		<Unit filename="interpolationMethods.cpp" />
-		<Unit filename="interpolationMethods.h" />
-		<Unit filename="skeletonanimator.cpp" />
-		<Unit filename="skeletonanimator.h" />
-		<Unit filename="timefloat.cpp" />
-		<Unit filename="timefloat.h" />
+		<Unit filename="Animation.cpp" />
+		<Unit filename="Animation.h" />
+		<Unit filename="BoneAnimation.cpp" />
+		<Unit filename="BoneAnimation.h" />
+		<Unit filename="GlobalDefs.h" />
+		<Unit filename="ImageManager.cpp" />
+		<Unit filename="ImageManager.h" />
+		<Unit filename="InterpolationMethods.cpp" />
+		<Unit filename="InterpolationMethods.h" />
+		<Unit filename="SkeletonAnimator.cpp" />
+		<Unit filename="SkeletonAnimator.h" />
+		<Unit filename="KeyFrame.cpp" />
+		<Unit filename="KeyFrame.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

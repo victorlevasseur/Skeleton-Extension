@@ -11,13 +11,13 @@
 #include <wx/dialog.h>
 //*)
 
-namespace Sk{namespace Anim{class SkeletonAnimator;}}
+namespace Sk{class Skeleton;}
 
 class SkeletonSettings: public wxDialog
 {
 	public:
 
-		SkeletonSettings(wxWindow* parent, Sk::Anim::SkeletonAnimator *skeAnim, wxWindowID id=wxID_ANY, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize);
+		SkeletonSettings(wxWindow* parent, Sk::Skeleton *ske, wxWindowID id=wxID_ANY, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize);
 		virtual ~SkeletonSettings();
 
 		//(*Declarations(SkeletonSettings)
@@ -43,7 +43,7 @@ class SkeletonSettings: public wxDialog
 		void OnButton2Click(wxCommandEvent& event);
 		//*)
 
-		Sk::Anim::SkeletonAnimator *skeletonAnimator;
+		Sk::Skeleton *skeleton;
 
 		DECLARE_EVENT_TABLE()
 };

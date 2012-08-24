@@ -31,7 +31,7 @@ Copyright (C) 2012 Victor Levasseur
 #include <wx/dialog.h>
 //*)
 
-#include "animation.h"
+#include "Animation.h"
 
 class SkeletonAnimationSettings: public wxDialog
 {
