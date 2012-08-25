@@ -457,7 +457,17 @@ void SkeletonObjectEditor::OnPanel1MouseMove(wxMouseEvent& event)
 
 void SkeletonObjectEditor::OnaddChildBoneBtClick(wxCommandEvent& event)
 {
-    Sk::Bone *newBone = skeleton.CreateBone("new bone");
+    std::string boneName;
+    do
+    {
+        wxTextEntryDialog dialog(this, _("Nom du nouvel os"), _("Nouvel os"), "New bone");
+        dialog.ShowModal();
+
+        boneName = ToString(dialog.GetValue());
+
+    } while(skeleton.BoneNameAlreadyUsed(boneName));
+
+    Sk::Bone *newBone = skeleton.CreateBone(boneName);
     selectedBone->AddBone(newBone);
 
     skeleton.GetRoot()->UnselectAllChilds();
