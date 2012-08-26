@@ -94,6 +94,19 @@ public:
     virtual std::string& GetName() const {static std::string name("InvertedExponential"); return name;};
 };
 
+class Binary : public InterpolationMethod
+{
+public:
+    Binary() : InterpolationMethod() {};
+
+    virtual float GetResult(float progress, float firstValue, float secondValue) const
+    {
+        return firstValue;
+    }
+
+    virtual std::string& GetName() const {static std::string name("Binary"); return name;};
+};
+
 class Get
 {
 public:
@@ -127,6 +140,13 @@ public:
 
             return invertedExponentialMethod;
         }
+        if(name == "Binary")
+        {
+            if(!binaryMethod)
+                binaryMethod = new Binary();
+
+            return binaryMethod;
+        }
 
         return 0;
     }
@@ -138,6 +158,7 @@ public:
         list.push_back("Sinusoidale");
         list.push_back("Exponential");
         list.push_back("InvertedExponential");
+        list.push_back("Binary");
 
         return list;
     }
@@ -147,6 +168,7 @@ private:
     static Sinusoidale *progressiveMethod;
     static Exponential *exponentialMethod;
     static InvertedExponential *invertedExponentialMethod;
+    static Binary *binaryMethod;
 };
 
 }
