@@ -181,8 +181,10 @@ class SkeletonObjectEditor: public wxDialog
 		float timeline_offset; //Offset as time
 		int timeline_tmp_dragbegan;
 
-		int GetPositionFromTimeToPixel(float time);
-		float GetPositionFromPixelToTime(int pixel);
+		int GetPositionFromTimeToPixel(float time) const;
+		float GetPositionFromPixelToTime(int pixel) const;
+
+		float GetGraduationScale(float width, float scale) const;
 
 		DECLARE_EVENT_TABLE()
 };

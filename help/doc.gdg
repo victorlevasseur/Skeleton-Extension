@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<Game>
+    <GDVersion Major="2" Minor="1" Build="10939" Revision="55108" />
+    <Info winExecutableFilename="" winExecutableIconFile="" linuxExecutableFilename="" macExecutableFilename="" useExternalSourceFiles="false">
+        <Nom value="Projet" />
+        <Auteur value="" />
+        <WindowW value="800" />
+        <WindowH value="600" />
+        <Portable />
+        <Extensions>
+            <Extension name="SkeletonObject" />
+            <Extension name="Sprite" />
+            <Extension name="BuiltinObject" />
+            <Extension name="BuiltinCommonInstructions" />
+            <Extension name="BuiltinCommonConversions" />
+            <Extension name="BuiltinVariables" />
+            <Extension name="BuiltinMouse" />
+            <Extension name="BuiltinKeyboard" />
+            <Extension name="BuiltinJoystick" />
+            <Extension name="BuiltinScene" />
+            <Extension name="BuiltinTime" />
+            <Extension name="BuiltinMathematicalTools" />
+            <Extension name="BuiltinCamera" />
+            <Extension name="BuiltinAudio" />
+            <Extension name="BuiltinFile" />
+            <Extension name="BuiltinNetwork" />
+            <Extension name="BuiltinWindow" />
+            <Extension name="BuiltinStringInstructions" />
+            <Extension name="BuiltinAdvanced" />
+            <Extension name="BuiltinExternalLayouts" />
+        </Extensions>
+        <FPSmax value="60" />
+        <FPSmin value="10" />
+        <verticalSync value="false" />
+        <Chargement>
+            <Afficher value="false" />
+            <Border value="true" />
+            <Smooth value="true" />
+            <Width value="170.000000" />
+            <Height value="50.000000" />
+            <TexteAfficher value="true" />
+            <TexteXPos value="0.000000" />
+            <TexteYPos value="5.000000" />
+            <Texte value="Chargement" />
+            <PourcentAfficher value="false" />
+            <PourcentXPos value="0.000000" />
+            <PourcentYPos value="0.000000" />
+            <ImageAfficher value="false" />
+            <Image value="" />
+        </Chargement>
+    </Info>
+    <Resources>
+        <Resources />
+        <ResourceFolders />
+    </Resources>
+    <Objects />
+    <ObjectGroups />
+    <Variables />
+    <Scenes>
+        <Scene nom="Nouvelle scène" r="209.000000" v="209.000000" b="209.000000" titre="" oglFOV="90.000000" oglZNear="1.000000" oglZFar="500.000000" standardSortMethod="true" stopSoundsOnStartup="true">
+            <UISettings gridWidth="32.000000" grid="false" snap="false" gridHeight="32.000000" gridR="158.000000" gridG="180.000000" gridB="255.000000" zoomFactor="1.000000" windowMask="false" associatedLayout="" />
+            <GroupesObjets />
+            <Objets />
+            <Layers>
+                <Layer Name="" Visibility="true">
+                    <Camera DefaultSize="true" Width="0.000000" Height="0.000000" DefaultViewport="true" ViewportLeft="0.000000" ViewportTop="0.000000" ViewportRight="1.000000" ViewportBottom="1.000000" />
+                </Layer>
+            </Layers>
+            <Variables />
+            <AutomatismsSharedDatas />
+            <Dependencies />
+            <Positions />
+            <Events />
+        </Scene>
+    </Scenes>
+    <ExternalEvents />
+    <ExternalLayouts />
+    <ExternalSourceFiles />
+</Game>

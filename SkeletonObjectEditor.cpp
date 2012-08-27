@@ -99,7 +99,7 @@ mode(0)
 	wxFlexGridSizer* FlexGridSizer6;
 	wxFlexGridSizer* FlexGridSizer1;
 	wxFlexGridSizer* FlexGridSizer11;
-	
+
 	Create(parent, wxID_ANY, _("Editeur de squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX, _T("wxID_ANY"));
 	FlexGridSizer3 = new wxFlexGridSizer(1, 1, 0, 0);
 	FlexGridSizer3->AddGrowableCol(0);
@@ -198,7 +198,7 @@ mode(0)
 	FlexGridSizer3->Fit(this);
 	FlexGridSizer3->SetSizeHints(this);
 	Center();
-	
+
 	Connect(ID_TOGGLEBUTTON1,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton1Toggle);
 	Connect(ID_TOGGLEBUTTON2,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton2Toggle);
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&SkeletonObjectEditor::OnAnimationComboboxSelect);
@@ -734,20 +734,22 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     dc.SetPen(wxPen(wxColour(120, 120, 120)));
     dc.DrawRectangle(0, 16 + int((panelSize.GetHeight() - 16)/5) * 3 + 1, panelSize.GetWidth(), int((panelSize.GetHeight() - 16)/5));
 
+
+    float gradScale = GetGraduationScale(panelSize.GetWidth(), timeline_scale);
     //Each 5s and 10s lines
-    for(int a = floor(timeline_offset / 10) - 1; a < floor(timeline_offset / 5) + floor(panelSize.GetWidth() / (timeline_scale * 10)) + 2;a++)
+    for(int a = floor(timeline_offset / gradScale) - 1; a < floor(timeline_offset / 5) + floor(panelSize.GetWidth() / (timeline_scale * gradScale)) + 2;a++)
     {
-        dc.DrawRotatedText(ToString(a * 10), (a * timeline_scale * 10) - (timeline_offset * timeline_scale) - 7, 2, 0);
+        dc.DrawRotatedText(ToString(a * gradScale), (a * timeline_scale * gradScale) - (timeline_offset * timeline_scale) - 7, 2, 0);
 
-        dc.SetPen(wxColour(170, 170, 170));
+        //dc.SetPen(wxColour(170, 170, 170));
 
-        dc.DrawLine((a * timeline_scale * 10 - 5 * timeline_scale) - (timeline_offset * timeline_scale), 17,
-                    (a * timeline_scale * 10 - 5 * timeline_scale) - (timeline_offset * timeline_scale), panelSize.GetHeight() - 1);
+        /*dc.DrawLine((a * timeline_scale * 10 - 5 * timeline_scale) - (timeline_offset * timeline_scale), 17,
+                    (a * timeline_scale * 10 - 5 * timeline_scale) - (timeline_offset * timeline_scale), panelSize.GetHeight() - 1);*/
 
         dc.SetPen(wxColour(130, 130, 130));
 
-        dc.DrawLine((a * timeline_scale * 10) - (timeline_offset * timeline_scale), 17,
-                    (a * timeline_scale * 10) - (timeline_offset * timeline_scale), panelSize.GetHeight() - 1);
+        dc.DrawLine((a * timeline_scale * gradScale) - (timeline_offset * timeline_scale), 17,
+                    (a * timeline_scale * gradScale) - (timeline_offset * timeline_scale), panelSize.GetHeight() - 1);
     }
 
     if(timeline_currentAnim)
@@ -1012,12 +1014,12 @@ void SkeletonObjectEditor::Seek(float time)
     Panel1->Update();
 }
 
-int SkeletonObjectEditor::GetPositionFromTimeToPixel(float time)
+int SkeletonObjectEditor::GetPositionFromTimeToPixel(float time) const
 {
     return (time * timeline_scale) - (timeline_offset * timeline_scale);
 }
 
-float SkeletonObjectEditor::GetPositionFromPixelToTime(int pixel)
+float SkeletonObjectEditor::GetPositionFromPixelToTime(int pixel) const
 {
     return (pixel) / timeline_scale + timeline_offset;
 }
@@ -1355,6 +1357,17 @@ void SkeletonObjectEditor::OnButton1Click1(wxCommandEvent& event)
 
 void SkeletonObjectEditor::OnInit(wxInitDialogEvent& event)
 {
+}
+
+float SkeletonObjectEditor::GetGraduationScale(float width, float scale) const
+{
+    float betweenGradDiff = 100000;
+    while((betweenGradDiff * scale > 100 && betweenGradDiff > 1) || (betweenGradDiff * scale > 250 && betweenGradDiff <= 1))
+    {
+        betweenGradDiff /= 10;
+    }
+
+    return betweenGradDiff;
 }
 
 #endif
