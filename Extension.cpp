@@ -37,7 +37,7 @@ class Extension : public ExtensionBase
         {
             DECLARE_THE_EXTENSION("SkeletonObject",
                                   _("Objet Squelette"),
-                                  _("Extension permettant de gérer les animations sous forme d'une squelette."),
+                                  _(L"Extension permettant de gérer les animations sous forme d'une squelette."),
                                   "Victor Levasseur",
                                   "zlib")
 
@@ -45,8 +45,8 @@ class Extension : public ExtensionBase
             //Declaration of all objects available
             DECLARE_OBJECT("Skeleton",
                            _("Squelette"),
-                           _("Squelette déformable selon des animations."),
-                           "res/Skeleton24.png",
+                           _(L"Squelette déformable selon des animations."),
+                           "res/Skeleton32.png",
                            &CreateSkeletonObject,
                            &DestroySkeletonObject,
                            "SkeletonObject");
