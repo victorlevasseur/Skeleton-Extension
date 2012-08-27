@@ -26,6 +26,7 @@ Copyright (C) 2012 Victor Levasseur
 
 #include <algorithm>
 #include "GDL/ImageManager.h"
+#include "GDL/Polygon.h"
 #include <SFML/Graphics.hpp>
 #include "Skeleton.h"
 #include "ImageManager.h"
@@ -120,11 +121,30 @@ void Bone::Draw(sf::RenderTarget &target, sf::Vector2f offset, Bone::DrawType ty
 void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset)
 {
     dc.SetPen(wxPen(m_selected ? wxColour(0, 0, 255) : m_color));
+    dc.SetBrush(wxBrush(wxColour(220, 220, 220)));
 
-    dc.DrawLine(floor(offset.x + m_tmp_position.x),
-                floor(offset.y + m_tmp_position.y),
-                floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x),
-                floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y));
+
+    dc.DrawCircle(floor(offset.x + m_tmp_position.x),
+                  floor(offset.y + m_tmp_position.y),
+                  4);
+
+    wxPoint startPoint(floor(m_tmp_position.x), floor(m_tmp_position.y));
+    wxPoint sidePoint1(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation + (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)),
+                       floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation + (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)));
+    wxPoint sidePoint2(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation - (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)),
+                       floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation - (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)));
+    wxPoint endPoint(floor(m_tmp_position.x + GetEndNodeRelativePosition().x),
+                     floor(m_tmp_position.y + GetEndNodeRelativePosition().y));
+
+    wxPoint pointList[4];
+    pointList[0] = startPoint;
+    pointList[1] = sidePoint1;
+    pointList[2] = endPoint;
+    pointList[3] = sidePoint2;
+
+    dc.DrawPolygon(4, pointList, offset.x, offset.y);
+
+
 
     dc.DrawCircle(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x),
                   floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y),
@@ -133,7 +153,6 @@ void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset)
     dc.DrawRotatedText(m_name, offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x / 2.5,
                                offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y / 2.5,
                                360 - m_tmp_absoluteRotation);
-
 }
 
 void Bone::UnselectAllChilds()
@@ -309,28 +328,46 @@ void Bone::LoadTexture(Res::SkImageManager & imageMgr)
     m_texture = imageMgr.GetImage(m_textureName);
 }
 
+#define MIN(x,y) (x < y ? x : y)
+#define MAX(x,y) (x > y ? x : y)
+
 bool Bone::IsOnPosition(sf::Vector2f position)
 {
-    float xRatio = (position.x - m_tmp_position.x) / GetEndNodeRelativePosition().x;
-    float yRatio = (position.y - m_tmp_position.y) / GetEndNodeRelativePosition().y;
+    std::vector<sf::Vector2f> poly;
+    poly.push_back(sf::Vector2f(floor(m_tmp_position.x), floor(m_tmp_position.y)));
+    poly.push_back(sf::Vector2f(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation + (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)),
+                                floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation + (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9))));
+    poly.push_back(sf::Vector2f(floor(m_tmp_position.x + GetEndNodeRelativePosition().x),
+                                floor(m_tmp_position.y + GetEndNodeRelativePosition().y)));
+    poly.push_back(sf::Vector2f(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation - (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)),
+                                floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation - (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9))));
 
-    if(((position.x > m_tmp_position.x - 2 && position.x < m_tmp_position.x + GetEndNodeRelativePosition().x + 2) || (position.x < m_tmp_position.x + 2 && position.x > m_tmp_position.x + GetEndNodeRelativePosition().x - 2))
-       && ((position.y > m_tmp_position.y - 2 && position.y < m_tmp_position.y + GetEndNodeRelativePosition().y + 2) || (position.y < m_tmp_position.y + 2 && position.y > m_tmp_position.y + GetEndNodeRelativePosition().y - 2)))
-    {
-           if(xRatio > yRatio - 0.3 && xRatio < yRatio + 0.3)
-           {
-               return true;
-           }
-           //if(m_tmp_position.x > GetEndNodeRelativePosition().x - 0.5 && m_tmp_position.x < GetEndNodeRelativePosition().x + 0.5)
-           if((m_tmp_absoluteRotation > 88 && m_tmp_absoluteRotation < 92) || (m_tmp_absoluteRotation > 268 && m_tmp_absoluteRotation < 272)
-               || (m_tmp_absoluteRotation > -2 && m_tmp_absoluteRotation < 2)  || (m_tmp_absoluteRotation > 178 && m_tmp_absoluteRotation < 182)
-               || (m_tmp_absoluteRotation > 358 && m_tmp_absoluteRotation < 362))
-           {
-               return true;
-           }
+    int counter = 0;
+    int i;
+    double xinters;
+    sf::Vector2f p1,p2;
+
+    p1 = poly[0];
+    for (i=1;i<=4;i++) {
+        p2 = poly[i % 4];
+        if (position.y > MIN(p1.y,p2.y)) {
+            if (position.y <= MAX(p1.y,p2.y)) {
+                if (position.x <= MAX(p1.x,p2.x)) {
+                    if (p1.y != p2.y) {
+                        xinters = (position.y-p1.y)*(p2.x-p1.x)/(p2.y-p1.y)+p1.x;
+                        if (p1.x == p2.x || position.x <= xinters)
+                            counter++;
+                    }
+                }
+            }
+        }
+        p1 = p2;
     }
 
+  if (counter % 2 == 0)
     return false;
+  else
+    return true;
 }
 
 void Bone::SaveBone(TiXmlElement &saveIn)

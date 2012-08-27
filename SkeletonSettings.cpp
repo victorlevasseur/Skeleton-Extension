@@ -32,7 +32,7 @@ SkeletonSettings::SkeletonSettings(wxWindow* parent, Sk::Skeleton *ske, wxWindow
 	wxFlexGridSizer* FlexGridSizer3;
 	wxFlexGridSizer* FlexGridSizer2;
 	wxFlexGridSizer* FlexGridSizer1;
-
+	
 	Create(parent, id, _("Paramètre du squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(301,84));
 	Move(wxDefaultPosition);
@@ -54,7 +54,7 @@ SkeletonSettings::SkeletonSettings(wxWindow* parent, Sk::Skeleton *ske, wxWindow
 	SetSizer(FlexGridSizer1);
 	FlexGridSizer1->SetSizeHints(this);
 	Center();
-
+	
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonSettings::OnButton1Click);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonSettings::OnButton2Click);
 	//*)
