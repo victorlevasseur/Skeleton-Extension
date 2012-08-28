@@ -37,6 +37,7 @@ namespace Sk
 Bone::Bone(std::string name, Skeleton *owner) : m_owner(owner), m_parentBone(0), m_name(name)
 #ifdef GD_IDE_ONLY
 , m_selected(false)
+, m_mathsFrame(false)
 , m_color(0, 0, 0)
 #endif
 , m_size(100)
@@ -73,6 +74,7 @@ void Bone::Init(const Bone &other)
     #ifdef GD_IDE_ONLY
     m_selected = false;
     m_color = wxColour(0, 0, 0);
+    m_mathsFrame = other.m_mathsFrame;
     #endif
 
     for(unsigned int a = 0; a < other.m_childBones.size(); a++)
@@ -153,6 +155,23 @@ void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset)
     dc.DrawRotatedText(m_name, offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x / 2.5,
                                offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y / 2.5,
                                360 - m_tmp_absoluteRotation);
+    if(m_mathsFrame)
+    {
+        wxPoint frameOrigin(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x),
+                            floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y));
+
+        wxPoint frameEndX(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x + cos((m_tmp_absoluteRotation * M_PI) / 180.f) * (400.f)),
+                          floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y + sin((m_tmp_absoluteRotation * M_PI) / 180.f) * (400.f)));
+
+        wxPoint frameEndY(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation + 90) * M_PI) / 180.f) * (400.f)),
+                          floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation + 90) * M_PI) / 180.f) * (400.f)));
+
+        dc.SetPen(wxPen(wxColour(255, 0, 0)));
+        dc.DrawLine(frameOrigin, frameEndX);
+
+        dc.SetPen(wxPen(wxColour(0, 0, 255)));
+        dc.DrawLine(frameOrigin, frameEndY);
+    }
 }
 
 void Bone::UnselectAllChilds()
@@ -173,6 +192,12 @@ void Bone::UnColorize()
 {
     m_color = wxColour(0, 0, 0);
 }
+
+void Bone::ShowMathsFrame(bool show)
+{
+    m_mathsFrame = show;
+}
+
 #endif
 
 void Bone::Update()

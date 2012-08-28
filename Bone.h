@@ -72,6 +72,8 @@ class Bone
 
         void SetColor(wxColour color);
         void UnColorize();
+
+        void ShowMathsFrame(bool show = true);
         #endif
 
         ///Save the bone as a subnode of "saveIn"
@@ -107,6 +109,7 @@ class Bone
         void LoadTexture(Res::SkImageManager & imageMgr);
 
         std::vector<Bone*> const & GetChildrenBones() const;
+        Bone* GetParentBone() const {return m_parentBone;};
 
     protected:
         Bone(std::string name, Skeleton *owner = 0);
@@ -122,6 +125,7 @@ class Bone
         std::string m_name;
         #ifdef GD_IDE_ONLY
         bool m_selected;
+        bool m_mathsFrame;
         wxColour m_color;
         #endif
 

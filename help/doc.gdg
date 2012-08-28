@@ -8,26 +8,26 @@
         <WindowH value="600" />
         <Portable />
         <Extensions>
-            <Extension name="SkeletonObject" />
-            <Extension name="Sprite" />
             <Extension name="BuiltinObject" />
-            <Extension name="BuiltinCommonInstructions" />
-            <Extension name="BuiltinCommonConversions" />
+            <Extension name="BuiltinAudio" />
             <Extension name="BuiltinVariables" />
+            <Extension name="BuiltinTime" />
             <Extension name="BuiltinMouse" />
             <Extension name="BuiltinKeyboard" />
             <Extension name="BuiltinJoystick" />
-            <Extension name="BuiltinScene" />
-            <Extension name="BuiltinTime" />
-            <Extension name="BuiltinMathematicalTools" />
             <Extension name="BuiltinCamera" />
-            <Extension name="BuiltinAudio" />
+            <Extension name="BuiltinWindow" />
             <Extension name="BuiltinFile" />
             <Extension name="BuiltinNetwork" />
-            <Extension name="BuiltinWindow" />
-            <Extension name="BuiltinStringInstructions" />
+            <Extension name="BuiltinScene" />
             <Extension name="BuiltinAdvanced" />
+            <Extension name="Sprite" />
+            <Extension name="BuiltinCommonInstructions" />
+            <Extension name="BuiltinCommonConversions" />
+            <Extension name="BuiltinStringInstructions" />
+            <Extension name="BuiltinMathematicalTools" />
             <Extension name="BuiltinExternalLayouts" />
+            <Extension name="SkeletonObject" />
         </Extensions>
         <FPSmax value="60" />
         <FPSmin value="10" />
@@ -60,7 +60,71 @@
         <Scene nom="Nouvelle scène" r="209.000000" v="209.000000" b="209.000000" titre="" oglFOV="90.000000" oglZNear="1.000000" oglZFar="500.000000" standardSortMethod="true" stopSoundsOnStartup="true">
             <UISettings gridWidth="32.000000" grid="false" snap="false" gridHeight="32.000000" gridR="158.000000" gridG="180.000000" gridB="255.000000" zoomFactor="1.000000" windowMask="false" associatedLayout="" />
             <GroupesObjets />
-            <Objets />
+            <Objets>
+                <Objet nom="NouvelObjet" type="SkeletonObject::Skeleton">
+                    <Variables />
+                    <Bone name="root" texturename="" size="100.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000">
+                        <Bone name="New bone" texturename="" size="200.000000" angle="40.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000">
+                            <Bone name="New bone 2" texturename="" size="100.000000" angle="20.000000" offsetX="30.000000" offsetY="15.000000" zOrder="0.000000" />
+                        </Bone>
+                    </Bone>
+                    <Animations calculationDelay="0.000000">
+                        <Animation name="Initial" period="0.000000">
+                            <Bone name="New bone">
+                                <Type type="0.000000">
+                                    <Keyframe time="0.000000" value="40.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="1.000000">
+                                    <Keyframe time="0.000000" value="200.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="2.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="3.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="4.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                            </Bone>
+                            <Bone name="New bone 2">
+                                <Type type="0.000000">
+                                    <Keyframe time="0.000000" value="20.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="1.000000">
+                                    <Keyframe time="0.000000" value="100.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="2.000000">
+                                    <Keyframe time="0.000000" value="30.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="3.000000">
+                                    <Keyframe time="0.000000" value="15.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="4.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                            </Bone>
+                            <Bone name="root">
+                                <Type type="0.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="1.000000">
+                                    <Keyframe time="0.000000" value="100.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="2.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="3.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="4.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                            </Bone>
+                        </Animation>
+                    </Animations>
+                </Objet>
+            </Objets>
             <Layers>
                 <Layer Name="" Visibility="true">
                     <Camera DefaultSize="true" Width="0.000000" Height="0.000000" DefaultViewport="true" ViewportLeft="0.000000" ViewportTop="0.000000" ViewportRight="1.000000" ViewportBottom="1.000000" />

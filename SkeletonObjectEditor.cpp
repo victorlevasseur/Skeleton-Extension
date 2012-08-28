@@ -335,6 +335,8 @@ void SkeletonObjectEditor::PreparePropertyGrid()
 void SkeletonObjectEditor::OnValidateButtonClick(wxCommandEvent& event)
 {
     //skeleton.GetAnimator().SetCurrentAnimation("Initial");
+    ToggleMode(1);
+    ToggleMode(0);
     skeleton.GetAnimator().Reset();
     skeleton.ApplyAnimationToBones();
     object.SetSkeleton(skeleton);
@@ -402,6 +404,11 @@ void SkeletonObjectEditor::OnPanel1Paint(wxPaintEvent& event)
 
 void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
 {
+    if(selectedBone && selectedBone->GetParentBone())
+    {
+        selectedBone->GetParentBone()->ShowMathsFrame(false);
+    }
+
     skeleton.GetRoot()->UnselectAllChilds();
     selectedBone = 0;
 
@@ -419,13 +426,13 @@ void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
         selectedBone = 0;
     }
 
+    UpdateForSelectedBone();
+
     Panel1->Refresh(); //Refresh
     Panel1->Update(); //Immediately
 
     Panel2->Refresh();
     Panel2->Update();
-
-    UpdateForSelectedBone();
 }
 
 void SkeletonObjectEditor::OnPanel1RightDown(wxMouseEvent& event)
@@ -471,6 +478,11 @@ void SkeletonObjectEditor::OnaddChildBoneBtClick(wxCommandEvent& event)
     selectedBone->AddBone(newBone);
 
     skeleton.GetRoot()->UnselectAllChilds();
+
+    if(selectedBone && selectedBone->GetParentBone())
+    {
+        selectedBone->GetParentBone()->ShowMathsFrame(false);
+    }
 
     selectedBone = newBone;
     selectedBone->Update();
@@ -548,6 +560,11 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
             {
                 m_grid->SetPropertyValue(_("Propriétés.BoneImage.BoneImageKeyFrame"), false);
             }
+        }
+
+        if(selectedBone->GetParentBone())
+        {
+            selectedBone->GetParentBone()->ShowMathsFrame(true);
         }
     }
     else

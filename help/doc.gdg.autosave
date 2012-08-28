@@ -8,26 +8,26 @@
         <WindowH value="600" />
         <Portable />
         <Extensions>
-            <Extension name="SkeletonObject" />
-            <Extension name="Sprite" />
             <Extension name="BuiltinObject" />
-            <Extension name="BuiltinCommonInstructions" />
-            <Extension name="BuiltinCommonConversions" />
+            <Extension name="BuiltinAudio" />
             <Extension name="BuiltinVariables" />
+            <Extension name="BuiltinTime" />
             <Extension name="BuiltinMouse" />
             <Extension name="BuiltinKeyboard" />
             <Extension name="BuiltinJoystick" />
-            <Extension name="BuiltinScene" />
-            <Extension name="BuiltinTime" />
-            <Extension name="BuiltinMathematicalTools" />
             <Extension name="BuiltinCamera" />
-            <Extension name="BuiltinAudio" />
+            <Extension name="BuiltinWindow" />
             <Extension name="BuiltinFile" />
             <Extension name="BuiltinNetwork" />
-            <Extension name="BuiltinWindow" />
-            <Extension name="BuiltinStringInstructions" />
+            <Extension name="BuiltinScene" />
             <Extension name="BuiltinAdvanced" />
+            <Extension name="Sprite" />
+            <Extension name="BuiltinCommonInstructions" />
+            <Extension name="BuiltinCommonConversions" />
+            <Extension name="BuiltinStringInstructions" />
+            <Extension name="BuiltinMathematicalTools" />
             <Extension name="BuiltinExternalLayouts" />
+            <Extension name="SkeletonObject" />
         </Extensions>
         <FPSmax value="60" />
         <FPSmin value="10" />
