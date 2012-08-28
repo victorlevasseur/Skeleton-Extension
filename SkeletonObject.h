@@ -22,7 +22,6 @@ Copyright (C) 2012 Victor Levasseur
 #define SkeletonObject_H
 
 #include "GDL/Object.h"
-#include "GDL/ResourceWrapper.h"
 
 #if defined(GD_IDE_ONLY)
 namespace gd {class ArbitraryResourceWorker;}

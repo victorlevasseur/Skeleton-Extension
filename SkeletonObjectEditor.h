@@ -58,6 +58,8 @@ class SkeletonObjectEditor: public wxDialog
 		wxToggleButton* ToggleButton2;
 		wxButton* ValidateButton;
 		wxButton* Button4;
+		wxFlexGridSizer* propertyGridSizer;
+		wxPanel* propertyGridPanel;
 		wxButton* Button1;
 		wxToggleButton* ToggleButton1;
 		wxPanel* Panel1;
@@ -65,7 +67,6 @@ class SkeletonObjectEditor: public wxDialog
 		wxFlexGridSizer* FlexGridSizer2;
 		wxBitmapButton* BitmapButton1;
 		wxButton* Button2;
-		wxPanel* Panel3;
 		wxButton* Button6;
 		wxButton* Button5;
 		wxButton* Button3;

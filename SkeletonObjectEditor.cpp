@@ -146,7 +146,7 @@ mode(0)
 	timelinePanel = new wxPanel(Core, ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL5"));
 	FlexGridSizer12 = new wxFlexGridSizer(0, 4, 0, 0);
 	FlexGridSizer12->AddGrowableCol(0);
-	Panel2 = new wxPanel(timelinePanel, ID_PANEL3, wxDefaultPosition, wxSize(725,85), wxTAB_TRAVERSAL, _T("ID_PANEL3"));
+	Panel2 = new wxPanel(timelinePanel, ID_PANEL3, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL3"));
 	FlexGridSizer12->Add(Panel2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	Button4 = new wxButton(timelinePanel, ID_BUTTON9, _("Zoomer"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON9"));
@@ -164,13 +164,19 @@ mode(0)
 	FlexGridSizer1 = new wxFlexGridSizer(1, 3, 0, 0);
 	FlexGridSizer1->AddGrowableCol(0);
 	FlexGridSizer1->AddGrowableRow(0);
-	Panel1 = new wxPanel(Core, ID_PANEL1, wxDefaultPosition, wxSize(457,373), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
+	Panel1 = new wxPanel(Core, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	FlexGridSizer1->Add(Panel1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer2 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer2->AddGrowableCol(0);
 	FlexGridSizer2->AddGrowableRow(0);
-	Panel3 = new wxPanel(Core, ID_PANEL4, wxDefaultPosition, wxSize(350,340), wxTAB_TRAVERSAL, _T("ID_PANEL4"));
-	FlexGridSizer2->Add(Panel3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	propertyGridPanel = new wxPanel(Core, ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL4"));
+	propertyGridSizer = new wxFlexGridSizer(1, 1, 0, 0);
+	propertyGridSizer->AddGrowableCol(0);
+	propertyGridSizer->AddGrowableRow(0);
+	propertyGridPanel->SetSizer(propertyGridSizer);
+	propertyGridSizer->Fit(propertyGridPanel);
+	propertyGridSizer->SetSizeHints(propertyGridPanel);
+	FlexGridSizer2->Add(propertyGridPanel, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer4 = new wxFlexGridSizer(1, 2, 0, 0);
 	addChildBoneBt = new wxButton(Core, ID_BUTTON2, _("Ajouter un os enfant"), wxDefaultPosition, wxSize(292,23), 0, wxDefaultValidator, _T("ID_BUTTON2"));
 	FlexGridSizer4->Add(addChildBoneBt, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
@@ -223,7 +229,6 @@ mode(0)
 	Panel1->Connect(wxEVT_RIGHT_UP,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1RightUp,0,this);
 	Panel1->Connect(wxEVT_MOTION,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1MouseMove,0,this);
 	Panel1->Connect(wxEVT_SIZE,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1Resize,0,this);
-	Panel3->Connect(wxEVT_SIZE,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel3Resize,0,this);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnaddChildBoneBtClick);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OndeleteBoneBtClick);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton3Click);
@@ -258,6 +263,7 @@ mode(0)
     UpdateAnimationsList();
 
     skeleton.GetRoot()->Update();
+    SetSize(900,650); //Set a new default size as the size computed by wxWidgets is too small.
 }
 
 SkeletonObjectEditor::~SkeletonObjectEditor()
@@ -272,7 +278,7 @@ void SkeletonObjectEditor::PreparePropertyGrid()
     long GRIDID = wxNewId();
 
     m_grid = new wxPropertyGrid(
-        Panel3, // parent
+        propertyGridPanel, // parent
         GRIDID, // id
         wxDefaultPosition, // position
         wxSize(300,340), // size
@@ -280,7 +286,7 @@ void SkeletonObjectEditor::PreparePropertyGrid()
         wxPG_DEFAULT_STYLE );
 
     m_grid->SetExtraStyle( wxPG_EX_HELP_AS_TOOLTIPS );
-    //FlexGridSizer2->Add(, 1, wxALL|wxEXPAND, 5);
+    propertyGridSizer->Add(m_grid, 1, wxALL|wxEXPAND, 0);
 
     //Create some stuff for property grid
     std::vector<std::string> listOfMethods = Sk::Anim::Interp::Get::Methods();
@@ -294,7 +300,7 @@ void SkeletonObjectEditor::PreparePropertyGrid()
     m_grid->Append( new wxPropertyCategory(_("Identification")) );
     m_grid->Append( new wxStringProperty("Nom", "BoneName", "Bone") );
 
-    m_grid->Append( new wxPropertyCategory(_("Propriétés")) );
+    m_grid->Append( new wxPropertyCategory(_("Propriétés"), "Properties") );
     m_grid->Append( new wxFloatProperty("Angle", "BoneAngle", 0.f) );
     {
         m_grid->AppendIn("BoneAngle", new wxBoolProperty(_("Frame clée"), "BoneAngleKeyFrame", false));
@@ -464,6 +470,8 @@ void SkeletonObjectEditor::OnPanel1MouseMove(wxMouseEvent& event)
 
 void SkeletonObjectEditor::OnaddChildBoneBtClick(wxCommandEvent& event)
 {
+    if ( !selectedBone ) return;
+
     std::string boneName;
     do
     {
@@ -511,54 +519,54 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
 {
     if(selectedBone)
     {
-        m_grid->SetPropertyValue(_("Identification.BoneName"), wxString(selectedBone->GetName()));
+        m_grid->SetPropertyValue(wxT("Identification.BoneName"), wxString(selectedBone->GetName()));
 
-        m_grid->SetPropertyValue(_("Propriétés.BoneAngle"), selectedBone->GetRotation());
-        m_grid->SetPropertyValue(_("Propriétés.BoneLength"), selectedBone->GetSize());
-        m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX"), selectedBone->GetOffset().x);
-        m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY"), selectedBone->GetOffset().y);
-        m_grid->SetPropertyValue(_("Propriétés.BoneImage"), wxString(selectedBone->GetTextureName()));
-        m_grid->SetPropertyValue(_("Propriétés.BoneZOrder"), selectedBone->GetZOrder());
+        m_grid->SetPropertyValue(wxT("Properties.BoneAngle"), selectedBone->GetRotation());
+        m_grid->SetPropertyValue(wxT("Properties.BoneLength"), selectedBone->GetSize());
+        m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetX"), selectedBone->GetOffset().x);
+        m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetY"), selectedBone->GetOffset().y);
+        m_grid->SetPropertyValue(wxT("Properties.BoneImage"), wxString(selectedBone->GetTextureName()));
+        m_grid->SetPropertyValue(wxT("Properties.BoneZOrder"), selectedBone->GetZOrder());
 
         if(mode == 1 && timeline_currentAnim)
         {
             if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current))
             {
-                m_grid->SetPropertyValue(_("Propriétés.BoneAngle.BoneAngleKeyFrame"), true);
-                m_grid->SetPropertyValue(_("Propriétés.BoneAngle.BoneAngleInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current).c_str()));
+                m_grid->SetPropertyValue(wxT("Properties.BoneAngle.BoneAngleKeyFrame"), true);
+                m_grid->SetPropertyValue(wxT("Properties.BoneAngle.BoneAngleInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current).c_str()));
             }
             else
             {
-                m_grid->SetPropertyValue(_("Propriétés.BoneAngle.BoneAngleKeyFrame"), false);
+                m_grid->SetPropertyValue(wxT("Properties.BoneAngle.BoneAngleKeyFrame"), false);
             }
 
             if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current))
             {
-                m_grid->SetPropertyValue(_("Propriétés.BoneLength.BoneLengthKeyFrame"), true);
-                m_grid->SetPropertyValue(_("Propriétés.BoneLength.BoneLengthInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current).c_str()));
+                m_grid->SetPropertyValue(wxT("Properties.BoneLength.BoneLengthKeyFrame"), true);
+                m_grid->SetPropertyValue(wxT("Properties.BoneLength.BoneLengthInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current).c_str()));
             }
             else
             {
-                m_grid->SetPropertyValue(_("Propriétés.BoneLength.BoneLengthKeyFrame"), false);
+                m_grid->SetPropertyValue(wxT("Properties.BoneLength.BoneLengthKeyFrame"), false);
             }
 
             if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current))
             {
-                m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetKeyFrame"), true);
-                m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current).c_str()));
+                m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetKeyFrame"), true);
+                m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current).c_str()));
             }
             else
             {
-                m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetKeyFrame"), false);
+                m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetKeyFrame"), false);
             }
 
             if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current))
             {
-                m_grid->SetPropertyValue(_("Propriétés.BoneImage.BoneImageKeyFrame"), true);
+                m_grid->SetPropertyValue(wxT("Properties.BoneImage.BoneImageKeyFrame"), true);
             }
             else
             {
-                m_grid->SetPropertyValue(_("Propriétés.BoneImage.BoneImageKeyFrame"), false);
+                m_grid->SetPropertyValue(wxT("Properties.BoneImage.BoneImageKeyFrame"), false);
             }
         }
 
@@ -569,14 +577,14 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
     }
     else
     {
-        m_grid->SetPropertyValue(_("Identification.BoneName"), wxString(""));
+        m_grid->SetPropertyValue(wxT("Identification.BoneName"), wxString(""));
 
-        m_grid->SetPropertyValue(_("Propriétés.BoneAngle"), 0.f);
-        m_grid->SetPropertyValue(_("Propriétés.BoneLength"), 0.f);
-        m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX"), 0.f);
-        m_grid->SetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY"), 0.f);
-        m_grid->SetPropertyValue(_("Propriétés.BoneImage"), wxString(""));
-        m_grid->SetPropertyValue(_("Propriétés.BoneZOrder"), 0);
+        m_grid->SetPropertyValue(wxT("Properties.BoneAngle"), 0.f);
+        m_grid->SetPropertyValue(wxT("Properties.BoneLength"), 0.f);
+        m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetX"), 0.f);
+        m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetY"), 0.f);
+        m_grid->SetPropertyValue(wxT("Properties.BoneImage"), wxString(""));
+        m_grid->SetPropertyValue(wxT("Properties.BoneZOrder"), 0);
     }
 }
 
@@ -622,21 +630,21 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
 
         AnimationCombobox->Enable(false);
 
-        m_grid->GetProperty(_("Identification.BoneName"))->Enable(true);
+        m_grid->GetProperty("Identification.BoneName")->Enable(true);
 
-        m_grid->GetProperty(_("Propriétés.BoneAngle.BoneAngleKeyFrame"))->Enable(false);
-        m_grid->GetProperty(_("Propriétés.BoneAngle.BoneAngleInterpolation"))->Enable(false);
+        m_grid->GetProperty("Properties.BoneAngle.BoneAngleKeyFrame")->Enable(false);
+        m_grid->GetProperty("Properties.BoneAngle.BoneAngleInterpolation")->Enable(false);
 
-        m_grid->GetProperty(_("Propriétés.BoneLength.BoneLengthKeyFrame"))->Enable(false);
-        m_grid->GetProperty(_("Propriétés.BoneLength.BoneLengthInterpolation"))->Enable(false);
+        m_grid->GetProperty("Properties.BoneLength.BoneLengthKeyFrame")->Enable(false);
+        m_grid->GetProperty("Properties.BoneLength.BoneLengthInterpolation")->Enable(false);
 
-        m_grid->GetProperty(_("Propriétés.BoneOffset.BoneOffsetKeyFrame"))->Enable(false);
-        m_grid->GetProperty(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))->Enable(false);
+        m_grid->GetProperty("Properties.BoneOffset.BoneOffsetKeyFrame")->Enable(false);
+        m_grid->GetProperty("Properties.BoneOffset.BoneOffsetInterpolation")->Enable(false);
 
-        m_grid->GetProperty(_("Propriétés.BoneImage.BoneImageKeyFrame"))->Enable(false);
+        m_grid->GetProperty("Properties.BoneImage.BoneImageKeyFrame")->Enable(false);
 
-        m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderKeyFrame"))->Enable(false);
-        m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderInterpolation"))->Enable(false);
+        m_grid->GetProperty("Properties.BoneZOrder.BoneZOrderKeyFrame")->Enable(false);
+        m_grid->GetProperty("Properties.BoneZOrder.BoneZOrderInterpolation")->Enable(false);
     }
     else
     {
@@ -666,21 +674,21 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         BitmapButton3->Enable(true);
         AnimationCombobox->Enable(true);
 
-        m_grid->GetProperty(_("Identification.BoneName"))->Enable(false);
+        m_grid->GetProperty("Identification.BoneName")->Enable(false);
 
-        m_grid->GetProperty(_("Propriétés.BoneAngle.BoneAngleKeyFrame"))->Enable(true);
-        m_grid->GetProperty(_("Propriétés.BoneAngle.BoneAngleInterpolation"))->Enable(true);
+        m_grid->GetProperty("Properties.BoneAngle.BoneAngleKeyFrame")->Enable(true);
+        m_grid->GetProperty("Properties.BoneAngle.BoneAngleInterpolation")->Enable(true);
 
-        m_grid->GetProperty(_("Propriétés.BoneLength.BoneLengthKeyFrame"))->Enable(true);
-        m_grid->GetProperty(_("Propriétés.BoneLength.BoneLengthInterpolation"))->Enable(true);
+        m_grid->GetProperty("Properties.BoneLength.BoneLengthKeyFrame")->Enable(true);
+        m_grid->GetProperty("Properties.BoneLength.BoneLengthInterpolation")->Enable(true);
 
-        m_grid->GetProperty(_("Propriétés.BoneOffset.BoneOffsetKeyFrame"))->Enable(true);
-        m_grid->GetProperty(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))->Enable(true);
+        m_grid->GetProperty("Properties.BoneOffset.BoneOffsetKeyFrame")->Enable(true);
+        m_grid->GetProperty("Properties.BoneOffset.BoneOffsetInterpolation")->Enable(true);
 
-        m_grid->GetProperty(_("Propriétés.BoneImage.BoneImageKeyFrame"))->Enable(true);
+        m_grid->GetProperty("Properties.BoneImage.BoneImageKeyFrame")->Enable(true);
 
-        m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderKeyFrame"))->Enable(true);
-        m_grid->GetProperty(_("Propriétés.BoneZOrder.BoneZOrderInterpolation"))->Enable(true);
+        m_grid->GetProperty("Properties.BoneZOrder.BoneZOrderKeyFrame")->Enable(true);
+        m_grid->GetProperty("Properties.BoneZOrder.BoneZOrderInterpolation")->Enable(true);
 
         UpdateAnimationsList();
         SelectAnimation(ToString(AnimationCombobox->GetString(AnimationCombobox->GetSelection())));
@@ -1131,7 +1139,7 @@ void SkeletonObjectEditor::OnGridPropertyChanging(wxPropertyGridEvent& event)
 {
     if(mode == 0 && selectedBone)
     {
-        if(event.GetProperty()->GetBaseName() == _("BoneName"))
+        if(event.GetProperty()->GetBaseName() == "BoneName")
         {
             if(skeleton.BoneNameAlreadyUsed(ToString(event.GetPropertyValue().GetString())) && ToString(event.GetPropertyValue().GetString()) != selectedBone->GetName())
             {
@@ -1159,36 +1167,36 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
     {
         skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(0);
 
-        if(event.GetProperty()->GetBaseName() == _("BoneName"))
+        if(event.GetProperty()->GetBaseName() == "BoneName")
         {
             std::string oldName = selectedBone->GetName();
             selectedBone->SetName(ToString(event.GetPropertyValue().GetString()));
             skeleton.GetAnimator().NotifyBoneRenamed(oldName, selectedBone->GetName());
         }
-        else if(event.GetProperty()->GetBaseName() == _("BoneAngle"))
+        else if(event.GetProperty()->GetBaseName() == "BoneAngle")
         {
             selectedBone->SetRotation(event.GetPropertyValue().GetDouble());
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, 0, event.GetPropertyValue().GetDouble());
         }
-        else if(event.GetProperty()->GetBaseName() == _("BoneLength"))
+        else if(event.GetProperty()->GetBaseName() == "BoneLength")
         {
             selectedBone->SetSize(event.GetPropertyValue().GetDouble());
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, 0, event.GetPropertyValue().GetDouble());
         }
-        else if(event.GetProperty()->GetBaseName() == _("BoneOffsetX") || event.GetProperty()->GetBaseName() == _("BoneOffsetY"))
+        else if(event.GetProperty()->GetBaseName() == "BoneOffsetX" || event.GetProperty()->GetBaseName() == "BoneOffsetY")
         {
-            selectedBone->SetOffset(m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX")).GetDouble(),
-                                    m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY")).GetDouble());
+            selectedBone->SetOffset(m_grid->GetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetX")).GetDouble(),
+                                    m_grid->GetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetY")).GetDouble());
 
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, 0, m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX")).GetDouble());
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, 0, m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY")).GetDouble());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, 0, m_grid->GetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetX")).GetDouble());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, 0, m_grid->GetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetY")).GetDouble());
         }
-        else if(event.GetProperty()->GetBaseName() == _("BoneImage"))
+        else if(event.GetProperty()->GetBaseName() == "BoneImage")
         {
             selectedBone->SetTextureName(ToString(event.GetPropertyValue().GetString()));
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, 0, ToString(event.GetPropertyValue().GetString()));
         }
-        else if(event.GetProperty()->GetBaseName() == _("BoneZOrder"))
+        else if(event.GetProperty()->GetBaseName() == "BoneZOrder")
         {
             selectedBone->SetZOrder(event.GetPropertyValue().GetInteger());
         }
@@ -1196,27 +1204,27 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
     else if(mode == 1 && selectedBone && timeline_currentAnim)
     {
         //When angle modified
-        if(event.GetProperty()->GetBaseName() == _("BoneAngle"))
+        if(event.GetProperty()->GetBaseName() == "BoneAngle")
         {
             selectedBone->SetRotation(event.GetPropertyValue().GetDouble());
 
             //When angle keyframe is already checked, modification applied
-            if(m_grid->GetPropertyValueAsBool(_("Propriétés.BoneAngle.BoneAngleKeyFrame")))
+            if(m_grid->GetPropertyValueAsBool("Properties.BoneAngle.BoneAngleKeyFrame"))
             {
                 timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
                 timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneAngle.BoneAngleInterpolation"))));
+                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneAngle.BoneAngleInterpolation")));
             }
         }
         //When check/uncheck keyframe for angle
-        else if(event.GetProperty()->GetBaseName() == _("BoneAngleKeyFrame"))
+        else if(event.GetProperty()->GetBaseName() == "BoneAngleKeyFrame")
         {
             if(event.GetPropertyValue().GetBool())
             {
                 timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
-                                                  m_grid->GetPropertyValueAsDouble(_("Propriétés.BoneAngle")));
+                                                  m_grid->GetPropertyValueAsDouble("Properties.BoneAngle"));
                 timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneAngle.BoneAngleInterpolation"))));
+                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneAngle.BoneAngleInterpolation")));
             }
             else
             {
@@ -1227,32 +1235,32 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         else if(event.GetProperty()->GetBaseName() == _("BoneAngleInterpolation"))
         {
             timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
-                                                           ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneAngle.BoneAngleInterpolation"))));
+                                                           ToString(m_grid->GetPropertyValueAsString("Properties.BoneAngle.BoneAngleInterpolation")));
         }
 
 
         //When length modified
-        if(event.GetProperty()->GetBaseName() == _("BoneLength"))
+        if(event.GetProperty()->GetBaseName() == "BoneLength")
         {
             selectedBone->SetSize(event.GetPropertyValue().GetDouble());
 
             //When offset keyframe is already checked, modification applied
-            if(m_grid->GetPropertyValueAsBool(_("Propriétés.BoneLength.BoneLengthKeyFrame")))
+            if(m_grid->GetPropertyValueAsBool("Properties.BoneLength.BoneLengthKeyFrame"))
             {
                 timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
                 timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneLength.BoneLengthInterpolation"))));
+                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneLength.BoneLengthInterpolation")));
             }
         }
         //When check/uncheck keyframe for length
-        else if(event.GetProperty()->GetBaseName() == _("BoneLengthKeyFrame"))
+        else if(event.GetProperty()->GetBaseName() == "BoneLengthKeyFrame")
         {
             if(event.GetPropertyValue().GetBool())
             {
                 timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
-                                                  m_grid->GetPropertyValueAsDouble(_("Propriétés.BoneLength")));
+                                                  m_grid->GetPropertyValueAsDouble("Properties.BoneLength"));
                 timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneLength.BoneLengthInterpolation"))));
+                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneLength.BoneLengthInterpolation")));
             }
             else
             {
@@ -1260,43 +1268,43 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
             }
         }
         //When we change keyframe interpolation
-        else if(event.GetProperty()->GetBaseName() == _("BoneLengthInterpolation"))
+        else if(event.GetProperty()->GetBaseName() == "BoneLengthInterpolation")
         {
             timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
-                                                           ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneLength.BoneLengthInterpolation"))));
+                                                           ToString(m_grid->GetPropertyValueAsString("Properties.BoneLength.BoneLengthInterpolation")));
         }
 
 
         //When offset modified
-        if(event.GetProperty()->GetBaseName() == _("BoneOffsetX") || event.GetProperty()->GetBaseName() == _("BoneOffsetY"))
+        if(event.GetProperty()->GetBaseName() == "BoneOffsetX" || event.GetProperty()->GetBaseName() == "BoneOffsetY")
         {
-            selectedBone->SetOffset(m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX")).GetDouble(),
-                                    m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY")).GetDouble());
+            selectedBone->SetOffset(m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetX").GetDouble(),
+                                    m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetY").GetDouble());
 
             //When offset keyframe is already checked, modification applied
-            if(m_grid->GetPropertyValueAsBool(_("Propriétés.BoneOffset.BoneOffsetKeyFrame")))
+            if(m_grid->GetPropertyValueAsBool("Properties.BoneOffset.BoneOffsetKeyFrame"))
             {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current, m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX")).GetDouble());
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current, m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetX").GetDouble());
                 timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))));
+                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
 
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current, m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY")).GetDouble());
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current, m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetY").GetDouble());
                 timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))));
+                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
             }
         }
         //When check/uncheck keyframe for offset
-        else if(event.GetProperty()->GetBaseName() == _("BoneOffsetKeyFrame"))
+        else if(event.GetProperty()->GetBaseName() == "BoneOffsetKeyFrame")
         {
             if(event.GetPropertyValue().GetBool())
             {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current, m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetX")).GetDouble());
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current, m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetX").GetDouble());
                 timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))));
+                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
 
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current, m_grid->GetPropertyValue(_("Propriétés.BoneOffset.BoneOffsetY")).GetDouble());
+                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current, m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetY").GetDouble());
                 timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))));
+                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
             }
             else
             {
@@ -1305,32 +1313,32 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
             }
         }
         //When we change keyframe interpolation
-        else if(event.GetProperty()->GetBaseName() == _("BoneOffsetInterpolation"))
+        else if(event.GetProperty()->GetBaseName() == "BoneOffsetInterpolation")
         {
             timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current,
-                                                           ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))));
+                                                           ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
             timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current,
-                                                           ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneOffset.BoneOffsetInterpolation"))));
+                                                           ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
         }
 
         //When image modified
-        if(event.GetProperty()->GetBaseName() == _("BoneImage"))
+        if(event.GetProperty()->GetBaseName() == "BoneImage")
         {
             selectedBone->SetTextureName(ToString(event.GetPropertyValue().GetString()));
 
             //When angle keyframe is already checked, modification applied
-            if(m_grid->GetPropertyValueAsBool(_("Propriétés.BoneImage.BoneImageKeyFrame")))
+            if(m_grid->GetPropertyValueAsBool("Properties.BoneImage.BoneImageKeyFrame"))
             {
                 timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current, ToString(event.GetPropertyValue().GetString()));
             }
         }
         //When check/uncheck keyframe for image
-        else if(event.GetProperty()->GetBaseName() == _("BoneImageKeyFrame"))
+        else if(event.GetProperty()->GetBaseName() == "BoneImageKeyFrame")
         {
             if(event.GetPropertyValue().GetBool())
             {
                 timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current,
-                                                  ToString(m_grid->GetPropertyValueAsString(_("Propriétés.BoneImage"))));
+                                                  ToString(m_grid->GetPropertyValueAsString("Properties.BoneImage")));
             }
             else
             {
@@ -1343,15 +1351,6 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
 
     Panel1->Refresh();
     Panel1->Update();
-}
-
-void SkeletonObjectEditor::OnPanel3Resize(wxSizeEvent& event)
-{
-    #if defined(LINUX)
-    return;
-    #endif
-
-    m_grid->SetSize(Panel3->GetSize().x, Panel3->GetSize().y);
 }
 
 void SkeletonObjectEditor::OnPanel2Resize(wxSizeEvent& event)
