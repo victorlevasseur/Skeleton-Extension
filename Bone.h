@@ -33,9 +33,11 @@ Copyright (C) 2012 Victor Levasseur
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include "GDL/ImageManager.h"
+#include "GDL/Polygon.h"
 #include "GDL/tinyxml/tinyxml.h"
 
 class ImageManager;
+class Polygon2d;
 class wxBufferedPaintDC;
 
 namespace Sk
@@ -84,7 +86,7 @@ class Bone
         bool IsOnPosition(sf::Vector2f position);
 
         void Update();
-        void UpdateTextureTransform();
+        void UpdateCollisionMask();
 
         sf::Vector2f GetBonePosition() const {return m_tmp_position;};
         sf::Vector2f GetEndNodeRelativePosition() const;
@@ -99,8 +101,17 @@ class Bone
         sf::Vector2f GetOffset() const;
         void SetZOrder(int zorder);
         int GetZOrder() const;
+
         void SetRotationInheritance(bool inherit) {m_inheritRotation = inherit; Update();};
         bool HasRotationInheritance() const {return m_inheritRotation;};
+
+        void SetCollisionMaskSize(float width, float height);
+        const sf::Vector2f& GetCollisionMaskSize() const;
+
+        inline bool HasCollisionMask() const {return m_hasCollisionMask;};
+        void SetHasCollisionMask(bool has) {m_hasCollisionMask = has;};
+
+        inline const Polygon2d& GetCollisionMask() const {return m_collisionMask;};
 
         void AddBone(Bone *bone);
         bool RemoveBone(Bone *bone);
@@ -140,6 +151,10 @@ class Bone
 
         //Not editable with keyframe
         bool m_inheritRotation;
+
+        bool m_hasCollisionMask;
+        sf::Vector2f m_collisionMaskSize;
+        Polygon2d m_collisionMask;
 
         //Pre-calculated members for absolute position and rotation (updated each time the bone is moved : its size, rotation changes, or its parent changes)
         sf::Vector2f m_tmp_position;

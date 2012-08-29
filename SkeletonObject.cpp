@@ -30,6 +30,7 @@ Copyright (C) 2012 Victor Levasseur
 #include "GDL/tinyxml/tinyxml.h"
 #include "GDL/Position.h"
 #include "GDL/CommonTools.h"
+#include "GDL/Polygon.h"
 
 #include "Skeleton.h"
 #include "Bone.h"
@@ -206,6 +207,19 @@ float SkeletonObject::GetCenterY() const
     return 16;
 }
 
+std::vector<Polygon2d> SkeletonObject::GetHitBoxes() const
+{
+    std::vector<Polygon2d> hitBoxes;
+
+    for(unsigned int a = 0; skeleton->GetListOfBones().size(); a++)
+    {
+        if(skeleton->GetListOfBones().at(a)->HasCollisionMask())
+            hitBoxes.push_back(skeleton->GetListOfBones().at(a)->GetCollisionMask());
+    }
+
+    return hitBoxes;
+}
+
 Sk::Skeleton SkeletonObject::GetSkeleton()
 {
     return *skeleton;
@@ -236,22 +250,22 @@ void SkeletonObject::SetSpeedRatio(float ratio)
     skeleton->GetAnimator().SetSpeedRatio(ratio);
 }
 
-bool SkeletonObject::IsPlaying()
+bool SkeletonObject::IsPlaying() const
 {
     return skeleton->GetAnimator().IsPlaying();
 }
 
-bool SkeletonObject::IsPausing()
+bool SkeletonObject::IsPausing() const
 {
     return skeleton->GetAnimator().IsPausing();
 }
 
-bool SkeletonObject::IsStopped()
+bool SkeletonObject::IsStopped() const
 {
     return skeleton->GetAnimator().IsStopped();
 }
 
-float SkeletonObject::GetSpeedRatio()
+float SkeletonObject::GetSpeedRatio() const
 {
     return skeleton->GetAnimator().GetSpeedRatio();
 }
@@ -259,6 +273,11 @@ float SkeletonObject::GetSpeedRatio()
 void SkeletonObject::SetAnimation(const std::string &anim)
 {
     skeleton->GetAnimator().SetCurrentAnimation(anim);
+}
+
+const std::string& SkeletonObject::GetAnimation() const
+{
+    return skeleton->GetAnimator().GetCurrentAnimation();
 }
 
 void DestroySkeletonObject(Object * object)

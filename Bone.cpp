@@ -26,7 +26,6 @@ Copyright (C) 2012 Victor Levasseur
 
 #include <algorithm>
 #include "GDL/ImageManager.h"
-#include "GDL/Polygon.h"
 #include <SFML/Graphics.hpp>
 #include "Skeleton.h"
 #include "ImageManager.h"
@@ -45,6 +44,9 @@ Bone::Bone(std::string name, Skeleton *owner) : m_owner(owner), m_parentBone(0),
 , m_offset(0, 0)
 , m_zorder(0)
 , m_inheritRotation(true)
+, m_hasCollisionMask(false)
+, m_collisionMaskSize(0, 0)
+, m_collisionMask()
 {
     m_texture = boost::shared_ptr<SFMLTextureWrapper>();
 }
@@ -73,6 +75,8 @@ void Bone::Init(const Bone &other)
     m_name = other.m_name;
     m_zorder = other.m_zorder;
     m_inheritRotation = other.m_inheritRotation;
+    m_hasCollisionMask = other.m_hasCollisionMask;
+    m_collisionMaskSize = other.m_collisionMaskSize;
     #ifdef GD_IDE_ONLY
     m_selected = false;
     m_color = wxColour(0, 0, 0);
@@ -234,12 +238,15 @@ void Bone::Update()
         (*it)->Update();
     }
 
-    UpdateTextureTransform();
+    UpdateCollisionMask();
 }
 
-void Bone::UpdateTextureTransform()
+void Bone::UpdateCollisionMask()
 {
-
+    m_collisionMask = Polygon2d::CreateRectangle(m_collisionMaskSize.x, m_collisionMaskSize.y);
+    m_collisionMask.Move((m_tmp_position.x + GetEndNodeRelativePosition().x)/2 - m_collisionMaskSize.x/2,
+                         (m_tmp_position.y + GetEndNodeRelativePosition().y)/2 - m_collisionMaskSize.y/2);
+    m_collisionMask.Rotate(m_tmp_absoluteRotation);
 }
 
 void Bone::ResetOwner(Skeleton *ske)
@@ -350,6 +357,19 @@ std::string Bone::GetTextureName() const
     return m_textureName;
 }
 
+void Bone::SetCollisionMaskSize(float width, float height)
+{
+    m_collisionMaskSize.x = width;
+    m_collisionMaskSize.y = height;
+
+    UpdateCollisionMask();
+}
+
+const sf::Vector2f& Bone::GetCollisionMaskSize() const
+{
+    return m_collisionMaskSize;
+}
+
 void Bone::LoadTexture(Res::SkImageManager & imageMgr)
 {
     m_texture = imageMgr.GetImage(m_textureName);
@@ -414,6 +434,10 @@ void Bone::SaveBone(TiXmlElement &saveIn)
 
     boneElement->SetDoubleAttribute("inheritRotation", (double)HasRotationInheritance());
 
+    boneElement->SetDoubleAttribute("hasCollisionMask", (double)HasCollisionMask());
+    boneElement->SetDoubleAttribute("collisionMaskWidth", GetCollisionMaskSize().x);
+    boneElement->SetDoubleAttribute("collisionMaskHeight", GetCollisionMaskSize().y);
+
     for(unsigned int a = 0; a < m_childBones.size(); a++)
     {
         m_childBones.at(a)->SaveBone(*boneElement);
@@ -443,6 +467,15 @@ void Bone::LoadBone(TiXmlElement &boneElement)
     int hasInheritRotation = true;
     boneElement.QueryIntAttribute("inheritRotation", &hasInheritRotation);
     SetRotationInheritance((bool)hasInheritRotation);
+
+    int hasCollision = false;
+    boneElement.QueryIntAttribute("hasCollisionMask", &hasCollision);
+    SetHasCollisionMask((bool)hasCollision);
+
+    float colWidth(0), colHeight(0);
+    boneElement.QueryFloatAttribute("collisionMaskWidth", &colWidth);
+    boneElement.QueryFloatAttribute("collisionMaskHeight", &colHeight);
+    SetCollisionMaskSize(colWidth, colHeight);
 
     TiXmlNode *child;
     for( child = boneElement.FirstChild(); child; child = child->NextSibling() )

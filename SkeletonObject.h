@@ -32,6 +32,7 @@ namespace gd {class MainFrameWrapper;}
 class ImageManager;
 class RuntimeScene;
 class Object;
+class Polygon2d;
 class ImageManager;
 class InitialPosition;
 
@@ -107,6 +108,8 @@ class GD_EXTENSION_API SkeletonObject : public Object
         virtual bool SetAngle(float newAngle) {return false;};
         virtual float GetAngle() const {return 0;};
 
+        virtual std::vector<Polygon2d> GetHitBoxes() const;
+
         Sk::Skeleton GetSkeleton();
         void SetSkeleton(Sk::Skeleton _ske);
 
@@ -116,13 +119,14 @@ class GD_EXTENSION_API SkeletonObject : public Object
 
         void SetSpeedRatio(float ratio);
 
-        bool IsPlaying();
-        bool IsPausing();
-        bool IsStopped();
+        bool IsPlaying() const;
+        bool IsPausing() const;
+        bool IsStopped() const;
 
-        float GetSpeedRatio();
+        float GetSpeedRatio() const;
 
         void SetAnimation(const std::string &anim);
+        const std::string& GetAnimation() const;
 
     protected:
         void Init(const SkeletonObject &other);

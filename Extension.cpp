@@ -200,6 +200,28 @@ class Extension : public ExtensionBase
 
                 DECLARE_END_OBJECT_ACTION()
 
+                DECLARE_OBJECT_CONDITION("TestAnimation",
+                               _("Tester le nom de l'animation qui se joue"),
+                               _("Teste le nom de l'animation qui se joue."),
+                               _("Le nom de l'animation de _PARAM0_ est _PARAM2__PARAM1_"),
+                               _("Animation"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom"), "", false);
+                    instrInfo.AddParameter("relationalOperator", _("Signe de comparaison"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetAnimation").SetManipulatedType("string").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_CONDITION()
+
+                DECLARE_OBJECT_STR_EXPRESSION("GetCurrentAnimation", _("Animation actuelle"), _("Animation actuelle"), _("Animation"), "res/actions/son.png")
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetAnimation").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+                DECLARE_END_OBJECT_STR_EXPRESSION()
+
                 /*DECLARE_OBJECT_ACTION("Volume",
                                _("Volume"),
                                _("Modifie le volume d'un objet son."),

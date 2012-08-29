@@ -63,9 +63,9 @@
             <Objets>
                 <Objet nom="NouvelObjet" type="SkeletonObject::Skeleton">
                     <Variables />
-                    <Bone name="root" texturename="" size="100.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000">
-                        <Bone name="New bone" texturename="" size="150.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000">
-                            <Bone name="New bone 2" texturename="" size="70.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000" />
+                    <Bone name="root" texturename="" size="100.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000" inheritRotation="1.000000">
+                        <Bone name="New bone" texturename="" size="150.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000" inheritRotation="1.000000">
+                            <Bone name="New bone 2" texturename="" size="70.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000" inheritRotation="1.000000" />
                         </Bone>
                     </Bone>
                     <Animations calculationDelay="0.000000">
@@ -73,6 +73,60 @@
                             <Bone name="New bone">
                                 <Type type="0.000000">
                                     <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="1.000000">
+                                    <Keyframe time="0.000000" value="150.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="2.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="3.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="4.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                            </Bone>
+                            <Bone name="New bone 2">
+                                <Type type="0.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="1.000000">
+                                    <Keyframe time="0.000000" value="70.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="2.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="3.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="4.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                            </Bone>
+                            <Bone name="root">
+                                <Type type="0.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="1.000000">
+                                    <Keyframe time="0.000000" value="100.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="2.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="3.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                                <Type type="4.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                </Type>
+                            </Bone>
+                        </Animation>
+                        <Animation name="New Animation" period="10.000000">
+                            <Bone name="New bone">
+                                <Type type="0.000000">
+                                    <Keyframe time="0.000000" value="0.000000" valueStr="" interpolation="Linear" />
+                                    <Keyframe time="5.000000" value="-50.000000" valueStr="" interpolation="Linear" />
                                 </Type>
                                 <Type type="1.000000">
                                     <Keyframe time="0.000000" value="150.000000" valueStr="" interpolation="Linear" />

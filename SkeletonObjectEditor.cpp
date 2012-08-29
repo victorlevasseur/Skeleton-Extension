@@ -297,9 +297,13 @@ void SkeletonObjectEditor::PreparePropertyGrid()
     }
 
     //Creating all needed items
+
+    // Identification
     m_grid->Append( new wxPropertyCategory(_("Identification"), "Identification") );
     m_grid->Append( new wxStringProperty("Nom", "BoneName", "Bone") );
 
+
+    // Properties
     m_grid->Append( new wxPropertyCategory(_("Propriétés"), "Properties") );
     m_grid->Append( new wxFloatProperty("Angle", "BoneAngle", 0.f) );
     {
@@ -333,6 +337,20 @@ void SkeletonObjectEditor::PreparePropertyGrid()
         m_grid->AppendIn("BoneZOrder", new wxBoolProperty(_("Frame clée"), "BoneZOrderKeyFrame", false));
         m_grid->AppendIn("BoneZOrder", new wxEnumProperty(_("Type d'interpolation"), "BoneZOrderInterpolation", interMethods));
     }
+
+
+    // Collision mask
+    m_grid->Append( new wxPropertyCategory(_("Collision"), "Collision") );
+
+    m_grid->Append( new wxBoolProperty(_("Activer le masque"), "HasCollisionMask", false));
+
+    m_grid->Append( new wxStringProperty(_("Taille du masque"), "CollisionMask", "<composed>"));
+    {
+        m_grid->AppendIn("CollisionMask", new wxFloatProperty(_("Largeur"), "CollisionMaskWidth", 0.f));
+        m_grid->AppendIn("CollisionMask", new wxFloatProperty(_("Hauteur"), "CollisionMaskHeight", 0.f));
+    }
+
+
 
     m_grid->SetPropertyAttributeAll(wxPG_BOOL_USE_CHECKBOX, true);
 
@@ -529,6 +547,10 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         m_grid->SetPropertyValue(wxT("Properties.BoneImage"), wxString(selectedBone->GetTextureName()));
         m_grid->SetPropertyValue(wxT("Properties.BoneZOrder"), selectedBone->GetZOrder());
 
+        m_grid->SetPropertyValue(wxT("Collision.HasCollisionMask"), selectedBone->HasCollisionMask());
+        m_grid->SetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskWidth"), selectedBone->GetCollisionMaskSize().x);
+        m_grid->SetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskHeight"), selectedBone->GetCollisionMaskSize().y);
+
         if(mode == 1 && timeline_currentAnim)
         {
             if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current))
@@ -587,6 +609,10 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetY"), 0.f);
         m_grid->SetPropertyValue(wxT("Properties.BoneImage"), wxString(""));
         m_grid->SetPropertyValue(wxT("Properties.BoneZOrder"), 0);
+
+        m_grid->SetPropertyValue(wxT("Collision.HasCollisionMask"), false);
+        m_grid->SetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskWidth"), 0);
+        m_grid->SetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskHeight"), 0);
     }
 }
 
@@ -1207,6 +1233,15 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         else if(event.GetProperty()->GetBaseName() == "BoneZOrder")
         {
             selectedBone->SetZOrder(event.GetPropertyValue().GetInteger());
+        }
+        else if(event.GetProperty()->GetBaseName() == "HasCollisionMask")
+        {
+            selectedBone->SetHasCollisionMask(event.GetProperty()->GetValue().GetBool());
+        }
+        else if(event.GetProperty()->GetBaseName() == "CollisionMaskWidth" || event.GetProperty()->GetBaseName() == "CollisionMaskHeight" || event.GetProperty()->GetBaseName() == "CollisionMask")
+        {
+            selectedBone->SetCollisionMaskSize(m_grid->GetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskWidth")).GetDouble(),
+                                               m_grid->GetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskHeight")).GetDouble());
         }
     }
     else if(mode == 1 && selectedBone && timeline_currentAnim)
