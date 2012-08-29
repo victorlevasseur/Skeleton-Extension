@@ -120,7 +120,6 @@
 											<growablecols>0</growablecols>
 											<object class="sizeritem">
 												<object class="wxPanel" name="ID_PANEL3" variable="Panel2" member="yes">
-													<size>725,85</size>
 													<handler function="OnPanel2Paint" entry="EVT_PAINT" />
 													<handler function="OnPanel2EraseBackground" entry="EVT_ERASE_BACKGROUND" />
 													<handler function="OnPanel2LeftDown" entry="EVT_LEFT_DOWN" />
@@ -181,7 +180,6 @@
 								<growablerows>0</growablerows>
 								<object class="sizeritem">
 									<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
-										<size>457,373</size>
 										<handler function="OnPanel1Paint" entry="EVT_PAINT" />
 										<handler function="OnPanel1EraseBackground" entry="EVT_ERASE_BACKGROUND" />
 										<handler function="OnPanel1LeftDown" entry="EVT_LEFT_DOWN" />
@@ -199,9 +197,13 @@
 										<growablecols>0</growablecols>
 										<growablerows>0</growablerows>
 										<object class="sizeritem">
-											<object class="wxPanel" name="ID_PANEL4" variable="Panel3" member="yes">
-												<size>350,340</size>
-												<handler function="OnPanel3Resize" entry="EVT_SIZE" />
+											<object class="wxPanel" name="ID_PANEL4" variable="propertyGridPanel" member="yes">
+												<object class="wxFlexGridSizer" variable="propertyGridSizer" member="yes">
+													<cols>1</cols>
+													<rows>1</rows>
+													<growablecols>0</growablecols>
+													<growablerows>0</growablerows>
+												</object>
 											</object>
 											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<option>1</option>
