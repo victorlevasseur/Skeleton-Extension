@@ -85,6 +85,8 @@ class Bone
 
         void Update();
         void UpdateTextureTransform();
+
+        sf::Vector2f GetBonePosition() const {return m_tmp_position;};
         sf::Vector2f GetEndNodeRelativePosition() const;
 
         void SetName(const std::string &string) {m_name = string;};
