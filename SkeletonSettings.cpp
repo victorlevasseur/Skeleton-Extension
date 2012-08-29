@@ -1,3 +1,23 @@
+/*
+Copyright (C) 2012 Victor Levasseur
+
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely, subject to the following restrictions:
+
+  1. The origin of this software must not be misrepresented; you must not
+     claim that you wrote the original software. If you use this software
+     in a product, an acknowledgment in the product documentation would be
+     appreciated but is not required.
+  2. Altered source versions must be plainly marked as such, and must not be
+     misrepresented as being the original software.
+  3. This notice may not be removed or altered from any source distribution.
+  */
+
 #ifdef GD_IDE_ONLY
 
 #include "SkeletonSettings.h"
@@ -32,7 +52,7 @@ SkeletonSettings::SkeletonSettings(wxWindow* parent, Sk::Skeleton *ske, wxWindow
 	wxFlexGridSizer* FlexGridSizer3;
 	wxFlexGridSizer* FlexGridSizer2;
 	wxFlexGridSizer* FlexGridSizer1;
-	
+
 	Create(parent, id, _("Paramètre du squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(301,84));
 	Move(wxDefaultPosition);
@@ -54,7 +74,7 @@ SkeletonSettings::SkeletonSettings(wxWindow* parent, Sk::Skeleton *ske, wxWindow
 	SetSizer(FlexGridSizer1);
 	FlexGridSizer1->SetSizeHints(this);
 	Center();
-	
+
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonSettings::OnButton1Click);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonSettings::OnButton2Click);
 	//*)

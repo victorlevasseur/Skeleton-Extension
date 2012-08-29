@@ -566,32 +566,32 @@
 			<Add directory="..\..\ExtLibs\SFML\build-mingw-debug\lib" />
 			<Add directory="..\..\ExtLibs\SFML\build-mingw-release\lib" />
 		</Linker>
+		<Unit filename="Animation.cpp" />
+		<Unit filename="Animation.h" />
 		<Unit filename="Bone.cpp" />
 		<Unit filename="Bone.h" />
+		<Unit filename="BoneAnimation.cpp" />
+		<Unit filename="BoneAnimation.h" />
 		<Unit filename="Extension.cpp" />
+		<Unit filename="GlobalDefs.h" />
+		<Unit filename="ImageManager.cpp" />
+		<Unit filename="ImageManager.h" />
+		<Unit filename="InterpolationMethods.cpp" />
+		<Unit filename="InterpolationMethods.h" />
+		<Unit filename="KeyFrame.cpp" />
+		<Unit filename="KeyFrame.h" />
 		<Unit filename="Skeleton.cpp" />
 		<Unit filename="Skeleton.h" />
 		<Unit filename="SkeletonAnimationSettings.cpp" />
 		<Unit filename="SkeletonAnimationSettings.h" />
+		<Unit filename="SkeletonAnimator.cpp" />
+		<Unit filename="SkeletonAnimator.h" />
 		<Unit filename="SkeletonObject.cpp" />
 		<Unit filename="SkeletonObject.h" />
 		<Unit filename="SkeletonObjectEditor.cpp" />
 		<Unit filename="SkeletonObjectEditor.h" />
 		<Unit filename="SkeletonSettings.cpp" />
 		<Unit filename="SkeletonSettings.h" />
-		<Unit filename="Animation.cpp" />
-		<Unit filename="Animation.h" />
-		<Unit filename="BoneAnimation.cpp" />
-		<Unit filename="BoneAnimation.h" />
-		<Unit filename="GlobalDefs.h" />
-		<Unit filename="ImageManager.cpp" />
-		<Unit filename="ImageManager.h" />
-		<Unit filename="InterpolationMethods.cpp" />
-		<Unit filename="InterpolationMethods.h" />
-		<Unit filename="SkeletonAnimator.cpp" />
-		<Unit filename="SkeletonAnimator.h" />
-		<Unit filename="KeyFrame.cpp" />
-		<Unit filename="KeyFrame.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
