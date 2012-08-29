@@ -97,14 +97,15 @@ class Bone
         float GetRotation() const;
         void SetOffset(float x, float y);
         sf::Vector2f GetOffset() const;
+        void SetZOrder(int zorder);
+        int GetZOrder() const;
+        void SetRotationInheritance(bool inherit) {m_inheritRotation = inherit; Update();};
+        bool HasRotationInheritance() const {return m_inheritRotation;};
 
         void AddBone(Bone *bone);
         bool RemoveBone(Bone *bone);
 
         void ResetOwner(Skeleton *ske);
-
-        void SetZOrder(int zorder);
-        int GetZOrder() const;
 
         void SetTextureName(const std::string &textureName);
         std::string GetTextureName() const;
@@ -131,11 +132,14 @@ class Bone
         wxColour m_color;
         #endif
 
+        //Can be modified by keyframes
         float m_size;
         float m_relativeRotation;
         sf::Vector2f m_offset;
-
         int m_zorder;
+
+        //Not editable with keyframe
+        bool m_inheritRotation;
 
         //Pre-calculated members for absolute position and rotation (updated each time the bone is moved : its size, rotation changes, or its parent changes)
         sf::Vector2f m_tmp_position;

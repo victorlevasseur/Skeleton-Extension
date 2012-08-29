@@ -44,6 +44,7 @@ Bone::Bone(std::string name, Skeleton *owner) : m_owner(owner), m_parentBone(0),
 , m_relativeRotation(0)
 , m_offset(0, 0)
 , m_zorder(0)
+, m_inheritRotation(true)
 {
     m_texture = boost::shared_ptr<SFMLTextureWrapper>();
 }
@@ -71,6 +72,7 @@ void Bone::Init(const Bone &other)
     m_texture = boost::shared_ptr<SFMLTextureWrapper>();
     m_name = other.m_name;
     m_zorder = other.m_zorder;
+    m_inheritRotation = other.m_inheritRotation;
     #ifdef GD_IDE_ONLY
     m_selected = false;
     m_color = wxColour(0, 0, 0);
@@ -205,7 +207,7 @@ void Bone::Update()
     if(m_parentBone)
     {
         m_tmp_position = m_parentBone->m_tmp_position + m_parentBone->GetEndNodeRelativePosition();
-        m_tmp_absoluteRotation = (m_parentBone->m_tmp_absoluteRotation + m_relativeRotation);
+        m_tmp_absoluteRotation = (m_inheritRotation ? m_parentBone->m_tmp_absoluteRotation : 0) + m_relativeRotation;
 
         m_tmp_position += sf::Vector2f(cos((m_parentBone->m_tmp_absoluteRotation * M_PI) / 180.f) * m_offset.x,
                                        sin((m_parentBone->m_tmp_absoluteRotation * M_PI) / 180.f) * m_offset.x);
@@ -410,6 +412,8 @@ void Bone::SaveBone(TiXmlElement &saveIn)
 
     boneElement->SetDoubleAttribute("zOrder", GetZOrder());
 
+    boneElement->SetDoubleAttribute("inheritRotation", (double)HasRotationInheritance());
+
     for(unsigned int a = 0; a < m_childBones.size(); a++)
     {
         m_childBones.at(a)->SaveBone(*boneElement);
@@ -435,6 +439,10 @@ void Bone::LoadBone(TiXmlElement &boneElement)
     boneElement.QueryFloatAttribute("zOrder", &zorder);
     SetOffset(offsetX, offsetY);
     SetZOrder(zorder);
+
+    int hasInheritRotation = true;
+    boneElement.QueryIntAttribute("inheritRotation", &hasInheritRotation);
+    SetRotationInheritance((bool)hasInheritRotation);
 
     TiXmlNode *child;
     for( child = boneElement.FirstChild(); child; child = child->NextSibling() )

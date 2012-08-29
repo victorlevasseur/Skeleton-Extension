@@ -297,7 +297,7 @@ void SkeletonObjectEditor::PreparePropertyGrid()
     }
 
     //Creating all needed items
-    m_grid->Append( new wxPropertyCategory(_("Identification")) );
+    m_grid->Append( new wxPropertyCategory(_("Identification"), "Identification") );
     m_grid->Append( new wxStringProperty("Nom", "BoneName", "Bone") );
 
     m_grid->Append( new wxPropertyCategory(_("Propriétés"), "Properties") );
@@ -306,6 +306,8 @@ void SkeletonObjectEditor::PreparePropertyGrid()
         m_grid->AppendIn("BoneAngle", new wxBoolProperty(_("Frame clée"), "BoneAngleKeyFrame", false));
         m_grid->AppendIn("BoneAngle", new wxEnumProperty(_("Type d'interpolation"), "BoneAngleInterpolation", interMethods));
     }
+
+    m_grid->Append( new wxBoolProperty(_("Suivre l'angle du parent"), "BoneInheritAngle", true) );
 
     m_grid->Append( new wxFloatProperty("Longueur", "BoneLength", 100.f) );
     {
@@ -340,9 +342,7 @@ void SkeletonObjectEditor::PreparePropertyGrid()
 
 void SkeletonObjectEditor::OnValidateButtonClick(wxCommandEvent& event)
 {
-    //skeleton.GetAnimator().SetCurrentAnimation("Initial");
-    ToggleMode(1);
-    ToggleMode(0);
+    skeleton.GetAnimator().SetCurrentAnimation("Initial");
     skeleton.GetAnimator().Reset();
     skeleton.ApplyAnimationToBones();
     object.SetSkeleton(skeleton);
@@ -522,6 +522,7 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         m_grid->SetPropertyValue(wxT("Identification.BoneName"), wxString(selectedBone->GetName()));
 
         m_grid->SetPropertyValue(wxT("Properties.BoneAngle"), selectedBone->GetRotation());
+        m_grid->SetPropertyValue(wxT("Properties.BoneInheritAngle"), selectedBone->HasRotationInheritance());
         m_grid->SetPropertyValue(wxT("Properties.BoneLength"), selectedBone->GetSize());
         m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetX"), selectedBone->GetOffset().x);
         m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetY"), selectedBone->GetOffset().y);
@@ -580,6 +581,7 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         m_grid->SetPropertyValue(wxT("Identification.BoneName"), wxString(""));
 
         m_grid->SetPropertyValue(wxT("Properties.BoneAngle"), 0.f);
+        m_grid->SetPropertyValue(wxT("Properties.BoneInheritAngle"), true);
         m_grid->SetPropertyValue(wxT("Properties.BoneLength"), 0.f);
         m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetX"), 0.f);
         m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetY"), 0.f);
@@ -623,14 +625,15 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         addChildBoneBt->Enable(true);
         deleteBoneBt->Enable(true);
 
+        m_grid->GetProperty("Identification.BoneName")->Enable(true);
+        m_grid->GetProperty("Properties.BoneInheritAngle")->Enable(true);
+
         BitmapButton2->Enable(false);
         BitmapButton4->Enable(false);
         BitmapButton1->Enable(false);
         BitmapButton3->Enable(false);
 
         AnimationCombobox->Enable(false);
-
-        m_grid->GetProperty("Identification.BoneName")->Enable(true);
 
         m_grid->GetProperty("Properties.BoneAngle.BoneAngleKeyFrame")->Enable(false);
         m_grid->GetProperty("Properties.BoneAngle.BoneAngleInterpolation")->Enable(false);
@@ -674,6 +677,7 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         BitmapButton3->Enable(true);
         AnimationCombobox->Enable(true);
 
+        m_grid->GetProperty("Properties.BoneInheritAngle")->Enable(false);
         m_grid->GetProperty("Identification.BoneName")->Enable(false);
 
         m_grid->GetProperty("Properties.BoneAngle.BoneAngleKeyFrame")->Enable(true);
@@ -762,7 +766,7 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
 
     float gradScale = GetGraduationScale(panelSize.GetWidth(), timeline_scale);
     //Each 5s and 10s lines
-    for(int a = floor(timeline_offset / gradScale) - 1; a < floor(timeline_offset / 5) + floor(panelSize.GetWidth() / (timeline_scale * gradScale)) + 2;a++)
+    for(int a = floor(timeline_offset / gradScale) - 1; a < floor(timeline_offset / (gradScale/2)) + floor(panelSize.GetWidth() / (timeline_scale * gradScale)) + 2;a++)
     {
         dc.DrawRotatedText(ToString(a * gradScale), (a * timeline_scale * gradScale) - (timeline_offset * timeline_scale) - 7, 2, 0);
 
@@ -1177,6 +1181,10 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         {
             selectedBone->SetRotation(event.GetPropertyValue().GetDouble());
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, 0, event.GetPropertyValue().GetDouble());
+        }
+        else if(event.GetProperty()->GetBaseName() == "BoneInheritAngle")
+        {
+            selectedBone->SetRotationInheritance(event.GetPropertyValue().GetBool());
         }
         else if(event.GetProperty()->GetBaseName() == "BoneLength")
         {
