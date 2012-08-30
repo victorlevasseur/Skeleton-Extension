@@ -325,8 +325,8 @@ void Animation::ApplyToSkeleton(std::vector<Bone*> &boneVec, Sk::Res::SkImageMan
         if(m_keyFrames.count(boneVec[a]->GetName()) == 0)
             continue;
 
-        boneVec[a]->m_relativeRotation = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[AngleKeyFrame];
-        boneVec[a]->m_size = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[LengthKeyFrame];
+        boneVec[a]->m_angle = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[AngleKeyFrame];
+        boneVec[a]->m_length = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[LengthKeyFrame];
         boneVec[a]->m_offset.x = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[PositionXKeyFrame];
         boneVec[a]->m_offset.y = m_keyFrames[boneVec[a]->GetName()].tmp_angleValue[PositionYKeyFrame];
 

@@ -89,23 +89,27 @@ class Bone
 
         void SetName(const std::string &string) {m_name = string;};
         std::string GetName() const {return m_name;};
-        void SetSize(float size);
-        float GetSize() const;
-        void SetRotation(float rotation);
-        float GetRotation() const;
+
+        void SetLength(float size);
+        float GetLength() const;
+
+        void SetAngle(float rotation);
+        float GetAngle() const;
+
         void SetOffset(float x, float y);
         sf::Vector2f GetOffset() const;
+
         void SetZOrder(int zorder);
         int GetZOrder() const;
 
-        void SetRotationInheritance(bool inherit) {m_inheritRotation = inherit; Update();};
-        bool HasRotationInheritance() const {return m_inheritRotation;};
+        void EnableAngleInheritance(bool inherit) {m_inheritAngle = inherit; Update();};
+        bool IsAngleInheritanceEnabled() const {return m_inheritAngle;};
 
         void SetHitBoxSize(float width, float height);
         const sf::Vector2f& GetHitBoxSize() const;
 
-        inline bool HasHitBox() const {return m_hasHitBox;};
-        void SetHasHitBox(bool has) {m_hasHitBox = has;};
+        inline bool IsHitBoxEnabled() const {return m_hasHitBox;};
+        void EnableHitBox(bool enable) {m_hasHitBox = enable;};
 
         inline const Polygon2d& GetHitBox() const {return m_hitBox;};
 
@@ -133,19 +137,20 @@ class Bone
         std::vector<Bone*> m_childBones;
 
         std::string m_name;
+
         #ifdef GD_IDE_ONLY
         bool m_mathsFrame;
         wxColour m_color;
         #endif
 
         //Can be modified by keyframes
-        float m_size;
-        float m_relativeRotation;
+        float m_angle;
+        float m_length;
         sf::Vector2f m_offset;
         int m_zorder;
 
         //Not editable with keyframe
-        bool m_inheritRotation;
+        bool m_inheritAngle;
 
         bool m_hasHitBox;
         sf::Vector2f m_hitBoxSize;
@@ -153,7 +158,7 @@ class Bone
 
         //Pre-calculated members for absolute position and rotation (updated each time the bone is moved : its size, rotation changes, or its parent changes)
         sf::Vector2f m_tmp_position;
-        float m_tmp_absoluteRotation;
+        float m_tmp_totalAngle;
 
         //Texture to be draw on the bone
         std::string m_textureName;

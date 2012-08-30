@@ -213,7 +213,7 @@ std::vector<Polygon2d> SkeletonObject::GetHitBoxes() const
 
     for(unsigned int a = 0; skeleton->GetBones().size(); a++)
     {
-        if(skeleton->GetBones().at(a)->HasHitBox())
+        if(skeleton->GetBones().at(a)->IsHitBoxEnabled())
             hitBoxes.push_back(skeleton->GetBones().at(a)->GetHitBox());
     }
 

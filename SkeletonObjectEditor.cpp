@@ -532,15 +532,15 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
     {
         m_grid->SetPropertyValue(wxT("Identification.BoneName"), wxString(selectedBone->GetName()));
 
-        m_grid->SetPropertyValue(wxT("Properties.BoneAngle"), selectedBone->GetRotation());
-        m_grid->SetPropertyValue(wxT("Properties.BoneInheritAngle"), selectedBone->HasRotationInheritance());
-        m_grid->SetPropertyValue(wxT("Properties.BoneLength"), selectedBone->GetSize());
+        m_grid->SetPropertyValue(wxT("Properties.BoneAngle"), selectedBone->GetAngle());
+        m_grid->SetPropertyValue(wxT("Properties.BoneInheritAngle"), selectedBone->IsAngleInheritanceEnabled());
+        m_grid->SetPropertyValue(wxT("Properties.BoneLength"), selectedBone->GetLength());
         m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetX"), selectedBone->GetOffset().x);
         m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetY"), selectedBone->GetOffset().y);
         m_grid->SetPropertyValue(wxT("Properties.BoneImage"), wxString(selectedBone->GetTextureName()));
         m_grid->SetPropertyValue(wxT("Properties.BoneZOrder"), selectedBone->GetZOrder());
 
-        m_grid->SetPropertyValue(wxT("Collision.HasHitBox"), selectedBone->HasHitBox());
+        m_grid->SetPropertyValue(wxT("Collision.HasHitBox"), selectedBone->IsHitBoxEnabled());
         m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxWidth"), selectedBone->GetHitBoxSize().x);
         m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxHeight"), selectedBone->GetHitBoxSize().y);
 
@@ -673,9 +673,9 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(0);
         for(std::vector<Sk::Bone*>::const_iterator it = skeleton.GetBones().begin(); it != skeleton.GetBones().end(); it++)
         {
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::AngleKeyFrame, 0, (*it)->GetRotation());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::AngleKeyFrame, 0, (*it)->GetAngle());
 
-            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::LengthKeyFrame, 0, (*it)->GetSize());
+            skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::LengthKeyFrame, 0, (*it)->GetLength());
 
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::PositionXKeyFrame, 0, (*it)->GetOffset().x);
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::PositionYKeyFrame, 0, (*it)->GetOffset().y);
@@ -1140,7 +1140,7 @@ void SkeletonObjectEditor::UncolorizeBoneIfNecessary(Sk::Bone &bone)
     for(unsigned int a = 0; a < listOfAnim.size(); a++)
     {
         skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).ClearKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame);
-        skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, 0, selectedBone->GetRotation());
+        skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, 0, selectedBone->GetAngle());
     }
 }
 
@@ -1153,7 +1153,7 @@ void SkeletonObjectEditor::OnlengthApplyToAllBtClick(wxCommandEvent& event)
     for(unsigned int a = 0; a < listOfAnim.size(); a++)
     {
         skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).ClearKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame);
-        skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, 0, selectedBone->GetSize());
+        skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, 0, selectedBone->GetLength());
     }
 }
 */
@@ -1198,16 +1198,16 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         }
         else if(event.GetProperty()->GetBaseName() == "BoneAngle")
         {
-            selectedBone->SetRotation(event.GetPropertyValue().GetDouble());
+            selectedBone->SetAngle(event.GetPropertyValue().GetDouble());
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, 0, event.GetPropertyValue().GetDouble());
         }
         else if(event.GetProperty()->GetBaseName() == "BoneInheritAngle")
         {
-            selectedBone->SetRotationInheritance(event.GetPropertyValue().GetBool());
+            selectedBone->EnableAngleInheritance(event.GetPropertyValue().GetBool());
         }
         else if(event.GetProperty()->GetBaseName() == "BoneLength")
         {
-            selectedBone->SetSize(event.GetPropertyValue().GetDouble());
+            selectedBone->SetLength(event.GetPropertyValue().GetDouble());
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, 0, event.GetPropertyValue().GetDouble());
         }
         else if(event.GetProperty()->GetBaseName() == "BoneOffsetX" || event.GetProperty()->GetBaseName() == "BoneOffsetY")
@@ -1229,7 +1229,7 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         }
         else if(event.GetProperty()->GetBaseName() == "HasHitBox")
         {
-            selectedBone->SetHasHitBox(event.GetProperty()->GetValue().GetBool());
+            selectedBone->EnableHitBox(event.GetProperty()->GetValue().GetBool());
         }
         else if(event.GetProperty()->GetBaseName() == "HitBoxWidth" || event.GetProperty()->GetBaseName() == "HitBoxHeight" || event.GetProperty()->GetBaseName() == "HitBox")
         {
@@ -1242,7 +1242,7 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         //When angle modified
         if(event.GetProperty()->GetBaseName() == "BoneAngle")
         {
-            selectedBone->SetRotation(event.GetPropertyValue().GetDouble());
+            selectedBone->SetAngle(event.GetPropertyValue().GetDouble());
 
             //When angle keyframe is already checked, modification applied
             if(m_grid->GetPropertyValueAsBool("Properties.BoneAngle.BoneAngleKeyFrame"))
@@ -1278,7 +1278,7 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         //When length modified
         if(event.GetProperty()->GetBaseName() == "BoneLength")
         {
-            selectedBone->SetSize(event.GetPropertyValue().GetDouble());
+            selectedBone->SetLength(event.GetPropertyValue().GetDouble());
 
             //When offset keyframe is already checked, modification applied
             if(m_grid->GetPropertyValueAsBool("Properties.BoneLength.BoneLengthKeyFrame"))

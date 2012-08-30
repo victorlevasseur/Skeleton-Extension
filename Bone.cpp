@@ -38,11 +38,11 @@ Bone::Bone(std::string name, Skeleton *owner) : m_owner(owner), m_parentBone(0),
 , m_mathsFrame(false)
 , m_color(0, 0, 0)
 #endif
-, m_size(100)
-, m_relativeRotation(0)
+, m_angle(0)
+, m_length(100)
 , m_offset(0, 0)
 , m_zorder(0)
-, m_inheritRotation(true)
+, m_inheritAngle(true)
 , m_hasHitBox(false)
 , m_hitBoxSize(0, 0)
 , m_hitBox()
@@ -66,14 +66,14 @@ void Bone::Init(const Bone &other)
 {
     m_owner = other.m_owner;
     m_parentBone = other.m_parentBone;
-    m_size = other.m_size;
-    m_relativeRotation = other.m_relativeRotation;
+    m_angle = other.m_angle;
+    m_length = other.m_length;
     m_offset = other.m_offset;
     m_textureName = other.m_textureName;
     m_texture = boost::shared_ptr<SFMLTextureWrapper>();
     m_name = other.m_name;
     m_zorder = other.m_zorder;
-    m_inheritRotation = other.m_inheritRotation;
+    m_inheritAngle = other.m_inheritAngle;
     m_hasHitBox = other.m_hasHitBox;
     m_hitBoxSize = other.m_hitBoxSize;
     #ifdef GD_IDE_ONLY
@@ -117,7 +117,7 @@ void Bone::Draw(sf::RenderTarget &target, sf::Vector2f offset, Bone::DrawType ty
         sprite.SetTexture(m_texture->texture);
         sprite.SetPosition(offset.x + m_tmp_position.x + (GetEndNodeRelativePosition().x / 2),
                            offset.y + m_tmp_position.y + (GetEndNodeRelativePosition().y / 2));
-        sprite.SetRotation(m_tmp_absoluteRotation);
+        sprite.SetRotation(m_tmp_totalAngle);
 
         target.Draw(sprite);
     }
@@ -148,10 +148,10 @@ void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset, bool selected)
                   4);
 
     wxPoint startPoint(floor(m_tmp_position.x), floor(m_tmp_position.y));
-    wxPoint sidePoint1(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation + (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)),
-                       floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation + (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)));
-    wxPoint sidePoint2(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation - (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)),
-                       floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation - (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)));
+    wxPoint sidePoint1(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_totalAngle + (500/m_length)) * M_PI) / 180.f) * (-m_length * 0.9)),
+                       floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_totalAngle + (500/m_length)) * M_PI) / 180.f) * (-m_length * 0.9)));
+    wxPoint sidePoint2(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_totalAngle - (500/m_length)) * M_PI) / 180.f) * (-m_length * 0.9)),
+                       floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_totalAngle - (500/m_length)) * M_PI) / 180.f) * (-m_length * 0.9)));
     wxPoint endPoint(floor(m_tmp_position.x + GetEndNodeRelativePosition().x),
                      floor(m_tmp_position.y + GetEndNodeRelativePosition().y));
 
@@ -171,17 +171,17 @@ void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset, bool selected)
 
     dc.DrawRotatedText(m_name, offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x / 2.5,
                                offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y / 2.5,
-                               360 - m_tmp_absoluteRotation);
+                               360 - m_tmp_totalAngle);
     if(m_mathsFrame)
     {
         wxPoint frameOrigin(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x),
                             floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y));
 
-        wxPoint frameEndX(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x + cos((m_tmp_absoluteRotation * M_PI) / 180.f) * (400.f)),
-                          floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y + sin((m_tmp_absoluteRotation * M_PI) / 180.f) * (400.f)));
+        wxPoint frameEndX(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x + cos((m_tmp_totalAngle * M_PI) / 180.f) * (400.f)),
+                          floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y + sin((m_tmp_totalAngle * M_PI) / 180.f) * (400.f)));
 
-        wxPoint frameEndY(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation + 90) * M_PI) / 180.f) * (400.f)),
-                          floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation + 90) * M_PI) / 180.f) * (400.f)));
+        wxPoint frameEndY(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_totalAngle + 90) * M_PI) / 180.f) * (400.f)),
+                          floor(offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_totalAngle + 90) * M_PI) / 180.f) * (400.f)));
 
         dc.SetPen(wxPen(wxColour(255, 0, 0)));
         dc.DrawLine(frameOrigin, frameEndX);
@@ -213,24 +213,24 @@ void Bone::Update()
     if(m_parentBone)
     {
         m_tmp_position = m_parentBone->m_tmp_position + m_parentBone->GetEndNodeRelativePosition();
-        m_tmp_absoluteRotation = (m_inheritRotation ? m_parentBone->m_tmp_absoluteRotation : 0) + m_relativeRotation;
+        m_tmp_totalAngle = (m_inheritAngle ? m_parentBone->m_tmp_totalAngle : 0) + m_angle;
 
-        m_tmp_position += sf::Vector2f(cos((m_parentBone->m_tmp_absoluteRotation * M_PI) / 180.f) * m_offset.x,
-                                       sin((m_parentBone->m_tmp_absoluteRotation * M_PI) / 180.f) * m_offset.x);
+        m_tmp_position += sf::Vector2f(cos((m_parentBone->m_tmp_totalAngle * M_PI) / 180.f) * m_offset.x,
+                                       sin((m_parentBone->m_tmp_totalAngle * M_PI) / 180.f) * m_offset.x);
 
-        m_tmp_position += sf::Vector2f(cos(((m_parentBone->m_tmp_absoluteRotation + 90) * M_PI) / 180.f) * m_offset.y,
-                                       sin(((m_parentBone->m_tmp_absoluteRotation + 90) * M_PI) / 180.f) * m_offset.y);
+        m_tmp_position += sf::Vector2f(cos(((m_parentBone->m_tmp_totalAngle + 90) * M_PI) / 180.f) * m_offset.y,
+                                       sin(((m_parentBone->m_tmp_totalAngle + 90) * M_PI) / 180.f) * m_offset.y);
 
 
-        while(m_tmp_absoluteRotation >= 360) //Simplify the angle
-            m_tmp_absoluteRotation -= 360;
-        while(m_tmp_absoluteRotation < 0)
-            m_tmp_absoluteRotation += 360;
+        while(m_tmp_totalAngle >= 360) //Simplify the angle
+            m_tmp_totalAngle -= 360;
+        while(m_tmp_totalAngle < 0)
+            m_tmp_totalAngle += 360;
     }
     else
     {
         m_tmp_position = sf::Vector2f(0, 0);
-        m_tmp_absoluteRotation = m_relativeRotation;
+        m_tmp_totalAngle = m_angle;
 
         m_tmp_position += sf::Vector2f(m_offset.x, m_offset.y);
     }
@@ -246,7 +246,7 @@ void Bone::Update()
 void Bone::UpdateHitBox()
 {
     m_hitBox = Polygon2d::CreateRectangle(m_hitBoxSize.x, m_hitBoxSize.y);
-    m_hitBox.Rotate(-m_tmp_absoluteRotation/180*3.14159);
+    m_hitBox.Rotate(-m_tmp_totalAngle/180*3.14159);
     m_hitBox.Move(m_tmp_position.x + (GetEndNodeRelativePosition().x)/2,
                          m_tmp_position.y + (GetEndNodeRelativePosition().y)/2);
 }
@@ -270,30 +270,30 @@ std::vector<Bone*> const & Bone::GetChildrenBones() const
 
 sf::Vector2f Bone::GetEndNodeRelativePosition() const
 {
-    return sf::Vector2f(cos((m_tmp_absoluteRotation * M_PI) / 180.f) * m_size,
-                         sin((m_tmp_absoluteRotation * M_PI) / 180.f) * m_size);
+    return sf::Vector2f(cos((m_tmp_totalAngle * M_PI) / 180.f) * m_length,
+                         sin((m_tmp_totalAngle * M_PI) / 180.f) * m_length);
 }
 
-void Bone::SetSize(float size)
+void Bone::SetLength(float size)
 {
-    m_size = size;
+    m_length = size;
 
     Update();
 }
 
-float Bone::GetSize() const
+float Bone::GetLength() const
 {
-    return m_size;
+    return m_length;
 }
 
-void Bone::SetRotation(float rotation)
+void Bone::SetAngle(float rotation)
 {
-    m_relativeRotation = rotation;
+    m_angle = rotation;
 }
 
-float Bone::GetRotation() const
+float Bone::GetAngle() const
 {
-    return m_relativeRotation;
+    return m_angle;
 }
 
 void Bone::SetOffset(float x, float y)
@@ -384,12 +384,12 @@ bool Bone::IsOnPosition(sf::Vector2f position)
 {
     std::vector<sf::Vector2f> poly;
     poly.push_back(sf::Vector2f(floor(m_tmp_position.x), floor(m_tmp_position.y)));
-    poly.push_back(sf::Vector2f(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation + (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)),
-                                floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation + (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9))));
+    poly.push_back(sf::Vector2f(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_totalAngle + (500/m_length)) * M_PI) / 180.f) * (-m_length * 0.9)),
+                                floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_totalAngle + (500/m_length)) * M_PI) / 180.f) * (-m_length * 0.9))));
     poly.push_back(sf::Vector2f(floor(m_tmp_position.x + GetEndNodeRelativePosition().x),
                                 floor(m_tmp_position.y + GetEndNodeRelativePosition().y)));
-    poly.push_back(sf::Vector2f(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_absoluteRotation - (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9)),
-                                floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_absoluteRotation - (500/m_size)) * M_PI) / 180.f) * (-m_size * 0.9))));
+    poly.push_back(sf::Vector2f(floor(m_tmp_position.x + GetEndNodeRelativePosition().x + cos(((m_tmp_totalAngle - (500/m_length)) * M_PI) / 180.f) * (-m_length * 0.9)),
+                                floor(m_tmp_position.y + GetEndNodeRelativePosition().y + sin(((m_tmp_totalAngle - (500/m_length)) * M_PI) / 180.f) * (-m_length * 0.9))));
 
     int counter = 0;
     int i;
@@ -426,17 +426,17 @@ void Bone::SaveBone(TiXmlElement &saveIn)
 
     boneElement->SetAttribute("name", GetName().c_str());
     boneElement->SetAttribute("texturename", GetTextureName().c_str());
-    boneElement->SetDoubleAttribute("size", GetSize());
-    boneElement->SetDoubleAttribute("angle", GetRotation());
+    boneElement->SetDoubleAttribute("size", GetLength());
+    boneElement->SetDoubleAttribute("angle", GetAngle());
 
     boneElement->SetDoubleAttribute("offsetX", GetOffset().x);
     boneElement->SetDoubleAttribute("offsetY", GetOffset().y);
 
     boneElement->SetDoubleAttribute("zOrder", GetZOrder());
 
-    boneElement->SetDoubleAttribute("inheritRotation", (double)HasRotationInheritance());
+    boneElement->SetDoubleAttribute("inheritRotation", (double)IsAngleInheritanceEnabled());
 
-    boneElement->SetDoubleAttribute("hasHitBox", (double)HasHitBox());
+    boneElement->SetDoubleAttribute("hasHitBox", (double)IsHitBoxEnabled());
     boneElement->SetDoubleAttribute("hitBoxWidth", GetHitBoxSize().x);
     boneElement->SetDoubleAttribute("hitBoxHeight", GetHitBoxSize().y);
 
@@ -453,11 +453,11 @@ void Bone::LoadBone(TiXmlElement &boneElement)
 
     float size = 100;
     boneElement.QueryFloatAttribute("size", &size);
-    SetSize(size);
+    SetLength(size);
 
     float angle = 0;
     boneElement.QueryFloatAttribute("angle", &angle);
-    SetRotation(angle);
+    SetAngle(angle);
 
     float offsetX(0), offsetY(0), zorder(0);
     boneElement.QueryFloatAttribute("offsetX", &offsetX);
@@ -468,11 +468,11 @@ void Bone::LoadBone(TiXmlElement &boneElement)
 
     int hasInheritRotation = true;
     boneElement.QueryIntAttribute("inheritRotation", &hasInheritRotation);
-    SetRotationInheritance((bool)hasInheritRotation);
+    EnableAngleInheritance((bool)hasInheritRotation);
 
     int hasCollision = false;
     boneElement.QueryIntAttribute("hasHitBox", &hasCollision);
-    SetHasHitBox((bool)hasCollision);
+    EnableHitBox((bool)hasCollision);
 
     float colWidth(0), colHeight(0);
     boneElement.QueryFloatAttribute("hitBoxWidth", &colWidth);
