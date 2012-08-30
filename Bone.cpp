@@ -341,7 +341,7 @@ void Bone::SetZOrder(int zorder)
     m_zorder = zorder;
 
     if(m_owner)
-        m_owner->ReorderByZOrder();
+        m_owner->SortBones();
 }
 
 int Bone::GetZOrder() const

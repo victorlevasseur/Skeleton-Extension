@@ -262,7 +262,7 @@ mode(0)
     ToggleMode(0);
     UpdateAnimationsList();
 
-    skeleton.GetRoot()->Update();
+    skeleton.GetRootBone()->Update();
     SetSize(900,650); //Set a new default size as the size computed by wxWidgets is too small.
 }
 
@@ -437,7 +437,7 @@ void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
 
     sf::Vector2f mousePos(event.GetPosition().x, event.GetPosition().y);
 
-    Sk::Bone *searched = FindBoneOnPosition(mousePos, skeleton.GetRoot());
+    Sk::Bone *searched = FindBoneOnPosition(mousePos, skeleton.GetRootBone());
 
     if(searched)
     {
@@ -496,7 +496,7 @@ void SkeletonObjectEditor::OnaddChildBoneBtClick(wxCommandEvent& event)
 
         boneName = ToString(dialog.GetValue());
 
-    } while(skeleton.BoneNameAlreadyUsed(boneName));
+    } while(skeleton.IsNameUsed(boneName));
 
     Sk::Bone *newBone = skeleton.CreateBone(boneName);
     selectedBone->AddBone(newBone);
@@ -517,7 +517,7 @@ void SkeletonObjectEditor::OnaddChildBoneBtClick(wxCommandEvent& event)
 
 void SkeletonObjectEditor::OndeleteBoneBtClick(wxCommandEvent& event)
 {
-    skeleton.GetRoot()->RemoveBone(selectedBone);
+    skeleton.GetRootBone()->RemoveBone(selectedBone);
     selectedBone = 0;
 
     Panel1->Refresh(); //Refresh
@@ -1164,7 +1164,7 @@ void SkeletonObjectEditor::OnGridPropertyChanging(wxPropertyGridEvent& event)
     {
         if(event.GetProperty()->GetBaseName() == "BoneName")
         {
-            if(skeleton.BoneNameAlreadyUsed(ToString(event.GetPropertyValue().GetString())) && ToString(event.GetPropertyValue().GetString()) != selectedBone->GetName())
+            if(skeleton.IsNameUsed(ToString(event.GetPropertyValue().GetString())) && ToString(event.GetPropertyValue().GetString()) != selectedBone->GetName())
             {
                 wxMessageBox(_("Un os ayant ce nom existe déjà.\nModifiez le nom et cliquez sur Appliquer."), "Nom de l'os");
                 event.Veto(true);

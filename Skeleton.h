@@ -60,9 +60,9 @@ class Skeleton
         void RegisterBone(Bone *bone);
         void UnRegisterBone(Bone *bone);
 
-        void ReorderByZOrder();
+        void SortBones();
 
-        Bone* GetRoot();
+        Bone* GetRootBone();
 
         Anim::SkeletonAnimator& GetAnimator() {return m_skeAnim;};
         void ApplyAnimationToBones();
@@ -71,7 +71,7 @@ class Skeleton
         void ExposeResources();
         void LoadResources(const RuntimeScene & scene, const ImageManager & imageMgr);
 
-        bool BoneNameAlreadyUsed(const std::string &name);
+        bool IsNameUsed(const std::string &name);
 
         const std::vector<Bone*>& GetBones() const {return m_bones;};
 
@@ -80,7 +80,7 @@ class Skeleton
 
     protected:
     private:
-        Bone *m_root;
+        Bone *m_rootBone;
         std::vector<Bone*> m_bones;
 
         Anim::SkeletonAnimator m_skeAnim;

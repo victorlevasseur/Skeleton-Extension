@@ -28,17 +28,17 @@ Copyright (C) 2012 Victor Levasseur
 namespace Sk
 {
 
-Skeleton::Skeleton() : m_root(new Bone("root", this)), m_imageMan()
+Skeleton::Skeleton() : m_rootBone(new Bone("root", this)), m_imageMan()
 {
-    RegisterBone(m_root);
+    RegisterBone(m_rootBone);
 }
 
 Skeleton::Skeleton(const Skeleton &other)
 {
     m_bones.clear();
 
-    m_root = new Bone(*other.m_root);
-    m_root->ResetOwner(this);
+    m_rootBone = new Bone(*other.m_rootBone);
+    m_rootBone->ResetOwner(this);
 
     m_skeAnim = other.m_skeAnim;
     m_imageMan = Res::SkImageManager();
@@ -93,7 +93,7 @@ void Skeleton::RegisterBone(Bone *bone)
 {
     m_bones.push_back(bone);
 
-    ReorderByZOrder();
+    SortBones();
 }
 
 void Skeleton::UnRegisterBone(Bone *bone)
@@ -106,12 +106,12 @@ void Skeleton::UnRegisterBone(Bone *bone)
     m_bones.erase(it);
 }
 
-Bone* Skeleton::GetRoot()
+Bone* Skeleton::GetRootBone()
 {
-    return m_root;
+    return m_rootBone;
 }
 
-bool Skeleton::BoneNameAlreadyUsed(const std::string &name)
+bool Skeleton::IsNameUsed(const std::string &name)
 {
     for(std::vector<Bone*>::iterator it = m_bones.begin(); it != m_bones.end(); it++)
     {
@@ -122,7 +122,7 @@ bool Skeleton::BoneNameAlreadyUsed(const std::string &name)
     return false;
 }
 
-void Skeleton::ReorderByZOrder()
+void Skeleton::SortBones()
 {
     ZOrderFunctor functor;
     std::sort(m_bones.begin(), m_bones.end(), functor);
@@ -131,7 +131,7 @@ void Skeleton::ReorderByZOrder()
 void Skeleton::ApplyAnimationToBones()
 {
     m_skeAnim.ApplyToSkeleton(m_bones, m_imageMan);
-    m_root->Update();
+    m_rootBone->Update();
 }
 
 void Skeleton::ExposeResources()
@@ -156,7 +156,7 @@ void Skeleton::LoadResources(const RuntimeScene & scene, const ImageManager & im
 
 void Skeleton::Save(TiXmlElement &elem)
 {
-    GetRoot()->SaveBone(elem);
+    GetRootBone()->SaveBone(elem);
 
     TiXmlElement *animationsElem = new TiXmlElement("Animations");
     elem.LinkEndChild(animationsElem);
@@ -168,7 +168,7 @@ void Skeleton::Load(const TiXmlElement &elem)
     TiXmlElement *boneElem = const_cast<TiXmlElement*>(elem.FirstChildElement("Bone"));
     if(boneElem)
     {
-        GetRoot()->LoadBone(*boneElem);
+        GetRootBone()->LoadBone(*boneElem);
     }
 
     TiXmlElement *animationsElem = const_cast<TiXmlElement*>(elem.FirstChildElement("Animations"));
