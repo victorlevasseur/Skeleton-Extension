@@ -380,7 +380,7 @@ void Bone::LoadTexture(Res::SkImageManager & imageMgr)
 #define MIN(x,y) (x < y ? x : y)
 #define MAX(x,y) (x > y ? x : y)
 
-bool Bone::IsOnPosition(sf::Vector2f position)
+bool Bone::IsPointOnBone(sf::Vector2f position)
 {
     std::vector<sf::Vector2f> poly;
     poly.push_back(sf::Vector2f(floor(m_tmp_position.x), floor(m_tmp_position.y)));

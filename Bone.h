@@ -79,7 +79,7 @@ class Bone
         /// "boneElement" is the node representing the bone.
         void LoadBone(TiXmlElement &boneElement);
 
-        bool IsOnPosition(sf::Vector2f position);
+        bool IsPointOnBone(sf::Vector2f position);
 
         void Update();
         void UpdateHitBox();

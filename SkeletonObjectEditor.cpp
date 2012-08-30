@@ -611,7 +611,7 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
 
 Sk::Bone* SkeletonObjectEditor::FindBoneOnPosition(sf::Vector2f position, Sk::Bone *base)
 {
-    if(base->IsOnPosition(position - offset))
+    if(base->IsPointOnBone(position - offset))
         return base;
 
     for(unsigned int a = 0; a < base->GetChildrenBones().size(); a++)
