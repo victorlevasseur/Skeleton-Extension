@@ -360,7 +360,7 @@ void SkeletonObjectEditor::PreparePropertyGrid()
 
 void SkeletonObjectEditor::OnValidateButtonClick(wxCommandEvent& event)
 {
-    skeleton.GetAnimator().SetCurrentAnimation("Initial");
+    skeleton.GetAnimator().SetCurrentAnimationName("Initial");
     skeleton.GetAnimator().Reset();
     skeleton.ApplyAnimationToBones();
     object.SetSkeleton(skeleton);
@@ -633,7 +633,7 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
 
     if(_mode == 0)
     {
-        skeleton.GetAnimator().SetCurrentAnimation("Initial");
+        skeleton.GetAnimator().SetCurrentAnimationName("Initial");
         skeleton.GetAnimator().Seek(0);
 
         timeline_currentAnim = 0;
@@ -810,7 +810,7 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     {
         //Draw angle keyframes
         {
-        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::Anim::AngleKeyFrame);
+        std::vector<float> keyFrames = timeline_currentAnim->GetKeyFramesTimes("", Sk::Anim::AngleKeyFrame);
         for(unsigned int a = 0; a < keyFrames.size(); a++)
         {
             if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, keyFrames.at(a)))
@@ -831,7 +831,7 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
 
         //Draw length keyframes
         {
-        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::Anim::LengthKeyFrame);
+        std::vector<float> keyFrames = timeline_currentAnim->GetKeyFramesTimes("", Sk::Anim::LengthKeyFrame);
         for(unsigned int a = 0; a < keyFrames.size(); a++)
         {
             if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, keyFrames.at(a)))
@@ -852,7 +852,7 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
 
         //Draw offset keyframes (PositionXKeyFrame and PositionYKeyFrame are already defined for a same time amount)
         {
-        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::Anim::PositionXKeyFrame);
+        std::vector<float> keyFrames = timeline_currentAnim->GetKeyFramesTimes("", Sk::Anim::PositionXKeyFrame);
         for(unsigned int a = 0; a < keyFrames.size(); a++)
         {
             if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, keyFrames.at(a)))
@@ -873,7 +873,7 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
 
         //Draw image keyframes
         {
-        std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime("", Sk::Anim::ImageKeyFrame);
+        std::vector<float> keyFrames = timeline_currentAnim->GetKeyFramesTimes("", Sk::Anim::ImageKeyFrame);
         for(unsigned int a = 0; a < keyFrames.size(); a++)
         {
             if(!selectedBone || !timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, keyFrames.at(a)))
@@ -914,7 +914,7 @@ void SkeletonObjectEditor::OnPanel2LeftDown(wxMouseEvent& event)
 
     float time = GetPositionFromPixelToTime(event.GetX());
 
-    std::vector<float> keyFrames = timeline_currentAnim->GetListOfKeyFramesTime();
+    std::vector<float> keyFrames = timeline_currentAnim->GetKeyFramesTimes();
     for(unsigned int a = 0; a < keyFrames.size(); a++)
     {
         if(event.GetX() > GetPositionFromTimeToPixel(keyFrames.at(a)) - 4 && event.GetX() < GetPositionFromTimeToPixel(keyFrames.at(a)) + 4)
@@ -983,7 +983,7 @@ void SkeletonObjectEditor::UpdateAnimationsList()
     wxString selected = AnimationCombobox->GetString(AnimationCombobox->GetSelection());
     AnimationCombobox->Clear();
 
-    std::vector<std::string> animations = skeleton.GetAnimator().GetListOfAnimations();
+    std::vector<std::string> animations = skeleton.GetAnimator().GetAnimations();
 
     for(unsigned int a = 0; a < animations.size(); a++)
     {
@@ -1015,7 +1015,7 @@ void SkeletonObjectEditor::SelectAnimation(const std::string &name)
     }
 
     timeline_currentAnim = &(skeleton.GetAnimator().GetAnimation(name));
-    skeleton.GetAnimator().SetCurrentAnimation(name);
+    skeleton.GetAnimator().SetCurrentAnimationName(name);
     timeline_offset = 0;
     timeline_current = 0;
 
@@ -1047,9 +1047,9 @@ void SkeletonObjectEditor::Seek(float time)
 
     for(unsigned int a = 0; a < skeleton.GetBones().size(); a++)
     {
-        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::AngleKeyFrame, timeline_current) ||
-           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::LengthKeyFrame, timeline_current) ||
-           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current))
+        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimationName()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::AngleKeyFrame, timeline_current) ||
+           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimationName()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::LengthKeyFrame, timeline_current) ||
+           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimationName()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current))
         {
             skeleton.GetBones().at(a)->SetColor(wxColour(0, 148, 255));
         }
@@ -1136,10 +1136,10 @@ void SkeletonObjectEditor::UncolorizeBoneIfNecessary(Sk::Bone &bone)
     if(mode != 0 || !selectedBone)
         return;
 
-    std::vector<std::string> listOfAnim = skeleton.GetAnimator().GetListOfAnimations();
+    std::vector<std::string> listOfAnim = skeleton.GetAnimator().GetAnimations();
     for(unsigned int a = 0; a < listOfAnim.size(); a++)
     {
-        skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).ClearKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame);
+        skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).ClearBoneKeyFrames(selectedBone->GetName(), Sk::AngleKeyFrame);
         skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).SetKeyFrame(selectedBone->GetName(), Sk::AngleKeyFrame, 0, selectedBone->GetAngle());
     }
 }
@@ -1149,10 +1149,10 @@ void SkeletonObjectEditor::OnlengthApplyToAllBtClick(wxCommandEvent& event)
     if(mode != 0 || !selectedBone)
         return;
 
-    std::vector<std::string> listOfAnim = skeleton.GetAnimator().GetListOfAnimations();
+    std::vector<std::string> listOfAnim = skeleton.GetAnimator().GetAnimations();
     for(unsigned int a = 0; a < listOfAnim.size(); a++)
     {
-        skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).ClearKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame);
+        skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).ClearBoneKeyFrames(selectedBone->GetName(), Sk::LengthKeyFrame);
         skeleton.GetAnimator().GetAnimation(listOfAnim.at(a)).SetKeyFrame(selectedBone->GetName(), Sk::LengthKeyFrame, 0, selectedBone->GetLength());
     }
 }

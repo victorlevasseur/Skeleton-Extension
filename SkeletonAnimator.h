@@ -53,14 +53,14 @@ class SkeletonAnimator
 
         inline Animation& GetAnimation(const std::string &name);
 
-        const std::string& GetCurrentAnimation() const;
-        void SetCurrentAnimation(const std::string &animName);
+        const std::string& GetCurrentAnimationName() const;
+        void SetCurrentAnimationName(const std::string &animName);
 
         void CreateAnimation(const std::string &name, const std::string &asACopyOf = std::string());
         void RenameAnimation(const std::string &name, const std::string &newName);
         void DeleteAnimation(const std::string &name);
 
-        std::vector<std::string> GetListOfAnimations() const;
+        std::vector<std::string> GetAnimations() const;
 
         void UpdateTime(float timeToAdd);
         void Seek(float time);
@@ -78,8 +78,8 @@ class SkeletonAnimator
 
         float GetSpeedRatio() const;
 
-        void SetDelayBetweenCalculations(float delay) {m_calculationDelay = delay;};
-        float GetDelayBetweenCalculations() const {return m_calculationDelay;};
+        void SetComputationsDelay(float delay) {m_computationsDelay = delay;};
+        float GetComputationsDelay() const {return m_computationsDelay;};
 
         void ApplyToSkeleton(std::vector<Bone*> &boneVec, Sk::Res::SkImageManager & imageMgr);
 
@@ -100,7 +100,7 @@ class SkeletonAnimator
 
         float m_speedRatio;
 
-        float m_calculationDelay;
+        float m_computationsDelay;
         float m_tmpTime;
 };
 

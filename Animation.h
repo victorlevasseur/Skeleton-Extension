@@ -56,22 +56,21 @@ class Animation
         void SetPeriod(float value) {m_period = value;};
 
         void SetKeyFrame(const std::string &boneName, KeyFrameType type, KeyFrame &keyframe);
-
         void SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, float value);
         void SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, std::string value);
 
         bool HasKeyFrame(const std::string &boneName, KeyFrameType type, float time);
         void RemoveKeyFrame(const std::string &boneName, KeyFrameType type, float time);
-        void ClearKeyFrame(const std::string &boneName, KeyFrameType type);
+        void ClearBoneKeyFrames(const std::string &boneName, KeyFrameType type);
 
         std::string GetKeyFrameInterpolation(const std::string &boneName, KeyFrameType type, float time);
         void SetKeyFrameInterpolation(const std::string &boneName, KeyFrameType type, float time, const std::string &method);
 
-        /// Don't forget to call ReorderKeys(const std::string &boneName); after modifying a bone keyframes list.
+        /// Don't forget to call SortKeyFrames(const std::string &boneName); after modifying a bone keyframes list.
         inline const std::vector<KeyFrame>& GetBoneKeyFrames(const std::string &boneName, KeyFrameType type);
-        void ReorderKeys(const std::string &boneName);
+        void SortKeyFrames(const std::string &boneName);
 
-        std::vector<float> GetListOfKeyFramesTime(const std::string &bone = "", KeyFrameType type = AnyKeyFrame);
+        std::vector<float> GetKeyFramesTimes(const std::string &bone = "", KeyFrameType type = AnyKeyFrame);
 
         void ApplyToSkeleton(std::vector<Bone*> &boneVec, Sk::Res::SkImageManager & imageMgr);
 

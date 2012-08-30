@@ -272,12 +272,12 @@ float SkeletonObject::GetSpeedRatio() const
 
 void SkeletonObject::SetAnimation(const std::string &anim)
 {
-    skeleton->GetAnimator().SetCurrentAnimation(anim);
+    skeleton->GetAnimator().SetCurrentAnimationName(anim);
 }
 
 const std::string& SkeletonObject::GetAnimation() const
 {
-    return skeleton->GetAnimator().GetCurrentAnimation();
+    return skeleton->GetAnimator().GetCurrentAnimationName();
 }
 
 void DestroySkeletonObject(Object * object)

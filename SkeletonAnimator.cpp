@@ -33,7 +33,7 @@ namespace Sk
 namespace Anim
 {
 
-SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial"), m_isRunning(true), m_isStopped(false), m_speedRatio(1.f), m_calculationDelay(0.f), m_tmpTime(0.f)
+SkeletonAnimator::SkeletonAnimator() : m_currentAnimation("Initial"), m_isRunning(true), m_isStopped(false), m_speedRatio(1.f), m_computationsDelay(0.f), m_tmpTime(0.f)
 {
     //ctor
     CreateAnimation("Initial");
@@ -44,12 +44,12 @@ SkeletonAnimator::~SkeletonAnimator()
     //dtor
 }
 
-const std::string& SkeletonAnimator::GetCurrentAnimation() const
+const std::string& SkeletonAnimator::GetCurrentAnimationName() const
 {
     return m_currentAnimation;
 }
 
-void SkeletonAnimator::SetCurrentAnimation(const std::string &animName)
+void SkeletonAnimator::SetCurrentAnimationName(const std::string &animName)
 {
     Stop();
     m_currentAnimation = animName;
@@ -76,7 +76,7 @@ void SkeletonAnimator::DeleteAnimation(const std::string &name)
     m_animations.erase(name);
 }
 
-std::vector<std::string> SkeletonAnimator::GetListOfAnimations() const
+std::vector<std::string> SkeletonAnimator::GetAnimations() const
 {
     std::vector<std::string> animations;
 
@@ -93,13 +93,13 @@ void SkeletonAnimator::UpdateTime(float timeToAdd)
     if(!m_isRunning)
         return;
 
-    if(m_calculationDelay > 0.f)
+    if(m_computationsDelay > 0.f)
     {
         m_tmpTime += timeToAdd;
-        if(m_tmpTime > m_calculationDelay)
+        if(m_tmpTime > m_computationsDelay)
         {
-            m_tmpTime -= m_calculationDelay;
-            GetAnimation(m_currentAnimation).UpdateTime(m_calculationDelay * m_speedRatio);
+            m_tmpTime -= m_computationsDelay;
+            GetAnimation(m_currentAnimation).UpdateTime(m_computationsDelay * m_speedRatio);
         }
     }
     else
@@ -188,7 +188,7 @@ void SkeletonAnimator::LoadFromXml(TiXmlElement *ele)
 {
     m_animations.clear();
 
-    ele->QueryFloatAttribute("calculationDelay", &m_calculationDelay);
+    ele->QueryFloatAttribute("calculationDelay", &m_computationsDelay);
 
     TiXmlNode *child;
     for( child = ele->FirstChild(); child; child = child->NextSibling() )
@@ -203,7 +203,7 @@ void SkeletonAnimator::LoadFromXml(TiXmlElement *ele)
 
 void SkeletonAnimator::SaveToXml(TiXmlElement *ele)
 {
-    ele->SetDoubleAttribute("calculationDelay", m_calculationDelay);
+    ele->SetDoubleAttribute("calculationDelay", m_computationsDelay);
 
     for(std::map<std::string, Animation>::iterator it = m_animations.begin(); it != m_animations.end(); it++)
     {

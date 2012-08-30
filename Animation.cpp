@@ -51,13 +51,13 @@ void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, KeyF
         if(m_keyFrames[boneName].keyFrames[type][a].time == keyframe.time)
         {
             m_keyFrames[boneName].keyFrames[type][a] = keyframe;
-            ReorderKeys(boneName);
+            SortKeyFrames(boneName);
             return;
         }
     }
 
     m_keyFrames[boneName].keyFrames[type].push_back(keyframe);
-    ReorderKeys(boneName);
+    SortKeyFrames(boneName);
 }
 
 void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, float value)
@@ -101,13 +101,13 @@ void Animation::RemoveKeyFrame(const std::string &boneName, KeyFrameType type, f
         if(m_keyFrames[boneName].keyFrames[type][a].time == time)
         {
             m_keyFrames[boneName].keyFrames[type].erase(m_keyFrames[boneName].keyFrames[type].begin() + a);
-            ReorderKeys(boneName);
+            SortKeyFrames(boneName);
             return;
         }
     }
 }
 
-void Animation::ClearKeyFrame(const std::string &boneName, KeyFrameType type)
+void Animation::ClearBoneKeyFrames(const std::string &boneName, KeyFrameType type)
 {
     m_keyFrames[boneName].keyFrames[type].clear();
 }
@@ -347,7 +347,7 @@ void Animation::NotifyBoneRenamed(const std::string &oldName, const std::string 
     m_keyFrames.erase(oldName);
 }
 
-void Animation::ReorderKeys(const std::string &boneName)
+void Animation::SortKeyFrames(const std::string &boneName)
 {
     for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it = m_keyFrames[boneName].keyFrames.begin(); it != m_keyFrames[boneName].keyFrames.end(); it++)
     {
@@ -355,7 +355,7 @@ void Animation::ReorderKeys(const std::string &boneName)
     }
 }
 
-std::vector<float> Animation::GetListOfKeyFramesTime(const std::string &bone, KeyFrameType type)
+std::vector<float> Animation::GetKeyFramesTimes(const std::string &bone, KeyFrameType type)
 {
     std::vector<float> listOfKeys;
 

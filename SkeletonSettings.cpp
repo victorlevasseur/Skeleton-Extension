@@ -81,7 +81,7 @@ SkeletonSettings::SkeletonSettings(wxWindow* parent, Sk::Skeleton *ske, wxWindow
 
 	skeleton = ske;
 
-	delayCalculationTextCtrl->SetValue(ToString(skeleton->GetAnimator().GetDelayBetweenCalculations()));
+	delayCalculationTextCtrl->SetValue(ToString(skeleton->GetAnimator().GetComputationsDelay()));
 }
 
 SkeletonSettings::~SkeletonSettings()
@@ -93,7 +93,7 @@ SkeletonSettings::~SkeletonSettings()
 
 void SkeletonSettings::OnButton1Click(wxCommandEvent& event)
 {
-    skeleton->GetAnimator().SetDelayBetweenCalculations(ToFloat(ToString(delayCalculationTextCtrl->GetValue())));
+    skeleton->GetAnimator().SetComputationsDelay(ToFloat(ToString(delayCalculationTextCtrl->GetValue())));
 
     EndModal(1);
 }
