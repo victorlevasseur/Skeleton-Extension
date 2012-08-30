@@ -646,6 +646,9 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
 
         m_grid->GetProperty("Identification.BoneName")->Enable(true);
         m_grid->GetProperty("Properties.BoneInheritAngle")->Enable(true);
+        m_grid->GetProperty("Collision.HasHitBox")->Enable(true);
+        m_grid->GetProperty("Collision.HitBox.HitBoxWidth")->Enable(true);
+        m_grid->GetProperty("Collision.HitBox.HitBoxHeight")->Enable(true);
 
         BitmapButton2->Enable(false);
         BitmapButton4->Enable(false);
@@ -698,6 +701,9 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
 
         m_grid->GetProperty("Properties.BoneInheritAngle")->Enable(false);
         m_grid->GetProperty("Identification.BoneName")->Enable(false);
+        m_grid->GetProperty("Collision.HasHitBox")->Enable(false);
+        m_grid->GetProperty("Collision.HitBox.HitBoxWidth")->Enable(false);
+        m_grid->GetProperty("Collision.HitBox.HitBoxHeight")->Enable(false);
 
         m_grid->GetProperty("Properties.BoneAngle.BoneAngleKeyFrame")->Enable(true);
         m_grid->GetProperty("Properties.BoneAngle.BoneAngleInterpolation")->Enable(true);
@@ -1049,7 +1055,8 @@ void SkeletonObjectEditor::Seek(float time)
     {
         if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimationName()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::AngleKeyFrame, timeline_current) ||
            skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimationName()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::LengthKeyFrame, timeline_current) ||
-           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimationName()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current))
+           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimationName()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current) ||
+           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimationName()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::ImageKeyFrame, timeline_current))
         {
             skeleton.GetBones().at(a)->SetColor(wxColour(0, 148, 255));
         }
