@@ -63,9 +63,9 @@
             <Objets>
                 <Objet nom="NouvelObjet" type="SkeletonObject::Skeleton">
                     <Variables />
-                    <Bone name="root" texturename="" size="100.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000">
-                        <Bone name="New bone" texturename="" size="150.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000">
-                            <Bone name="New bone 2" texturename="" size="70.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000" />
+                    <Bone name="root" texturename="" size="100.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000" inheritRotation="1.000000" hasHitBox="1.000000" hitBoxWidth="100.000000" hitBoxHeight="50.000000">
+                        <Bone name="New bone" texturename="" size="150.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000" inheritRotation="1.000000" hasHitBox="1.000000" hitBoxWidth="150.000000" hitBoxHeight="50.000000">
+                            <Bone name="New bone 2" texturename="" size="70.000000" angle="0.000000" offsetX="0.000000" offsetY="0.000000" zOrder="0.000000" inheritRotation="1.000000" hasHitBox="1.000000" hitBoxWidth="70.000000" hitBoxHeight="50.000000" />
                         </Bone>
                     </Bone>
                     <Animations calculationDelay="0.000000">

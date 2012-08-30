@@ -61,11 +61,11 @@ void Skeleton::Draw(sf::RenderTarget &target, sf::Vector2f offset, Bone::DrawTyp
 
 #ifdef GD_IDE_ONLY
 
-void Skeleton::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset)
+void Skeleton::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset, Bone *selectedBone)
 {
     for(unsigned int a = 0; a < m_bones.size(); a++)
     {
-        m_bones.at(a)->DrawWx(dc, offset);
+        m_bones.at(a)->DrawWx(dc, offset, (m_bones.at(a) == selectedBone));
     }
 }
 

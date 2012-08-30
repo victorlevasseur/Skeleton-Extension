@@ -211,10 +211,10 @@ std::vector<Polygon2d> SkeletonObject::GetHitBoxes() const
 {
     std::vector<Polygon2d> hitBoxes;
 
-    for(unsigned int a = 0; skeleton->GetListOfBones().size(); a++)
+    for(unsigned int a = 0; skeleton->GetBones().size(); a++)
     {
-        if(skeleton->GetListOfBones().at(a)->HasCollisionMask())
-            hitBoxes.push_back(skeleton->GetListOfBones().at(a)->GetCollisionMask());
+        if(skeleton->GetBones().at(a)->HasHitBox())
+            hitBoxes.push_back(skeleton->GetBones().at(a)->GetHitBox());
     }
 
     return hitBoxes;

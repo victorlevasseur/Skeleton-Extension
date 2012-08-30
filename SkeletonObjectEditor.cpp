@@ -342,12 +342,12 @@ void SkeletonObjectEditor::PreparePropertyGrid()
     // Collision mask
     m_grid->Append( new wxPropertyCategory(_("Collision"), "Collision") );
 
-    m_grid->Append( new wxBoolProperty(_("Activer le masque"), "HasCollisionMask", false));
+    m_grid->Append( new wxBoolProperty(_("Activer le masque"), "HasHitBox", false));
 
-    m_grid->Append( new wxStringProperty(_("Taille du masque"), "CollisionMask", "<composed>"));
+    m_grid->Append( new wxStringProperty(_("Taille du masque"), "HitBox", "<composed>"));
     {
-        m_grid->AppendIn("CollisionMask", new wxFloatProperty(_("Largeur"), "CollisionMaskWidth", 0.f));
-        m_grid->AppendIn("CollisionMask", new wxFloatProperty(_("Hauteur"), "CollisionMaskHeight", 0.f));
+        m_grid->AppendIn("HitBox", new wxFloatProperty(_("Largeur"), "HitBoxWidth", 0.f));
+        m_grid->AppendIn("HitBox", new wxFloatProperty(_("Hauteur"), "HitBoxHeight", 0.f));
     }
 
 
@@ -423,7 +423,7 @@ void SkeletonObjectEditor::OnPanel1Paint(wxPaintEvent& event)
         }
     }
 
-    skeleton.DrawWx(dc, offset);
+    skeleton.DrawWx(dc, offset, selectedBone);
 }
 
 void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
@@ -433,7 +433,6 @@ void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
         selectedBone->GetParentBone()->ShowMathsFrame(false);
     }
 
-    skeleton.GetRoot()->UnselectAllChilds();
     selectedBone = 0;
 
     sf::Vector2f mousePos(event.GetPosition().x, event.GetPosition().y);
@@ -443,7 +442,6 @@ void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
     if(searched)
     {
         selectedBone = searched;
-        searched->Select(true);
     }
     else
     {
@@ -503,8 +501,6 @@ void SkeletonObjectEditor::OnaddChildBoneBtClick(wxCommandEvent& event)
     Sk::Bone *newBone = skeleton.CreateBone(boneName);
     selectedBone->AddBone(newBone);
 
-    skeleton.GetRoot()->UnselectAllChilds();
-
     if(selectedBone && selectedBone->GetParentBone())
     {
         selectedBone->GetParentBone()->ShowMathsFrame(false);
@@ -512,7 +508,6 @@ void SkeletonObjectEditor::OnaddChildBoneBtClick(wxCommandEvent& event)
 
     selectedBone = newBone;
     selectedBone->Update();
-    selectedBone->Select(true);
 
     Panel1->Refresh(); //Refresh
     Panel1->Update(); //Immediately
@@ -524,8 +519,6 @@ void SkeletonObjectEditor::OndeleteBoneBtClick(wxCommandEvent& event)
 {
     skeleton.GetRoot()->RemoveBone(selectedBone);
     selectedBone = 0;
-
-    skeleton.GetRoot()->UnselectAllChilds();
 
     Panel1->Refresh(); //Refresh
     Panel1->Update(); //Immediately
@@ -547,9 +540,9 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         m_grid->SetPropertyValue(wxT("Properties.BoneImage"), wxString(selectedBone->GetTextureName()));
         m_grid->SetPropertyValue(wxT("Properties.BoneZOrder"), selectedBone->GetZOrder());
 
-        m_grid->SetPropertyValue(wxT("Collision.HasCollisionMask"), selectedBone->HasCollisionMask());
-        m_grid->SetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskWidth"), selectedBone->GetCollisionMaskSize().x);
-        m_grid->SetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskHeight"), selectedBone->GetCollisionMaskSize().y);
+        m_grid->SetPropertyValue(wxT("Collision.HasHitBox"), selectedBone->HasHitBox());
+        m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxWidth"), selectedBone->GetHitBoxSize().x);
+        m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxHeight"), selectedBone->GetHitBoxSize().y);
 
         if(mode == 1 && timeline_currentAnim)
         {
@@ -610,9 +603,9 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         m_grid->SetPropertyValue(wxT("Properties.BoneImage"), wxString(""));
         m_grid->SetPropertyValue(wxT("Properties.BoneZOrder"), 0);
 
-        m_grid->SetPropertyValue(wxT("Collision.HasCollisionMask"), false);
-        m_grid->SetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskWidth"), 0);
-        m_grid->SetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskHeight"), 0);
+        m_grid->SetPropertyValue(wxT("Collision.HasHitBox"), false);
+        m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxWidth"), 0);
+        m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxHeight"), 0);
     }
 }
 
@@ -633,9 +626,9 @@ Sk::Bone* SkeletonObjectEditor::FindBoneOnPosition(sf::Vector2f position, Sk::Bo
 
 void SkeletonObjectEditor::ToggleMode(char _mode)
 {
-    for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
+    for(unsigned int a = 0; a < skeleton.GetBones().size(); a++)
     {
-        skeleton.GetListOfBones().at(a)->UnColorize();
+        skeleton.GetBones().at(a)->UnColorize();
     }
 
     if(_mode == 0)
@@ -678,7 +671,7 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
     else
     {
         skeleton.GetAnimator().GetAnimation("Initial").SetPeriod(0);
-        for(std::vector<Sk::Bone*>::const_iterator it = skeleton.GetListOfBones().begin(); it != skeleton.GetListOfBones().end(); it++)
+        for(std::vector<Sk::Bone*>::const_iterator it = skeleton.GetBones().begin(); it != skeleton.GetBones().end(); it++)
         {
             skeleton.GetAnimator().GetAnimation("Initial").SetKeyFrame((*it)->GetName(), Sk::Anim::AngleKeyFrame, 0, (*it)->GetRotation());
 
@@ -1004,9 +997,9 @@ void SkeletonObjectEditor::UpdateAnimationsList()
 
 void SkeletonObjectEditor::SelectAnimation(const std::string &name)
 {
-    for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
+    for(unsigned int a = 0; a < skeleton.GetBones().size(); a++)
     {
-        skeleton.GetListOfBones().at(a)->UnColorize();
+        skeleton.GetBones().at(a)->UnColorize();
     }
 
     if(name == "")
@@ -1042,9 +1035,9 @@ void SkeletonObjectEditor::SelectAnimation(const std::string &name)
 
 void SkeletonObjectEditor::Seek(float time)
 {
-    for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
+    for(unsigned int a = 0; a < skeleton.GetBones().size(); a++)
     {
-        skeleton.GetListOfBones().at(a)->UnColorize();
+        skeleton.GetBones().at(a)->UnColorize();
     }
 
     skeleton.GetAnimator().Seek(time);
@@ -1052,13 +1045,13 @@ void SkeletonObjectEditor::Seek(float time)
 
     timeline_current = time;
 
-    for(unsigned int a = 0; a < skeleton.GetListOfBones().size(); a++)
+    for(unsigned int a = 0; a < skeleton.GetBones().size(); a++)
     {
-        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), Sk::Anim::AngleKeyFrame, timeline_current) ||
-           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), Sk::Anim::LengthKeyFrame, timeline_current) ||
-           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetListOfBones().at(a)->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current))
+        if(skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::AngleKeyFrame, timeline_current) ||
+           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::LengthKeyFrame, timeline_current) ||
+           skeleton.GetAnimator().GetAnimation(skeleton.GetAnimator().GetCurrentAnimation()).HasKeyFrame(skeleton.GetBones().at(a)->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current))
         {
-            skeleton.GetListOfBones().at(a)->SetColor(wxColour(0, 148, 255));
+            skeleton.GetBones().at(a)->SetColor(wxColour(0, 148, 255));
         }
     }
 
@@ -1234,14 +1227,14 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         {
             selectedBone->SetZOrder(event.GetPropertyValue().GetInteger());
         }
-        else if(event.GetProperty()->GetBaseName() == "HasCollisionMask")
+        else if(event.GetProperty()->GetBaseName() == "HasHitBox")
         {
-            selectedBone->SetHasCollisionMask(event.GetProperty()->GetValue().GetBool());
+            selectedBone->SetHasHitBox(event.GetProperty()->GetValue().GetBool());
         }
-        else if(event.GetProperty()->GetBaseName() == "CollisionMaskWidth" || event.GetProperty()->GetBaseName() == "CollisionMaskHeight" || event.GetProperty()->GetBaseName() == "CollisionMask")
+        else if(event.GetProperty()->GetBaseName() == "HitBoxWidth" || event.GetProperty()->GetBaseName() == "HitBoxHeight" || event.GetProperty()->GetBaseName() == "HitBox")
         {
-            selectedBone->SetCollisionMaskSize(m_grid->GetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskWidth")).GetDouble(),
-                                               m_grid->GetPropertyValue(wxT("Collision.CollisionMask.CollisionMaskHeight")).GetDouble());
+            selectedBone->SetHitBoxSize(m_grid->GetPropertyValue(wxT("Collision.HitBox.HitBoxWidth")).GetDouble(),
+                                               m_grid->GetPropertyValue(wxT("Collision.HitBox.HitBoxHeight")).GetDouble());
         }
     }
     else if(mode == 1 && selectedBone && timeline_currentAnim)

@@ -66,11 +66,7 @@ class Bone
 
         void Draw(sf::RenderTarget &target, sf::Vector2f offset, DrawType);
         #ifdef GD_IDE_ONLY
-        void DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset);
-
-        bool IsSelected() {return m_selected;};
-        void Select(bool is) {m_selected = is;};
-        void UnselectAllChilds();
+        void DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset, bool selected);
 
         void SetColor(wxColour color);
         void UnColorize();
@@ -86,7 +82,7 @@ class Bone
         bool IsOnPosition(sf::Vector2f position);
 
         void Update();
-        void UpdateCollisionMask();
+        void UpdateHitBox();
 
         sf::Vector2f GetBonePosition() const {return m_tmp_position;};
         sf::Vector2f GetEndNodeRelativePosition() const;
@@ -105,13 +101,13 @@ class Bone
         void SetRotationInheritance(bool inherit) {m_inheritRotation = inherit; Update();};
         bool HasRotationInheritance() const {return m_inheritRotation;};
 
-        void SetCollisionMaskSize(float width, float height);
-        const sf::Vector2f& GetCollisionMaskSize() const;
+        void SetHitBoxSize(float width, float height);
+        const sf::Vector2f& GetHitBoxSize() const;
 
-        inline bool HasCollisionMask() const {return m_hasCollisionMask;};
-        void SetHasCollisionMask(bool has) {m_hasCollisionMask = has;};
+        inline bool HasHitBox() const {return m_hasHitBox;};
+        void SetHasHitBox(bool has) {m_hasHitBox = has;};
 
-        inline const Polygon2d& GetCollisionMask() const {return m_collisionMask;};
+        inline const Polygon2d& GetHitBox() const {return m_hitBox;};
 
         void AddBone(Bone *bone);
         bool RemoveBone(Bone *bone);
@@ -138,7 +134,6 @@ class Bone
 
         std::string m_name;
         #ifdef GD_IDE_ONLY
-        bool m_selected;
         bool m_mathsFrame;
         wxColour m_color;
         #endif
@@ -152,9 +147,9 @@ class Bone
         //Not editable with keyframe
         bool m_inheritRotation;
 
-        bool m_hasCollisionMask;
-        sf::Vector2f m_collisionMaskSize;
-        Polygon2d m_collisionMask;
+        bool m_hasHitBox;
+        sf::Vector2f m_hitBoxSize;
+        Polygon2d m_hitBox;
 
         //Pre-calculated members for absolute position and rotation (updated each time the bone is moved : its size, rotation changes, or its parent changes)
         sf::Vector2f m_tmp_position;

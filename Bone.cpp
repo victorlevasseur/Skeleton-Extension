@@ -35,7 +35,6 @@ namespace Sk
 
 Bone::Bone(std::string name, Skeleton *owner) : m_owner(owner), m_parentBone(0), m_name(name)
 #ifdef GD_IDE_ONLY
-, m_selected(false)
 , m_mathsFrame(false)
 , m_color(0, 0, 0)
 #endif
@@ -44,9 +43,9 @@ Bone::Bone(std::string name, Skeleton *owner) : m_owner(owner), m_parentBone(0),
 , m_offset(0, 0)
 , m_zorder(0)
 , m_inheritRotation(true)
-, m_hasCollisionMask(false)
-, m_collisionMaskSize(0, 0)
-, m_collisionMask()
+, m_hasHitBox(false)
+, m_hitBoxSize(0, 0)
+, m_hitBox()
 {
     m_texture = boost::shared_ptr<SFMLTextureWrapper>();
 }
@@ -75,10 +74,9 @@ void Bone::Init(const Bone &other)
     m_name = other.m_name;
     m_zorder = other.m_zorder;
     m_inheritRotation = other.m_inheritRotation;
-    m_hasCollisionMask = other.m_hasCollisionMask;
-    m_collisionMaskSize = other.m_collisionMaskSize;
+    m_hasHitBox = other.m_hasHitBox;
+    m_hitBoxSize = other.m_hitBoxSize;
     #ifdef GD_IDE_ONLY
-    m_selected = false;
     m_color = wxColour(0, 0, 0);
     m_mathsFrame = other.m_mathsFrame;
     #endif
@@ -126,11 +124,24 @@ void Bone::Draw(sf::RenderTarget &target, sf::Vector2f offset, Bone::DrawType ty
 }
 
 #ifdef GD_IDE_ONLY
-void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset)
+void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset, bool selected)
 {
-    dc.SetPen(wxPen(m_selected ? wxColour(0, 0, 255) : m_color));
-    dc.SetBrush(wxBrush(wxColour(220, 220, 220)));
+    if(selected && m_hasHitBox && m_hitBox.vertices.size() == 4)
+    {
+        dc.SetPen(wxPen(wxColour(255, 255, 255)));
+        dc.SetBrush(wxBrush(wxColour(160, 160, 160), wxBRUSHSTYLE_BDIAGONAL_HATCH ));
 
+        wxPoint colPointList[4];
+        colPointList[3] = wxPoint(m_hitBox.vertices.at(0).x + offset.x, m_hitBox.vertices.at(0).y + offset.y);
+        colPointList[2] = wxPoint(m_hitBox.vertices.at(1).x + offset.x, m_hitBox.vertices.at(1).y + offset.y);
+        colPointList[1] = wxPoint(m_hitBox.vertices.at(2).x + offset.x, m_hitBox.vertices.at(2).y + offset.y);
+        colPointList[0] = wxPoint(m_hitBox.vertices.at(3).x + offset.x, m_hitBox.vertices.at(3).y + offset.y);
+
+        dc.DrawPolygon(4, colPointList);
+    }
+
+    dc.SetPen(wxPen(selected ? wxColour(0, 0, 255) : m_color));
+    dc.SetBrush(wxBrush(selected ? wxColour(100, 192, 255) : wxColour(220, 220, 220)));
 
     dc.DrawCircle(floor(offset.x + m_tmp_position.x),
                   floor(offset.y + m_tmp_position.y),
@@ -177,15 +188,6 @@ void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset)
 
         dc.SetPen(wxPen(wxColour(0, 0, 255)));
         dc.DrawLine(frameOrigin, frameEndY);
-    }
-}
-
-void Bone::UnselectAllChilds()
-{
-    Select(false);
-    for(std::vector<Bone*>::iterator it = m_childBones.begin(); it != m_childBones.end(); it++)
-    {
-        (*it)->UnselectAllChilds();
     }
 }
 
@@ -238,15 +240,15 @@ void Bone::Update()
         (*it)->Update();
     }
 
-    UpdateCollisionMask();
+    UpdateHitBox();
 }
 
-void Bone::UpdateCollisionMask()
+void Bone::UpdateHitBox()
 {
-    m_collisionMask = Polygon2d::CreateRectangle(m_collisionMaskSize.x, m_collisionMaskSize.y);
-    m_collisionMask.Move((m_tmp_position.x + GetEndNodeRelativePosition().x)/2 - m_collisionMaskSize.x/2,
-                         (m_tmp_position.y + GetEndNodeRelativePosition().y)/2 - m_collisionMaskSize.y/2);
-    m_collisionMask.Rotate(m_tmp_absoluteRotation);
+    m_hitBox = Polygon2d::CreateRectangle(m_hitBoxSize.x, m_hitBoxSize.y);
+    m_hitBox.Rotate(-m_tmp_absoluteRotation/180*3.14159);
+    m_hitBox.Move(m_tmp_position.x + (GetEndNodeRelativePosition().x)/2,
+                         m_tmp_position.y + (GetEndNodeRelativePosition().y)/2);
 }
 
 void Bone::ResetOwner(Skeleton *ske)
@@ -357,17 +359,17 @@ std::string Bone::GetTextureName() const
     return m_textureName;
 }
 
-void Bone::SetCollisionMaskSize(float width, float height)
+void Bone::SetHitBoxSize(float width, float height)
 {
-    m_collisionMaskSize.x = width;
-    m_collisionMaskSize.y = height;
+    m_hitBoxSize.x = width;
+    m_hitBoxSize.y = height;
 
-    UpdateCollisionMask();
+    UpdateHitBox();
 }
 
-const sf::Vector2f& Bone::GetCollisionMaskSize() const
+const sf::Vector2f& Bone::GetHitBoxSize() const
 {
-    return m_collisionMaskSize;
+    return m_hitBoxSize;
 }
 
 void Bone::LoadTexture(Res::SkImageManager & imageMgr)
@@ -434,9 +436,9 @@ void Bone::SaveBone(TiXmlElement &saveIn)
 
     boneElement->SetDoubleAttribute("inheritRotation", (double)HasRotationInheritance());
 
-    boneElement->SetDoubleAttribute("hasCollisionMask", (double)HasCollisionMask());
-    boneElement->SetDoubleAttribute("collisionMaskWidth", GetCollisionMaskSize().x);
-    boneElement->SetDoubleAttribute("collisionMaskHeight", GetCollisionMaskSize().y);
+    boneElement->SetDoubleAttribute("hasHitBox", (double)HasHitBox());
+    boneElement->SetDoubleAttribute("hitBoxWidth", GetHitBoxSize().x);
+    boneElement->SetDoubleAttribute("hitBoxHeight", GetHitBoxSize().y);
 
     for(unsigned int a = 0; a < m_childBones.size(); a++)
     {
@@ -469,13 +471,13 @@ void Bone::LoadBone(TiXmlElement &boneElement)
     SetRotationInheritance((bool)hasInheritRotation);
 
     int hasCollision = false;
-    boneElement.QueryIntAttribute("hasCollisionMask", &hasCollision);
-    SetHasCollisionMask((bool)hasCollision);
+    boneElement.QueryIntAttribute("hasHitBox", &hasCollision);
+    SetHasHitBox((bool)hasCollision);
 
     float colWidth(0), colHeight(0);
-    boneElement.QueryFloatAttribute("collisionMaskWidth", &colWidth);
-    boneElement.QueryFloatAttribute("collisionMaskHeight", &colHeight);
-    SetCollisionMaskSize(colWidth, colHeight);
+    boneElement.QueryFloatAttribute("hitBoxWidth", &colWidth);
+    boneElement.QueryFloatAttribute("hitBoxHeight", &colHeight);
+    SetHitBoxSize(colWidth, colHeight);
 
     TiXmlNode *child;
     for( child = boneElement.FirstChild(); child; child = child->NextSibling() )

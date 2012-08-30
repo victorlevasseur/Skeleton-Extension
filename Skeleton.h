@@ -51,7 +51,7 @@ class Skeleton
 
         void Draw(sf::RenderTarget &target, sf::Vector2f offset, Bone::DrawType);
         #ifdef GD_IDE_ONLY
-        void DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset);
+        void DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset, Bone *selectedBone);
         #endif
 
         Bone* CreateBone(const std::string &name);
@@ -73,7 +73,7 @@ class Skeleton
 
         bool BoneNameAlreadyUsed(const std::string &name);
 
-        const std::vector<Bone*>& GetListOfBones() const {return m_bones;};
+        const std::vector<Bone*>& GetBones() const {return m_bones;};
 
         void Save(TiXmlElement &elem);
         void Load(const TiXmlElement &elem);
