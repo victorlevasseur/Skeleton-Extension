@@ -66,6 +66,8 @@ class SkeletonAnimator
         void Seek(float time);
         void Reset();
 
+        float GetTime();
+
         void Play();
         void Pause();
         void Stop();

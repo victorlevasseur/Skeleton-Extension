@@ -125,6 +125,9 @@ class GD_EXTENSION_API SkeletonObject : public Object
 
         float GetSpeedRatio() const;
 
+        float GetPosition();
+        void Seek(float time);
+
         void SetAnimation(const std::string &anim);
         const std::string& GetAnimation() const;
 

@@ -52,6 +52,8 @@ class Animation
         void UpdateTime(float timeToAdd);
         void Seek(float time);
 
+        float GetTime() const {return m_time;};
+
         float GetPeriod() const {return m_period;};
         void SetPeriod(float value) {m_period = value;};
 

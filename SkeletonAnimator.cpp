@@ -118,6 +118,11 @@ void SkeletonAnimator::Reset()
     GetAnimation(m_currentAnimation).Reset();
 }
 
+float SkeletonAnimator::GetTime()
+{
+    return GetAnimation(m_currentAnimation).GetTime();
+}
+
 void SkeletonAnimator::Play()
 {
     m_isRunning = true;

@@ -280,6 +280,16 @@ const std::string& SkeletonObject::GetAnimation() const
     return skeleton->GetAnimator().GetCurrentAnimationName();
 }
 
+float SkeletonObject::GetPosition()
+{
+    return skeleton->GetAnimator().GetTime();
+}
+
+void SkeletonObject::Seek(float time)
+{
+    skeleton->GetAnimator().Seek(time);
+}
+
 void DestroySkeletonObject(Object * object)
 {
     delete object;
