@@ -327,12 +327,12 @@ void SkeletonObjectEditor::PreparePropertyGrid()
         m_grid->AppendIn("BoneOffset", new wxEnumProperty(_("Type d'interpolation"), "BoneOffsetInterpolation", interMethods));
     }
 
-    m_grid->Append( new wxStringProperty("Image", "BoneImage", "") );
+    m_grid->Append( new wxStringProperty(_("Image"), "BoneImage", "") );
     {
         m_grid->AppendIn("BoneImage", new wxBoolProperty(_("Frame clée"), "BoneImageKeyFrame", false));
     }
 
-    m_grid->Append( new wxIntProperty("Plan", "BoneZOrder", 0) );
+    m_grid->Append( new wxIntProperty(_("Plan"), "BoneZOrder", 0) );
     {
         m_grid->AppendIn("BoneZOrder", new wxBoolProperty(_("Frame clée"), "BoneZOrderKeyFrame", false));
         m_grid->AppendIn("BoneZOrder", new wxEnumProperty(_("Type d'interpolation"), "BoneZOrderInterpolation", interMethods));
@@ -1275,7 +1275,7 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
             }
         }
         //When we change keyframe interpolation
-        else if(event.GetProperty()->GetBaseName() == _("BoneAngleInterpolation"))
+        else if(event.GetProperty()->GetBaseName() == "BoneAngleInterpolation")
         {
             timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
                                                            ToString(m_grid->GetPropertyValueAsString("Properties.BoneAngle.BoneAngleInterpolation")));
