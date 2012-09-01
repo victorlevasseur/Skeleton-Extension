@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Extension squelette\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-31 16:24+0100\n"
-"PO-Revision-Date: 2012-08-31 16:25+0100\n"
+"POT-Creation-Date: 2012-09-01 10:23+0100\n"
+"PO-Revision-Date: 2012-09-01 10:26+0100\n"
 "Last-Translator: Victor Levasseur <victorlevasseur01@orange.fr>\n"
 "Language-Team: Victor Levasseur <victorlevasseur01@orange.fr>\n"
 "MIME-Version: 1.0\n"
@@ -42,7 +42,7 @@ msgstr "Play the current animation."
 
 #: ..\../Extension.cpp:65
 msgid "Jouer l'animation de _PARAM0_"
-msgstr ""
+msgstr "Play animation of _PARAM0_"
 
 #: ..\../Extension.cpp:66
 #: ..\../Extension.cpp:80
@@ -57,7 +57,7 @@ msgstr ""
 #: ..\../Extension.cpp:208
 #: ..\../Extension.cpp:220
 msgid "Lecture"
-msgstr ""
+msgstr "Playing"
 
 #: ..\../Extension.cpp:70
 #: ..\../Extension.cpp:84
@@ -75,179 +75,181 @@ msgstr ""
 #: ..\../Extension.cpp:253
 #: ..\../Extension.cpp:262
 msgid "Objet"
-msgstr ""
+msgstr "Object"
 
 #: ..\../Extension.cpp:77
 msgid "L'animation se joue"
-msgstr ""
+msgstr "The animation is playing"
 
 #: ..\../Extension.cpp:78
 msgid "Teste si l'animation se joue."
-msgstr ""
+msgstr "Check if the animation is playing."
 
 #: ..\../Extension.cpp:79
 msgid "L'animation de _PARAM0_ se joue"
-msgstr ""
+msgstr "The animation of _PARAM0_ is playing"
 
 #: ..\../Extension.cpp:91
 msgid "Mettre en pause l'animation"
-msgstr ""
+msgstr "Pause the animation"
 
 #: ..\../Extension.cpp:92
 msgid "Met en pause l'animation en cours."
-msgstr ""
+msgstr "Pause the current animation."
 
 #: ..\../Extension.cpp:93
 msgid "Mettre en pause l'animation de _PARAM0_"
-msgstr ""
+msgstr "Pause the animation of _PARAM0_"
 
 #: ..\../Extension.cpp:105
 msgid "L'animation est en pause"
-msgstr ""
+msgstr "The animation is pausing"
 
 #: ..\../Extension.cpp:106
 msgid "Teste si l'animation est en pause."
-msgstr ""
+msgstr "Check if the animation is pausing."
 
 #: ..\../Extension.cpp:107
 msgid "L'animation de _PARAM0_ est en pause"
-msgstr ""
+msgstr "The animation of _PARAM0_ is pausing"
 
 #: ..\../Extension.cpp:119
 msgid "Arrêter l'animation"
-msgstr ""
+msgstr "Stop the animation"
 
 #: ..\../Extension.cpp:120
 msgid "Arrête l'animation en cours."
-msgstr ""
+msgstr "Stop the current animation."
 
 #: ..\../Extension.cpp:121
 msgid "Arrêter l'animation de _PARAM0_"
-msgstr ""
+msgstr "Stop the animation of _PARAM0_"
 
 #: ..\../Extension.cpp:133
 msgid "L'animation est arrêtée"
-msgstr ""
+msgstr "The animation is stopped"
 
 #: ..\../Extension.cpp:134
 msgid "Teste si l'animation est arrêtée."
-msgstr ""
+msgstr "Check if the animation is stopped."
 
 #: ..\../Extension.cpp:135
 msgid "L'animation de _PARAM0_ est arrêtée"
-msgstr ""
+msgstr "The animation of _PARAM0_ is stopped"
 
 #: ..\../Extension.cpp:147
 msgid "Changer la vitesse de l'animation"
-msgstr ""
+msgstr "Change the animation's speed"
 
 #: ..\../Extension.cpp:148
 msgid ""
 "Change la vitesse de l'animation.\n"
 "1 = Vitesse normale, 1< = Ralentit, >1 = Accéléré"
 msgstr ""
+"Change the animation's speed.\n"
+"1 = normal speed, 1< = Slows, >1 = Speed up"
 
 #: ..\../Extension.cpp:149
 msgid "Mettre la vitesse de l'animation de _PARAM0_ à _PARAM2__PARAM1_"
-msgstr ""
+msgstr "Do _PARAM2__PARAM1_ to the animation's speed of _PARAM0_"
 
 #: ..\../Extension.cpp:155
 #: ..\../Extension.cpp:171
 #: ..\../Extension.cpp:197
 #: ..\../Extension.cpp:213
 msgid "Valeur"
-msgstr ""
+msgstr "Value"
 
 #: ..\../Extension.cpp:156
 #: ..\../Extension.cpp:198
 msgid "Signe de la modification"
-msgstr ""
+msgstr "Modification sign"
 
 #: ..\../Extension.cpp:163
 msgid "Tester la vitesse de l'animation"
-msgstr ""
+msgstr "Check the animation's speed"
 
 #: ..\../Extension.cpp:164
 msgid "Teste la vitesse de l'animation."
-msgstr ""
+msgstr "Check the animation's speed."
 
 #: ..\../Extension.cpp:165
 msgid "La vitesse de l'animation de _PARAM0_ est _PARAM2__PARAM1_"
-msgstr ""
+msgstr "The animation's speed of _PARAM0_ is _PARAM2__PARAM1_"
 
 #: ..\../Extension.cpp:172
 #: ..\../Extension.cpp:214
 #: ..\../Extension.cpp:255
 msgid "Signe de comparaison"
-msgstr ""
+msgstr "Comparison sign"
 
 #: ..\../Extension.cpp:178
 msgid "Vitesse de l'animation"
-msgstr ""
+msgstr "Animation's speed"
 
 #: ..\../Extension.cpp:189
 msgid "Aller à"
-msgstr ""
+msgstr "Seek"
 
 #: ..\../Extension.cpp:190
 msgid "Aller à une position précise (seconde) dans l'animation."
-msgstr ""
+msgstr "Seek to a precise amount of time in the animation."
 
 #: ..\../Extension.cpp:191
 msgid "Aller à _PARAM2__PARAM1_s dans l'animation de _PARAM0_"
-msgstr ""
+msgstr "Seek to _PARAM2__PARAM1_s in the animation of _PARAM0_"
 
 #: ..\../Extension.cpp:205
 #: ..\../Extension.cpp:220
 msgid "Position dans l'animation"
-msgstr ""
+msgstr "Position in the animation"
 
 #: ..\../Extension.cpp:206
-msgid "Teste si la position de lecture dans l'animation actuelle."
-msgstr ""
+msgid "Teste la position de lecture dans l'animation actuelle."
+msgstr "Check the playing position in the current animation."
 
 #: ..\../Extension.cpp:207
 msgid "La position dans l'animation est _PARAM2__PARAM1_ dans _PARAM0_"
-msgstr ""
+msgstr "The position in the animation is _PARAM2__PARAM1_ in _PARAM0_"
 
 #: ..\../Extension.cpp:231
 msgid "Changer d'animation"
-msgstr ""
+msgstr "Change animation"
 
 #: ..\../Extension.cpp:232
 msgid "Change l'animation en cours."
-msgstr ""
+msgstr "Change the current animation."
 
 #: ..\../Extension.cpp:233
 msgid "Mettre l'animation _PARAM1_ à _PARAM0_"
-msgstr ""
+msgstr "Set the current animation of _PARAM0_ to _PARAM1_"
 
 #: ..\../Extension.cpp:234
 #: ..\../Extension.cpp:249
 #: ..\../Extension.cpp:261
 msgid "Animation"
-msgstr ""
+msgstr "Animation"
 
 #: ..\../Extension.cpp:239
 #: ..\../Extension.cpp:254
 msgid "Nom"
-msgstr ""
+msgstr "Name"
 
 #: ..\../Extension.cpp:246
 msgid "Tester le nom de l'animation qui se joue"
-msgstr ""
+msgstr "Test the name of the current animation"
 
 #: ..\../Extension.cpp:247
 msgid "Teste le nom de l'animation qui se joue."
-msgstr ""
+msgstr "Test the name of the current animation."
 
 #: ..\../Extension.cpp:248
 msgid "Le nom de l'animation de _PARAM0_ est _PARAM2__PARAM1_"
-msgstr ""
+msgstr "The name of the current animation of _PARAM0_ is _PARAM2__PARAM1_"
 
 #: ..\../Extension.cpp:261
 msgid "Animation actuelle"
-msgstr ""
+msgstr "Current animation"
 
 #: ..\../SkeletonAnimationSettings.cpp:54
 msgid "Paramètres de l'animation"

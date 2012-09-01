@@ -203,7 +203,7 @@ class Extension : public ExtensionBase
 
                 DECLARE_OBJECT_CONDITION("TestPosition",
                                _("Position dans l'animation"),
-                               _("Teste si la position de lecture dans l'animation actuelle."),
+                               _("Teste la position de lecture dans l'animation actuelle."),
                                _("La position dans l'animation est _PARAM2__PARAM1_ dans _PARAM0_"),
                                _("Lecture"),
                                "res/actions/son24.png",
