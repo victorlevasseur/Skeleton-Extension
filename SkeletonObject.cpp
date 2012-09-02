@@ -290,6 +290,85 @@ void SkeletonObject::Seek(float time)
     skeleton->GetAnimator().Seek(time);
 }
 
+void SkeletonObject::EnableAnimationSystem(bool enable)
+{
+    skeleton->EnableAnimationSystem(enable);
+}
+
+float SkeletonObject::GetBoneAngle(const std::string &boneName)
+{
+    Sk::Bone *bone = skeleton->GetBone(boneName);
+    if(bone)
+    {
+        return bone->GetAngle();
+    }
+
+    return 0;
+}
+
+float SkeletonObject::GetBoneAbsoluteAngle(const std::string &boneName)
+{
+    Sk::Bone *bone = skeleton->GetBone(boneName);
+    if(bone)
+    {
+        return bone->GetAbsoluteAngle();
+    }
+
+    return 0;
+}
+
+void SkeletonObject::SetBoneAngle(const std::string &boneName, float angle)
+{
+    Sk::Bone *bone = skeleton->GetBone(boneName);
+    if(bone)
+    {
+        bone->SetAngle(angle);
+        bone->Update();
+    }
+}
+
+float SkeletonObject::GetBoneLength(const std::string &boneName)
+{
+    Sk::Bone *bone = skeleton->GetBone(boneName);
+    if(bone)
+    {
+        return bone->GetLength();
+    }
+
+    return 0;
+}
+
+void SkeletonObject::SetBoneLength(const std::string &boneName, float length)
+{
+    Sk::Bone *bone = skeleton->GetBone(boneName);
+    if(bone)
+    {
+        bone->SetLength(length);
+    }
+}
+
+float SkeletonObject::GetBoneCenterX(const std::string &boneName)
+{
+    Sk::Bone *bone = skeleton->GetBone(boneName);
+    if(bone)
+    {
+        return GetX() + bone->GetBonePosition().x + (bone->GetEndNodeRelativePosition().x)/2;
+    }
+
+    return 0;
+}
+
+float SkeletonObject::GetBoneCenterY(const std::string &boneName)
+{
+    Sk::Bone *bone = skeleton->GetBone(boneName);
+    if(bone)
+    {
+        return GetY() + bone->GetBonePosition().y + (bone->GetEndNodeRelativePosition().y)/2;
+    }
+
+    return 0;
+}
+
 void DestroySkeletonObject(Object * object)
 {
     delete object;

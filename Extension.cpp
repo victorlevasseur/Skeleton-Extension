@@ -264,6 +264,137 @@ class Extension : public ExtensionBase
                     instrInfo.cppCallingInformation.SetFunctionName("GetAnimation").SetIncludeFile("SkeletonObject/SkeletonObject.h");
                 DECLARE_END_OBJECT_STR_EXPRESSION()
 
+                /**
+                Actions/Conditions to dis/enable the animation system (in order to move manually bones)
+                */
+
+                DECLARE_OBJECT_ACTION("EnableAnimationSystem",
+                               _(L"Dé/activer le système d'animation"),
+                               _(L"Dé/active le système d'animation pour permettre par exemple de bouger manuellement les os."),
+                               _(L"Activer le système d'animation de _PARAM0_ ? _PARAM1_"),
+                               _(L"Fonctionnalités"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("yesorno", _("Activer ?"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("EnableAnimationSystem").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_ACTION()
+
+                /**
+                Actions/Conditions/Expressions to change (or get) bone's properties (angle, length, position)
+                */
+
+                DECLARE_OBJECT_ACTION("SetBoneAngle",
+                               _(L"Changer l'angle d'un os"),
+                               _(L"Change l'angle d'un os (relatif à l'os parent)."),
+                               _(L"Mettre l'angle de l'os _PARAM1_ de _PARAM0_ à _PARAM3__PARAM2_"),
+                               _("Os"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
+                    instrInfo.AddParameter("expression", _("Angle"), "", false);
+                    instrInfo.AddParameter("operator", _(L"Signe de l'opération"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("SetBoneAngle").SetManipulatedType("number").SetAssociatedGetter("GetBoneAngle").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_ACTION()
+
+                DECLARE_OBJECT_CONDITION("TestBoneAngle",
+                               _("Tester l'angle d'un os"),
+                               _("Teste l'angle d'un os."),
+                               _("L'angle (relatif) de _PARAM1_ de _PARAM0_ est _PARAM3__PARAM2_"),
+                               _("Os"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
+                    instrInfo.AddParameter("expression", _("Angle"), "", false);
+                    instrInfo.AddParameter("relationalOperator", _("Signe de comparaison"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetBoneAngle").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_CONDITION()
+
+                DECLARE_OBJECT_EXPRESSION("GetBoneAngle", _("Angle d'un os"), _("Angle d'un os"), _("Os"), "res/actions/son.png")
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetBoneAngle").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+                DECLARE_END_OBJECT_EXPRESSION()
+
+                DECLARE_OBJECT_EXPRESSION("GetBoneAbsoluteAngle", _("Angle absolut d'un os"), _("Angle absolut d'un os"), _("Os"), "res/actions/son.png")
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetBoneAbsoluteAngle").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+                DECLARE_END_OBJECT_EXPRESSION()
+
+
+
+                DECLARE_OBJECT_ACTION("SetBoneLength",
+                               _(L"Changer la longueur d'un os"),
+                               _(L"Change la longueur d'un os."),
+                               _(L"Mettre la longueur de l'os _PARAM1_ de _PARAM0_ à _PARAM3__PARAM2_"),
+                               _("Os"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
+                    instrInfo.AddParameter("expression", _("Longueur"), "", false);
+                    instrInfo.AddParameter("operator", _(L"Signe de l'opération"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("SetBoneLength").SetManipulatedType("number").SetAssociatedGetter("GetBoneLength").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_ACTION()
+
+                DECLARE_OBJECT_CONDITION("TestBoneLength",
+                               _("Tester la longueur d'un os"),
+                               _("Teste la longueur d'un os."),
+                               _("La longueur de _PARAM1_ de _PARAM0_ est _PARAM3__PARAM2_"),
+                               _("Os"),
+                               "res/actions/son24.png",
+                               "res/actions/son.png");
+
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
+                    instrInfo.AddParameter("expression", _("Longueur"), "", false);
+                    instrInfo.AddParameter("relationalOperator", _("Signe de comparaison"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetBoneLength").SetManipulatedType("number").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+
+                DECLARE_END_OBJECT_CONDITION()
+
+                DECLARE_OBJECT_EXPRESSION("GetBoneLength", _("Longueur d'un os"), _("Longueur d'un os"), _("Os"), "res/actions/son.png")
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetBoneLength").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+                DECLARE_END_OBJECT_EXPRESSION()
+
+
+
+                DECLARE_OBJECT_EXPRESSION("GetBoneCenterX", _("Position X du centre d'un os"), _("Position X du centre d'un os"), _("Os"), "res/actions/son.png")
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetBoneCenterX").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+                DECLARE_END_OBJECT_EXPRESSION()
+
+                DECLARE_OBJECT_EXPRESSION("GetBoneCenterY", _("Position Y du centre d'un os"), _("Position Y du centre d'un os"), _("Os"), "res/actions/son.png")
+                    instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
+                    instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
+
+                    instrInfo.cppCallingInformation.SetFunctionName("GetBoneCenterY").SetIncludeFile("SkeletonObject/SkeletonObject.h");
+                DECLARE_END_OBJECT_EXPRESSION()
+
+
             #endif
             DECLARE_END_OBJECT()
 

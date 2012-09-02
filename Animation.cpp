@@ -222,8 +222,10 @@ void Animation::UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type)
             nextKey = &(keyFrames->at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
         }
 
-        it->second.progress[type] = GetTimeDelta(*key, *nextKey) != 0 ? ((((m_time >= key->time) ? m_time - key->time : m_time + m_period - key->time)) / GetTimeDelta(*key, *nextKey)) : 1;
-        it->second.tmp_angleValue[type] = Sk::Anim::Interp::Get::Method(key->interpolation)->GetResult(it->second.progress[type], key->value, nextKey->value);
+        //it->second.progress[type] = (GetTimeDelta(*key, *nextKey) != 0 ? ((((m_time >= key->time) ? m_time - key->time : m_time + m_period - key->time)) / GetTimeDelta(*key, *nextKey)) : 1);
+        it->second.tmp_angleValue[type] = Sk::Anim::Interp::Get::Method(key->interpolation)->GetResult((GetTimeDelta(*key, *nextKey) != 0 ? ((((m_time >= key->time) ? m_time - key->time : m_time + m_period - key->time)) / GetTimeDelta(*key, *nextKey)) : 1),
+                                                                                                       key->value,
+                                                                                                       nextKey->value);
     }
 }
 
@@ -252,8 +254,10 @@ void Animation::SeekOfSmoothedType(float time, KeyFrameType type)
 
         KeyFrame *nextKey = &(it->second.keyFrames[type].at(GetNextIndex(it->first, type, it->second.currentIndex[type])));
 
-        it->second.progress[type] = GetTimeDelta(*key, *nextKey) != 0 ? ((((m_time >= key->time) ? m_time - key->time : m_time + m_period - key->time)) / GetTimeDelta(*key, *nextKey)) : 1;
-        it->second.tmp_angleValue[type] = Sk::Anim::Interp::Get::Method(key->interpolation)->GetResult(it->second.progress[type], key->value, nextKey->value);
+        //it->second.progress[type] = (GetTimeDelta(*key, *nextKey) != 0 ? ((((m_time >= key->time) ? m_time - key->time : m_time + m_period - key->time)) / GetTimeDelta(*key, *nextKey)) : 1);
+        it->second.tmp_angleValue[type] = Sk::Anim::Interp::Get::Method(key->interpolation)->GetResult((GetTimeDelta(*key, *nextKey) != 0 ? ((((m_time >= key->time) ? m_time - key->time : m_time + m_period - key->time)) / GetTimeDelta(*key, *nextKey)) : 1),
+                                                                                                       key->value,
+                                                                                                       nextKey->value);
     }
 }
 

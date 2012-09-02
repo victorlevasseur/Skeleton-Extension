@@ -28,7 +28,7 @@ Copyright (C) 2012 Victor Levasseur
 namespace Sk
 {
 
-Skeleton::Skeleton() : m_rootBone(new Bone("root", this)), m_imageMan()
+Skeleton::Skeleton() : m_rootBone(new Bone("root", this)), m_skeAnimEnabled(true), m_imageMan()
 {
     RegisterBone(m_rootBone);
 }
@@ -41,6 +41,7 @@ Skeleton::Skeleton(const Skeleton &other)
     m_rootBone->ResetOwner(this);
 
     m_skeAnim = other.m_skeAnim;
+    m_skeAnimEnabled = other.m_skeAnimEnabled;
     m_imageMan = Res::SkImageManager();
 
     //m_root->Update();
@@ -130,6 +131,9 @@ void Skeleton::SortBones()
 
 void Skeleton::ApplyAnimationToBones()
 {
+    if(!m_skeAnimEnabled)
+        return;
+
     m_skeAnim.ApplyToSkeleton(m_bones, m_imageMan);
     m_rootBone->Update();
 }
@@ -176,6 +180,32 @@ void Skeleton::Load(const TiXmlElement &elem)
     {
         GetAnimator().LoadFromXml(animationsElem);
     }
+}
+
+Bone* Skeleton::GetBone(const std::string &name)
+{
+    for(unsigned int a = 0; a < m_bones.size(); a++)
+    {
+        if(m_bones.at(a)->GetName() == name)
+            return m_bones.at(a);
+    }
+
+    return NULL;
+}
+
+void Skeleton::EnableAnimationSystem(bool enable)
+{
+    if(enable)
+    {
+        m_skeAnim.Reset();
+    }
+    else
+    {
+        m_skeAnim.SetCurrentAnimationName("Initial");
+        m_skeAnim.Reset();
+        ApplyAnimationToBones();
+    }
+    m_skeAnimEnabled = enable;
 }
 
 }

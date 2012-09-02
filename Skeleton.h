@@ -73,17 +73,22 @@ class Skeleton
 
         bool IsNameUsed(const std::string &name);
 
+        Bone* GetBone(const std::string &name);
         const std::vector<Bone*>& GetBones() const {return m_bones;};
 
         void Save(TiXmlElement &elem);
         void Load(const TiXmlElement &elem);
+
+        void EnableAnimationSystem(bool enable);
 
     protected:
     private:
         Bone *m_rootBone;
         std::vector<Bone*> m_bones;
 
+        bool m_skeAnimEnabled;
         Anim::SkeletonAnimator m_skeAnim;
+
         Res::SkImageManager m_imageMan;
 };
 

@@ -87,6 +87,8 @@ class Bone
         sf::Vector2f GetBonePosition() const {return m_tmp_position;};
         sf::Vector2f GetEndNodeRelativePosition() const;
 
+        float GetAbsoluteAngle() const {return m_tmp_totalAngle;};
+
         void SetName(const std::string &string) {m_name = string;};
         std::string GetName() const {return m_name;};
 

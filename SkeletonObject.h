@@ -131,6 +131,18 @@ class GD_EXTENSION_API SkeletonObject : public Object
         void SetAnimation(const std::string &anim);
         const std::string& GetAnimation() const;
 
+        void EnableAnimationSystem(bool enable);
+
+        float GetBoneAngle(const std::string &boneName);
+        float GetBoneAbsoluteAngle(const std::string &boneName);
+        void SetBoneAngle(const std::string &boneName, float angle);
+
+        float GetBoneLength(const std::string &boneName);
+        void SetBoneLength(const std::string &boneName, float length);
+
+        float GetBoneCenterX(const std::string &boneName);
+        float GetBoneCenterY(const std::string &boneName);
+
     protected:
         void Init(const SkeletonObject &other);
 
