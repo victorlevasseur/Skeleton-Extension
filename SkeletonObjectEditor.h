@@ -49,6 +49,12 @@ class SkeletonObjectEditor: public wxDialog
 {
 	public:
 
+        enum DragType
+        {
+            NotDragging,
+            DraggingAngle
+        };
+
 		SkeletonObjectEditor( wxWindow* parent, Game & game_, SkeletonObject & object_, gd::MainFrameWrapper & mainEditorCommand_ );
 		virtual ~SkeletonObjectEditor();
 
@@ -144,6 +150,7 @@ class SkeletonObjectEditor: public wxDialog
 		void OnBitmapButton4Click(wxCommandEvent& event);
 		void OnButton1Click1(wxCommandEvent& event);
 		void OnButton6Click(wxCommandEvent& event);
+		void OnPanel1LeftUp(wxMouseEvent& event);
 		//*)
 		void OnGridPropertyChanging(wxPropertyGridEvent& event);
 		void OnGridPropertyChanged(wxPropertyGridEvent& event);
@@ -181,6 +188,9 @@ class SkeletonObjectEditor: public wxDialog
 		float timeline_scale; //Size of one second
 		float timeline_offset; //Offset as time
 		int timeline_tmp_dragbegan;
+
+		DragType isDraggingHandle;
+		sf::Vector2f draggingStartPosition;
 
 		int GetPositionFromTimeToPixel(float time) const;
 		float GetPositionFromPixelToTime(int pixel) const;

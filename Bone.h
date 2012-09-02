@@ -80,6 +80,7 @@ class Bone
         void LoadBone(TiXmlElement &boneElement);
 
         bool IsPointOnBone(sf::Vector2f position);
+        bool IsOnAngleHandle(sf::Vector2f position);
 
         void Update();
         void UpdateHitBox();

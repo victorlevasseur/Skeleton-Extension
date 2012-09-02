@@ -225,6 +225,7 @@ mode(0)
 	Panel1->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1Paint,0,this);
 	Panel1->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1EraseBackground,0,this);
 	Panel1->Connect(wxEVT_LEFT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1LeftDown,0,this);
+	Panel1->Connect(wxEVT_LEFT_UP,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1LeftUp,0,this);
 	Panel1->Connect(wxEVT_RIGHT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1RightDown,0,this);
 	Panel1->Connect(wxEVT_RIGHT_UP,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1RightUp,0,this);
 	Panel1->Connect(wxEVT_MOTION,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel1MouseMove,0,this);
@@ -258,6 +259,8 @@ mode(0)
     timeline_currentAnim = 0;
     timeline_offset = 0;
     timeline_scale = 5;
+
+    isDraggingHandle = NotDragging;
 
     ToggleMode(0);
     UpdateAnimationsList();
@@ -428,27 +431,52 @@ void SkeletonObjectEditor::OnPanel1Paint(wxPaintEvent& event)
 
 void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
 {
-    if(selectedBone && selectedBone->GetParentBone())
+    if(isDraggingHandle == NotDragging)
     {
-        selectedBone->GetParentBone()->ShowMathsFrame(false);
-    }
+        if(selectedBone && selectedBone->GetParentBone())
+        {
+            selectedBone->GetParentBone()->ShowMathsFrame(false);
+        }
 
-    selectedBone = 0;
+        if(selectedBone && selectedBone->IsOnAngleHandle(sf::Vector2f(event.GetPosition().x - offset.x, event.GetPosition().y - offset.y)))
+        {
+            draggingStartPosition = sf::Vector2f(event.GetPosition().x, event.GetPosition().y) - offset;
+            isDraggingHandle = DraggingAngle;
+        }
 
-    sf::Vector2f mousePos(event.GetPosition().x, event.GetPosition().y);
-
-    Sk::Bone *searched = FindBoneOnPosition(mousePos, skeleton.GetRootBone());
-
-    if(searched)
-    {
-        selectedBone = searched;
-    }
-    else
-    {
         selectedBone = 0;
+
+        sf::Vector2f mousePos(event.GetPosition().x, event.GetPosition().y);
+        Sk::Bone *searched = FindBoneOnPosition(mousePos, skeleton.GetRootBone());
+
+        if(searched)
+        {
+            selectedBone = searched;
+        }
+        else
+        {
+            selectedBone = 0;
+        }
+
+        UpdateForSelectedBone();
     }
 
-    UpdateForSelectedBone();
+    Panel1->Refresh(); //Refresh
+    Panel1->Update(); //Immediately
+
+    Panel2->Refresh();
+    Panel2->Update();
+}
+
+void SkeletonObjectEditor::OnPanel1LeftUp(wxMouseEvent& event)
+{
+    if(selectedBone && isDraggingHandle != NotDragging)
+    {
+        if(isDraggingHandle == DraggingAngle)
+        {
+            isDraggingHandle = NotDragging;
+        }
+    }
 
     Panel1->Refresh(); //Refresh
     Panel1->Update(); //Immediately
@@ -482,6 +510,43 @@ void SkeletonObjectEditor::OnPanel1MouseMove(wxMouseEvent& event)
         Panel1->Refresh(); //Refresh
         Panel1->Update(); //Immediately
     }
+
+    if(selectedBone && isDraggingHandle != NotDragging)
+    {
+        if(isDraggingHandle == DraggingAngle)
+        {
+            float computedAngle;
+
+            sf::Vector2f relativePosition = sf::Vector2f(event.GetPosition().x - offset.x,
+                                                         event.GetPosition().y - offset.y)
+                                            - selectedBone->GetBonePosition();
+
+            computedAngle = (relativePosition.y >= 0 ? 1 : (-1)) * (acos((relativePosition.x)/(sqrt(relativePosition.x * relativePosition.x + relativePosition.y * relativePosition.y))) * 180) / M_PI;
+
+            if(event.ShiftDown())
+            {
+                computedAngle = floor(computedAngle / 5) * 5;
+            }
+
+            if(selectedBone->GetParentBone())
+            {
+                selectedBone->SetAngle(computedAngle - selectedBone->GetParentBone()->GetAbsoluteAngle());
+            }
+            else
+            {
+                selectedBone->SetAngle(computedAngle);
+            }
+
+            selectedBone->Update();
+            UpdateForSelectedBone();
+        }
+    }
+
+    Panel1->Refresh(); //Refresh
+    Panel1->Update(); //Immediately
+
+    Panel2->Refresh();
+    Panel2->Update();
 }
 
 void SkeletonObjectEditor::OnaddChildBoneBtClick(wxCommandEvent& event)

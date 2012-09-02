@@ -172,6 +172,19 @@ void Bone::DrawWx(wxBufferedPaintDC &dc, sf::Vector2f offset, bool selected)
     dc.DrawRotatedText(m_name, offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x / 2.5,
                                offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y / 2.5,
                                360 - m_tmp_totalAngle);
+
+
+    if(selected)
+    {
+        wxPoint handleCenter(offset.x + (startPoint.x + endPoint.x)/2,
+                             offset.y + (startPoint.y + endPoint.y)/2);
+
+        dc.SetPen(wxPen(wxColour(0, 0, 0)));
+        dc.SetBrush(wxBrush(wxColour(255, 255, 255)));
+
+        dc.DrawCircle(handleCenter, 4);
+    }
+
     if(m_mathsFrame)
     {
         wxPoint frameOrigin(floor(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x),
@@ -397,12 +410,17 @@ bool Bone::IsPointOnBone(sf::Vector2f position)
     sf::Vector2f p1,p2;
 
     p1 = poly[0];
-    for (i=1;i<=4;i++) {
+    for (i=1;i<=4;i++)
+    {
         p2 = poly[i % 4];
-        if (position.y > MIN(p1.y,p2.y)) {
-            if (position.y <= MAX(p1.y,p2.y)) {
-                if (position.x <= MAX(p1.x,p2.x)) {
-                    if (p1.y != p2.y) {
+        if (position.y > MIN(p1.y,p2.y))
+        {
+            if (position.y <= MAX(p1.y,p2.y))
+            {
+                if (position.x <= MAX(p1.x,p2.x))
+                {
+                    if (p1.y != p2.y)
+                    {
                         xinters = (position.y-p1.y)*(p2.x-p1.x)/(p2.y-p1.y)+p1.x;
                         if (p1.x == p2.x || position.x <= xinters)
                             counter++;
@@ -413,10 +431,27 @@ bool Bone::IsPointOnBone(sf::Vector2f position)
         p1 = p2;
     }
 
-  if (counter % 2 == 0)
-    return false;
-  else
-    return true;
+    if (counter % 2 == 0)
+        return false;
+    else
+        return true;
+}
+
+bool Bone::IsOnAngleHandle(sf::Vector2f position)
+{
+    sf::Vector2f startPoint(floor(m_tmp_position.x), floor(m_tmp_position.y));
+
+    sf::Vector2f endPoint(floor(m_tmp_position.x + GetEndNodeRelativePosition().x),
+                          floor(m_tmp_position.y + GetEndNodeRelativePosition().y));
+
+    sf::Vector2f handleCenter((startPoint.x + endPoint.x)/2,
+                              (startPoint.y + endPoint.y)/2);
+
+    if(position.x > handleCenter.x - 4 && position.x < handleCenter.x + 4 &&
+       position.y > handleCenter.y - 4 && position.y < handleCenter.y + 4)
+        return true;
+    else
+        return false;
 }
 
 void Bone::SaveBone(TiXmlElement &saveIn)
