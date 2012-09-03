@@ -887,6 +887,14 @@ void SkeletonObjectEditor::OnPanel2Paint(wxPaintEvent& event)
     {
         dc.SetPen(wxPen(wxColour(255, 255, 0)));
         dc.DrawLine(GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()), 17, GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()), panelSize.GetHeight());
+
+        if(GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()) < panelSize.GetWidth())
+        {
+            dc.SetBrush(wxColour(60, 60, 60));
+            dc.SetPen(wxPen(wxPENSTYLE_TRANSPARENT));
+
+            dc.DrawRectangle(GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()), 17, panelSize.GetWidth() - GetPositionFromTimeToPixel(timeline_currentAnim->GetPeriod()), panelSize.GetHeight() - 17);
+        }
     }
 
     if(timeline_currentAnim)
