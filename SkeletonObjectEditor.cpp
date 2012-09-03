@@ -530,10 +530,22 @@ void SkeletonObjectEditor::OnPanel1MouseMove(wxMouseEvent& event)
 
             if(selectedBone->GetParentBone())
             {
+                while(computedAngle - selectedBone->GetParentBone()->GetAbsoluteAngle() <= -180)
+                    computedAngle += 360;
+
+                while(computedAngle - selectedBone->GetParentBone()->GetAbsoluteAngle() > 180)
+                    computedAngle -= 360;
+
                 selectedBone->SetAngle(computedAngle - selectedBone->GetParentBone()->GetAbsoluteAngle());
             }
             else
             {
+                while(computedAngle <= -180)
+                    computedAngle += 360;
+
+                while(computedAngle > 180)
+                    computedAngle -= 360;
+
                 selectedBone->SetAngle(computedAngle);
             }
 
