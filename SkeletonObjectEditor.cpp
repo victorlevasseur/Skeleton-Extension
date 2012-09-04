@@ -303,12 +303,12 @@ void SkeletonObjectEditor::PreparePropertyGrid()
 
     // Identification
     m_grid->Append( new wxPropertyCategory(_("Identification"), "Identification") );
-    m_grid->Append( new wxStringProperty("Nom", "BoneName", "Bone") );
+    m_grid->Append( new wxStringProperty(_("Nom"), "BoneName", "Bone") );
 
 
     // Properties
     m_grid->Append( new wxPropertyCategory(_("Propriétés"), "Properties") );
-    m_grid->Append( new wxFloatProperty("Angle", "BoneAngle", 0.f) );
+    m_grid->Append( new wxFloatProperty(_("Angle"), "BoneAngle", 0.f) );
     {
         m_grid->AppendIn("BoneAngle", new wxBoolProperty(_("Frame clée"), "BoneAngleKeyFrame", false));
         m_grid->AppendIn("BoneAngle", new wxEnumProperty(_("Type d'interpolation"), "BoneAngleInterpolation", interMethods));
@@ -316,7 +316,7 @@ void SkeletonObjectEditor::PreparePropertyGrid()
 
     m_grid->Append( new wxBoolProperty(_("Suivre l'angle du parent"), "BoneInheritAngle", true) );
 
-    m_grid->Append( new wxFloatProperty("Longueur", "BoneLength", 100.f) );
+    m_grid->Append( new wxFloatProperty(_("Longueur"), "BoneLength", 100.f) );
     {
         m_grid->AppendIn("BoneLength", new wxBoolProperty(_("Frame clée"), "BoneLengthKeyFrame", false));
         m_grid->AppendIn("BoneLength", new wxEnumProperty(_("Type d'interpolation"), "BoneLengthInterpolation", interMethods));

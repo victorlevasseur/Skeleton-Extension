@@ -328,7 +328,7 @@ class Extension : public ExtensionBase
                     instrInfo.cppCallingInformation.SetFunctionName("GetBoneAngle").SetIncludeFile("SkeletonObject/SkeletonObject.h");
                 DECLARE_END_OBJECT_EXPRESSION()
 
-                DECLARE_OBJECT_EXPRESSION("GetBoneAbsoluteAngle", _("Angle absolut d'un os"), _("Angle absolut d'un os"), _("Os"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("GetBoneAbsoluteAngle", _("Angle absolu d'un os"), _("Angle absolu d'un os"), _("Os"), "res/actions/son.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
 
