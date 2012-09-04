@@ -536,7 +536,7 @@ void SkeletonObjectEditor::OnPanel1MouseMove(wxMouseEvent& event)
                 while(computedAngle - selectedBone->GetParentBone()->GetAbsoluteAngle() > 180)
                     computedAngle -= 360;
 
-                selectedBone->SetAngle(computedAngle - selectedBone->GetParentBone()->GetAbsoluteAngle());
+                computedAngle -= selectedBone->GetParentBone()->GetAbsoluteAngle();
             }
             else
             {
@@ -546,8 +546,17 @@ void SkeletonObjectEditor::OnPanel1MouseMove(wxMouseEvent& event)
                 while(computedAngle > 180)
                     computedAngle -= 360;
 
-                selectedBone->SetAngle(computedAngle);
             }
+
+            //Send the event to the propertyGrid handler to be sure to make the same operations on keyframes...
+            wxPropertyGridEvent event;
+
+            m_grid->SetPropertyValue(wxT("Properties.BoneAngle"), computedAngle);
+            event.SetProperty(m_grid->GetProperty(wxT("Properties.BoneAngle")));
+            event.SetPropertyValue(computedAngle);
+            event.SetPropertyGrid(m_grid);
+
+            OnGridPropertyChanged(event);
 
             selectedBone->Update();
             UpdateForSelectedBone();
