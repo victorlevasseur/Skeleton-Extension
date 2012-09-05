@@ -43,7 +43,7 @@ class wxBufferedPaintDC;
 namespace Sk
 {
 
-namespace Anim{class Animation;}
+namespace Anim{class Animation; class SkeletonAnimator;}
 namespace Res{class SkImageManager;}
 
 class Skeleton;
@@ -53,6 +53,7 @@ class Bone
     friend struct ZOrderFunctor;
     friend class Skeleton;
     friend class Sk::Anim::Animation;
+    friend class Sk::Anim::SkeletonAnimator;
 
     public:
 

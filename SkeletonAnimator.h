@@ -97,6 +97,20 @@ class SkeletonAnimator
         std::map<std::string, Animation> m_animations;
         std::string m_currentAnimation;
 
+        void UpdateTimeInternal(float timeToAdd);
+        void SeekInternal(float time);
+
+        int GetNextIndex(const std::string &boneName, KeyFrameType type, unsigned int index);
+        float GetTimeDelta(const KeyFrame &frame1, const KeyFrame &frame2);
+
+        void UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type);
+        void SeekOfSmoothedType(float time, KeyFrameType type);
+
+        void UpdateTimeOfStringType(float timeToAdd, KeyFrameType type);
+        void SeekOfStringType(float time, KeyFrameType type);
+
+        float m_time;
+
         bool m_isRunning;
         bool m_isStopped;
 

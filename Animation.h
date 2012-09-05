@@ -42,17 +42,11 @@ This class represents an animations. It manages all calculations for each bones 
 class Animation
 {
     friend class Sk::Bone;
+    friend class SkeletonAnimator;
 
     public:
         Animation();
         virtual ~Animation();
-
-        void Reset();
-
-        void UpdateTime(float timeToAdd);
-        void Seek(float time);
-
-        float GetTime() const {return m_time;};
 
         float GetPeriod() const {return m_period;};
         void SetPeriod(float value) {m_period = value;};
@@ -74,8 +68,6 @@ class Animation
 
         std::vector<float> GetKeyFramesTimes(const std::string &bone = "", KeyFrameType type = AnyKeyFrame);
 
-        void ApplyToSkeleton(std::vector<Bone*> &boneVec, Sk::Res::SkImageManager & imageMgr);
-
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
 
         void LoadFromXml(TiXmlElement *ele);
@@ -84,16 +76,7 @@ class Animation
         void ExposeResources(Sk::Res::SkImageManager & manager);
 
     private:
-        int GetNextIndex(const std::string &boneName, KeyFrameType type, unsigned int index);
-        float GetTimeDelta(const KeyFrame &frame1, const KeyFrame &frame2);
 
-        void UpdateTimeOfSmoothedType(float timeToAdd, KeyFrameType type);
-        void SeekOfSmoothedType(float time, KeyFrameType type);
-
-        void UpdateTimeOfStringType(float timeToAdd, KeyFrameType type);
-        void SeekOfStringType(float time, KeyFrameType type);
-
-        float m_time;
         float m_period;
         bool m_autoRepeat;
 
