@@ -592,6 +592,8 @@
 		<Unit filename="SkeletonObjectEditor.h" />
 		<Unit filename="SkeletonSettings.cpp" />
 		<Unit filename="SkeletonSettings.h" />
+		<Unit filename="Template.cpp" />
+		<Unit filename="Template.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
