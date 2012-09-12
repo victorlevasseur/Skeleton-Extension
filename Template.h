@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <utility>
 
 #include "BoneAnimation.h"
 
@@ -12,21 +13,23 @@ namespace Sk
 namespace Anim
 {
 
+class Animation;
+
 class Template
 {
     public:
-        Template(const Animation &animation, std::map<std::string, std::string> bonesDescriptions);
+        Template(const Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions);
         ~Template();
 
         void LoadFromFile(const std::string &path);
         void SaveToFile(const std::string &path);
 
-        Animation* CreateAnimation(std::map<std::string, std::string> &bonesNames);
+        void CreateAnimation(std::map<std::string, std::string> &bonesNames, Animation &baseAnimation);
 
     private:
         float m_period;
         std::map<std::string, BoneAnimation> m_keyFrames;
-        std::map<std::string, std::string> m_boneDescriptions;
+        std::vector<std::pair<std::string, std::string> > m_boneDescriptions;
 };
 
 }

@@ -43,6 +43,7 @@ class Animation
 {
     friend class Sk::Bone;
     friend class SkeletonAnimator;
+    friend class Template;
 
     public:
         Animation();
