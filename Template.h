@@ -18,7 +18,7 @@ class Animation;
 class Template
 {
     public:
-        Template(const Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions);
+        Template(Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions, KeyFrameTypes types);
         ~Template();
 
         void LoadFromFile(const std::string &path);
@@ -30,6 +30,7 @@ class Template
         float m_period;
         std::map<std::string, BoneAnimation> m_keyFrames;
         std::vector<std::pair<std::string, std::string> > m_boneDescriptions;
+        KeyFrameTypes m_types;
 };
 
 }

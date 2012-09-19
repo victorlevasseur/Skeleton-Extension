@@ -9,9 +9,21 @@ namespace Sk
 namespace Anim
 {
 
-Template::Template(const Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions)
+Template::Template(Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions, KeyFrameTypes types)
 {
-    m_keyFrames = animation.m_keyFrames;
+    m_types = types;
+
+    for(std::map<std::string, BoneAnimation>::iterator it = animation.m_keyFrames.begin(); it != animation.m_keyFrames.end(); it++)
+    {
+        for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
+        {
+            if((types & it2->first) != 0)
+            {
+                m_keyFrames[it->first].keyFrames[it2->first] = it2->second;
+            }
+        }
+    }
+
     m_boneDescriptions = bonesDescriptions;
 }
 

@@ -41,6 +41,8 @@ enum KeyFrameType
     AnyKeyFrame = 1000 /**< Used to represents all keyframes types in some methods*/
 };
 
+typedef int KeyFrameTypes;
+
 }
 
 }
