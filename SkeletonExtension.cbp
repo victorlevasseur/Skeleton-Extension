@@ -573,6 +573,7 @@
 		<Unit filename="BoneAnimation.cpp" />
 		<Unit filename="BoneAnimation.h" />
 		<Unit filename="Extension.cpp" />
+		<Unit filename="GlobalDefs.cpp" />
 		<Unit filename="GlobalDefs.h" />
 		<Unit filename="ImageManager.cpp" />
 		<Unit filename="ImageManager.h" />

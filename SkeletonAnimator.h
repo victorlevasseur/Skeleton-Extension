@@ -87,7 +87,7 @@ class SkeletonAnimator
 
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
 
-        void LoadFromXml(TiXmlElement *ele);
+        void LoadFromXml(TiXmlElement *ele, int fileVersion);
         void SaveToXml(TiXmlElement *ele);
 
         void ExposeResources(Sk::Res::SkImageManager & manager);

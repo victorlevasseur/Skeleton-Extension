@@ -402,7 +402,7 @@ void SkeletonAnimator::NotifyBoneRenamed(const std::string &oldName, const std::
     }
 }
 
-void SkeletonAnimator::LoadFromXml(TiXmlElement *ele)
+void SkeletonAnimator::LoadFromXml(TiXmlElement *ele, int fileVersion)
 {
     m_animations.clear();
 
@@ -414,7 +414,7 @@ void SkeletonAnimator::LoadFromXml(TiXmlElement *ele)
         if(child->ToElement())
         {
             m_animations[std::string(child->ToElement()->Attribute("name"))] = Animation();
-            m_animations[std::string(child->ToElement()->Attribute("name"))].LoadFromXml(child->ToElement());
+            m_animations[std::string(child->ToElement()->Attribute("name"))].LoadFromXml(child->ToElement(), fileVersion);
         }
     }
 }

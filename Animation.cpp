@@ -21,6 +21,7 @@ Copyright (C) 2012 Victor Levasseur
 #include "Animation.h"
 
 #include "GDL/tinyxml/tinyxml.h"
+#include "GDL/CommonTools.h"
 
 #include "BoneAnimation.h"
 #include "InterpolationMethods.h"
@@ -161,7 +162,7 @@ std::vector<float> Animation::GetKeyFramesTimes(const std::string &bone, KeyFram
     {
         for(std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin(); it != m_keyFrames.end(); it++)
         {
-            if(type == AnyKeyFrame)
+            if(type == AllKeyFrame)
             {
                 for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
                 {
@@ -182,7 +183,7 @@ std::vector<float> Animation::GetKeyFramesTimes(const std::string &bone, KeyFram
     }
     else
     {
-        if(type == AnyKeyFrame)
+        if(type == AllKeyFrame)
         {
             for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = m_keyFrames[bone].keyFrames.begin(); it2 != m_keyFrames[bone].keyFrames.end(); it2++)
             {
@@ -208,7 +209,7 @@ std::vector<float> Animation::GetKeyFramesTimes(const std::string &bone, KeyFram
     return listOfKeys;
 }
 
-void Animation::LoadFromXml(TiXmlElement *ele)
+void Animation::LoadFromXml(TiXmlElement *ele, int fileVersion)
 {
     m_keyFrames.clear();
 
@@ -230,10 +231,10 @@ void Animation::LoadFromXml(TiXmlElement *ele)
             TiXmlNode *keyframetypes;
             for( keyframetypes = child->ToElement()->FirstChild("Type"); keyframetypes; keyframetypes = keyframetypes->NextSibling() )
             {
-                int typeInt = 0;
+                int typeInt = 1;
                 keyframetypes->ToElement()->QueryIntAttribute("type", &typeInt);
 
-                KeyFrameType type = static_cast<KeyFrameType>(typeInt);
+                KeyFrameType type = fileVersion != 0 ? (static_cast<KeyFrameType>(typeInt)) : (static_cast<KeyFrameType>(pow(2, typeInt)));
 
                 //Query all KeyFrames
                 TiXmlNode *keyframe;

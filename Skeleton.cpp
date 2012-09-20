@@ -160,6 +160,10 @@ void Skeleton::LoadResources(const RuntimeScene & scene, const ImageManager & im
 
 void Skeleton::Save(TiXmlElement &elem)
 {
+    TiXmlElement *verEle = new TiXmlElement("Version");
+    verEle->SetAttribute("version", GetFileVersion());
+    elem.LinkEndChild(verEle);
+
     GetRootBone()->SaveBone(elem);
 
     TiXmlElement *animationsElem = new TiXmlElement("Animations");
@@ -169,6 +173,13 @@ void Skeleton::Save(TiXmlElement &elem)
 
 void Skeleton::Load(const TiXmlElement &elem)
 {
+    int version = 0;
+    TiXmlElement *verEle = const_cast<TiXmlElement*>(elem.FirstChildElement("Version"));
+    if(verEle)
+    {
+        verEle->QueryIntAttribute("version", &version);
+    }
+
     TiXmlElement *boneElem = const_cast<TiXmlElement*>(elem.FirstChildElement("Bone"));
     if(boneElem)
     {
@@ -178,7 +189,7 @@ void Skeleton::Load(const TiXmlElement &elem)
     TiXmlElement *animationsElem = const_cast<TiXmlElement*>(elem.FirstChildElement("Animations"));
     if(animationsElem)
     {
-        GetAnimator().LoadFromXml(animationsElem);
+        GetAnimator().LoadFromXml(animationsElem, version);
     }
 }
 

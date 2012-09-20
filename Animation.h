@@ -67,11 +67,11 @@ class Animation
         inline const std::vector<KeyFrame>& GetBoneKeyFrames(const std::string &boneName, KeyFrameType type);
         void SortKeyFrames(const std::string &boneName);
 
-        std::vector<float> GetKeyFramesTimes(const std::string &bone = "", KeyFrameType type = AnyKeyFrame);
+        std::vector<float> GetKeyFramesTimes(const std::string &bone = "", KeyFrameType type = AllKeyFrame);
 
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
 
-        void LoadFromXml(TiXmlElement *ele);
+        void LoadFromXml(TiXmlElement *ele, int fileVersion);
         void SaveToXml(TiXmlElement *ele);
 
         void ExposeResources(Sk::Res::SkImageManager & manager);
