@@ -154,6 +154,20 @@ void Template::SaveToFile(const std::string &path)
     doc->SaveFile(path.c_str());
 }
 
+void Template::CreateAnimation(std::map<std::string, std::string> &bonesNames, Animation &baseAnimation)
+{
+    for(std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin(); it != m_keyFrames.end(); it++)
+    {
+        std::string boneName = bonesNames[it->first];
+
+        for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = m_keyFrames[it->first].keyFrames.begin(); it2 != m_keyFrames[it->first].keyFrames.end(); it2++)
+        {
+            baseAnimation.m_keyFrames[boneName].keyFrames[it2->first] = it2->second;
+        }
+
+    }
+}
+
 }
 
 }
