@@ -595,6 +595,8 @@
 		<Unit filename="SkeletonSettings.h" />
 		<Unit filename="Template.cpp" />
 		<Unit filename="Template.h" />
+		<Unit filename="TemplateCreator.cpp" />
+		<Unit filename="TemplateCreator.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
@@ -606,6 +608,7 @@
 					<wxDialog wxs="wxsmith/SkeletonObjectEditor.wxs" src="SkeletonObjectEditor.cpp" hdr="SkeletonObjectEditor.h" name="SkeletonObjectEditor" language="CPP" />
 					<wxDialog wxs="wxsmith/SkeletonAnimationSettings.wxs" src="SkeletonAnimationSettings.cpp" hdr="SkeletonAnimationSettings.h" name="SkeletonAnimationSettings" language="CPP" />
 					<wxDialog wxs="wxsmith/SkeletonSettings.wxs" src="SkeletonSettings.cpp" hdr="SkeletonSettings.h" name="SkeletonSettings" language="CPP" />
+					<wxDialog wxs="wxsmith/TemplateCreator.wxs" src="TemplateCreator.cpp" hdr="TemplateCreator.h" name="TemplateCreator" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

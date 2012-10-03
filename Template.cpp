@@ -1,5 +1,7 @@
 #include "Template.h"
 
+#ifdef GD_IDE_ONLY
+
 #include "Animation.h"
 #include "GDL/tinyxml/tinyxml.h"
 
@@ -171,3 +173,5 @@ void Template::CreateAnimation(std::map<std::string, std::string> &bonesNames, A
 }
 
 }
+
+#endif

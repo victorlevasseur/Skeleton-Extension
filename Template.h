@@ -1,6 +1,8 @@
 #ifndef SKTEMPLATE_H
 #define SKTEMPLATE_H
 
+#ifdef GD_IDE_ONLY
+
 #include <map>
 #include <string>
 #include <utility>
@@ -15,6 +17,10 @@ namespace Anim
 
 class Animation;
 
+/**
+Class to manage a template. Provides methods to create or apply template from/to an animation.
+Note : Only available when GD_IDE_ONLY is defined.
+*/
 class Template
 {
     public:
@@ -36,5 +42,7 @@ class Template
 }
 
 }
+
+#endif
 
 #endif

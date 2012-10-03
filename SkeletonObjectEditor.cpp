@@ -41,6 +41,7 @@ Copyright (C) 2012 Victor Levasseur
 
 #include "GDL/Game.h"
 #include "SkeletonObject.h"
+#include "TemplateCreator.h"
 #include "InterpolationMethods.h"
 #include "GDL/IDE/MainEditorCommand.h"
 #include "GDCore/IDE/CommonBitmapManager.h"
@@ -57,8 +58,10 @@ const long SkeletonObjectEditor::ID_TOGGLEBUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_CHOICE1 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON2 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON4 = wxNewId();
+const long SkeletonObjectEditor::ID_BITMAPBUTTON6 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON1 = wxNewId();
 const long SkeletonObjectEditor::ID_BITMAPBUTTON3 = wxNewId();
+const long SkeletonObjectEditor::ID_BITMAPBUTTON5 = wxNewId();
 const long SkeletonObjectEditor::ID_PANEL3 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON9 = wxNewId();
 const long SkeletonObjectEditor::ID_BUTTON10 = wxNewId();
@@ -99,7 +102,7 @@ mode(0)
 	wxFlexGridSizer* FlexGridSizer6;
 	wxFlexGridSizer* FlexGridSizer1;
 	wxFlexGridSizer* FlexGridSizer11;
-
+	
 	Create(parent, wxID_ANY, _("Editeur de squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX, _T("wxID_ANY"));
 	FlexGridSizer3 = new wxFlexGridSizer(1, 1, 0, 0);
 	FlexGridSizer3->AddGrowableCol(0);
@@ -121,7 +124,7 @@ mode(0)
 	ToggleButton2->SetToolTip(_("L\'éditeur d\'animation permet de gérer et de créer des animations en utilisant les os du squelette."));
 	BoxSizer1->Add(ToggleButton2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer11->Add(BoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer8 = new wxFlexGridSizer(0, 5, 0, 0);
+	FlexGridSizer8 = new wxFlexGridSizer(0, 7, 0, 0);
 	AnimationCombobox = new wxChoice(Core, ID_CHOICE1, wxDefaultPosition, wxSize(163,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
 	FlexGridSizer8->Add(AnimationCombobox, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BitmapButton2 = new wxBitmapButton(Core, ID_BITMAPBUTTON2, wxBitmap(wxImage(_T("res/addicon.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
@@ -132,6 +135,10 @@ mode(0)
 	BitmapButton4->SetDefault();
 	BitmapButton4->SetToolTip(_("Dupliquer l\'animation sélectionnée"));
 	FlexGridSizer8->Add(BitmapButton4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	templateBt = new wxBitmapButton(Core, ID_BITMAPBUTTON6, wxBitmap(wxImage(_T("res\\bookmark.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON6"));
+	templateBt->SetDefault();
+	templateBt->SetToolTip(_("Appliquer un modèle à l\'animation courante."));
+	FlexGridSizer8->Add(templateBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BitmapButton1 = new wxBitmapButton(Core, ID_BITMAPBUTTON1, wxBitmap(wxImage(_T("res/paraJeu16.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON1"));
 	BitmapButton1->SetDefault();
 	BitmapButton1->SetToolTip(_("Configurer l\'animation..."));
@@ -141,6 +148,10 @@ mode(0)
 	BitmapButton3->SetToolTip(_("Supprimer l\'animation"));
 	BitmapButton3->SetHelpText(_("Supprimer l\'animation"));
 	FlexGridSizer8->Add(BitmapButton3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	createTemplateBt = new wxBitmapButton(Core, ID_BITMAPBUTTON5, wxBitmap(wxImage(_T("res\\bookmark_add.png"))), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON5"));
+	createTemplateBt->SetDefault();
+	createTemplateBt->SetToolTip(_("Créer un modèle"));
+	FlexGridSizer8->Add(createTemplateBt, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer11->Add(FlexGridSizer8, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer5->Add(FlexGridSizer11, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	timelinePanel = new wxPanel(Core, ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL5"));
@@ -204,7 +215,7 @@ mode(0)
 	FlexGridSizer3->Fit(this);
 	FlexGridSizer3->SetSizeHints(this);
 	Center();
-
+	
 	Connect(ID_TOGGLEBUTTON1,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton1Toggle);
 	Connect(ID_TOGGLEBUTTON2,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton2Toggle);
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&SkeletonObjectEditor::OnAnimationComboboxSelect);
@@ -212,6 +223,7 @@ mode(0)
 	Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton4Click);
 	Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton1Click);
 	Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton3Click);
+	Connect(ID_BITMAPBUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OncreateTemplateBtClick);
 	Panel2->Connect(wxEVT_PAINT,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2Paint,0,this);
 	Panel2->Connect(wxEVT_ERASE_BACKGROUND,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2EraseBackground,0,this);
 	Panel2->Connect(wxEVT_LEFT_DOWN,(wxObjectEventFunction)&SkeletonObjectEditor::OnPanel2LeftDown,0,this);
@@ -1521,6 +1533,15 @@ float SkeletonObjectEditor::GetGraduationScale(float width, float scale) const
     }
 
     return betweenGradDiff;
+}
+
+void SkeletonObjectEditor::OncreateTemplateBtClick(wxCommandEvent& event)
+{
+    if(mode != 1 || !timeline_currentAnim)
+        return;
+
+    TemplateCreator templCreator(&skeleton, timeline_currentAnim, this);
+    templCreator.ShowModal();
 }
 
 #endif
