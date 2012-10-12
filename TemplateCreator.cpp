@@ -6,6 +6,19 @@
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
+#include <wx/filedlg.h>
+#include <wx/log.h>
+
+#include <string>
+#include <vector>
+#include <utility>
+
+#include "Bone.h"
+#include "Skeleton.h"
+#include "Template.h"
+#include "Animation.h"
+
+#include "GDL/CommonTools.h"
 
 //(*IdInit(TemplateCreator)
 const long TemplateCreator::ID_STATICTEXT1 = wxNewId();
@@ -75,7 +88,7 @@ TemplateCreator::TemplateCreator(Sk::Skeleton *ske, Sk::Anim::Animation *anim, w
 	propertyGridSizer->Fit(propertyGridPanel);
 	propertyGridSizer->SetSizeHints(propertyGridPanel);
 	FlexGridSizer4->Add(propertyGridPanel, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	StaticBoxSizer2->Add(FlexGridSizer4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	StaticBoxSizer2->Add(FlexGridSizer4, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer5->Add(StaticBoxSizer2, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer3 = new wxFlexGridSizer(0, 3, 0, 0);
 	saveButton = new wxButton(Core, ID_BUTTON1, _("Enregistrer..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
@@ -90,6 +103,9 @@ TemplateCreator::TemplateCreator(Sk::Skeleton *ske, Sk::Anim::Animation *anim, w
 	SetSizer(FlexGridSizer1);
 	FlexGridSizer1->Fit(this);
 	FlexGridSizer1->SetSizeHints(this);
+
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TemplateCreator::OnsaveButtonClick);
+	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TemplateCreator::OncancelButtonClick);
 	//*)
 
 	m_ske = ske;
@@ -114,7 +130,13 @@ TemplateCreator::TemplateCreator(Sk::Skeleton *ske, Sk::Anim::Animation *anim, w
     m_grid->SetExtraStyle( wxPG_EX_HELP_AS_TOOLTIPS );
     propertyGridSizer->Add(m_grid, 1, wxALL|wxEXPAND, 0);
 
-    m_grid->Append( new wxPropertyCategory(_("Identification"), "Identification") );
+    m_grid->Append( new wxPropertyCategory(_("Descriptions des os"), "Descriptions") );
+
+    std::vector<Sk::Bone*> bonesList = m_ske->GetBones();
+    for(unsigned int a = 0; a < bonesList.size(); a++)
+    {
+        m_grid->Append( new wxStringProperty(wxString(bonesList.at(a)->GetName().c_str()), wxString(bonesList.at(a)->GetName().c_str()), "") );
+    }
 
     SetSize(500,700);
 }
@@ -124,6 +146,45 @@ TemplateCreator::~TemplateCreator()
     m_mgr.UnInit();
 	//(*Destroy(TemplateCreator)
 	//*)
+}
+
+void TemplateCreator::OnsaveButtonClick(wxCommandEvent& event)
+{
+    wxFileDialog saveFileDialog(this, _("Enregistrer ce modèle"), "", "", "Skeleton templates (*.skt)|*.skt", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+
+    if (saveFileDialog.ShowModal() == wxID_CANCEL) ;
+    //    return;     // the user changed idea...
+
+    std::string filePath = ToString(saveFileDialog.GetPath());
+
+    std::vector<std::pair<std::string, std::string> > listOfDescriptions;
+    std::vector<Sk::Bone*> bonesList = m_ske->GetBones();
+
+    for(unsigned int a = 0; a < bonesList.size(); a++)
+    {
+        if(m_grid->GetProperty("Descriptions." + wxString(bonesList.at(a)->GetName().c_str())))
+        {
+            std::pair<std::string, std::string> boneDescription(bonesList.at(a)->GetName(), ToString(m_grid->GetProperty("Descriptions." + wxString(bonesList.at(a)->GetName().c_str()))->GetValue().GetString()));
+            listOfDescriptions.push_back(boneDescription);
+        }
+    }
+
+    Sk::Anim::KeyFrameTypes types = (saveAngleKeyFrames->IsChecked() ? Sk::Anim::AngleKeyFrame : 0) |
+                                    (saveLengthKeyFrames->IsChecked() ? Sk::Anim::LengthKeyFrame : 0) |
+                                    (saveOffsetKeyFrames->IsChecked() ? Sk::Anim::PositionXKeyFrame : 0) |
+                                    (saveOffsetKeyFrames->IsChecked() ? Sk::Anim::PositionYKeyFrame : 0) |
+                                    (saveImageKeyFrames->IsChecked() ? Sk::Anim::ImageKeyFrame : 0);
+
+    Sk::Anim::Template newTemplate;
+    newTemplate.CreateFromAnimation(*m_anim, listOfDescriptions, types);
+    newTemplate.SaveToFile(filePath);
+
+    EndModal(1);
+}
+
+void TemplateCreator::OncancelButtonClick(wxCommandEvent& event)
+{
+    EndModal(0);
 }
 
 #endif

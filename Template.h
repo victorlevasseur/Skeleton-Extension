@@ -24,12 +24,13 @@ Note : Only available when GD_IDE_ONLY is defined.
 class Template
 {
     public:
-        Template(Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions, KeyFrameTypes types);
+        Template();
         ~Template();
 
         void LoadFromFile(const std::string &path);
         void SaveToFile(const std::string &path);
 
+        void CreateFromAnimation(Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions, KeyFrameTypes types);
         void CreateAnimation(std::map<std::string, std::string> &bonesNames, Animation &baseAnimation);
 
     private:

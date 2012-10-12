@@ -98,7 +98,7 @@
 											<option>1</option>
 										</object>
 									</object>
-									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<option>1</option>
 								</object>
 							</object>
@@ -112,6 +112,7 @@
 								<object class="sizeritem">
 									<object class="wxButton" name="ID_BUTTON1" variable="saveButton" member="yes">
 										<label>Enregistrer...</label>
+										<handler function="OnsaveButtonClick" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -120,6 +121,7 @@
 								<object class="sizeritem">
 									<object class="wxButton" name="ID_BUTTON2" variable="cancelButton" member="yes">
 										<label>Annuler</label>
+										<handler function="OncancelButtonClick" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>

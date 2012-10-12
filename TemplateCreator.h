@@ -61,6 +61,8 @@ class TemplateCreator: public wxDialog
 	private:
 
 		//(*Handlers(TemplateCreator)
+		void OnsaveButtonClick(wxCommandEvent& event);
+		void OncancelButtonClick(wxCommandEvent& event);
 		//*)
 
 		Sk::Skeleton *m_ske;

@@ -1,3 +1,7 @@
+#ifdef GD_IDE_ONLY
+#include <wx/log.h>
+#endif
+
 #include "Template.h"
 
 #ifdef GD_IDE_ONLY
@@ -11,7 +15,17 @@ namespace Sk
 namespace Anim
 {
 
-Template::Template(Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions, KeyFrameTypes types)
+Template::Template()
+{
+
+}
+
+Template::~Template()
+{
+
+}
+
+void Template::CreateFromAnimation(Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions, KeyFrameTypes types)
 {
     m_types = types;
 
@@ -27,11 +41,6 @@ Template::Template(Animation &animation, std::vector<std::pair<std::string, std:
     }
 
     m_boneDescriptions = bonesDescriptions;
-}
-
-Template::~Template()
-{
-
 }
 
 void Template::LoadFromFile(const std::string &path)
@@ -110,9 +119,9 @@ void Template::LoadFromFile(const std::string &path)
 
 void Template::SaveToFile(const std::string &path)
 {
-    TiXmlDocument *doc = new TiXmlDocument("Template");
-    TiXmlElement *baseEle = doc->LinkEndChild(new TiXmlElement("Template"))->ToElement();
-    TiXmlElement *ele = baseEle->LinkEndChild(new TiXmlElement("Keyframes"))->ToElement();
+    TiXmlDocument *doc = new TiXmlDocument();
+    TiXmlElement *baseEle = new TiXmlElement("Template");
+    TiXmlElement *ele = new TiXmlElement("Keyframes");
 
     ele->SetDoubleAttribute("period", m_period);
     ele->SetAttribute("types", m_types);
@@ -152,6 +161,9 @@ void Template::SaveToFile(const std::string &path)
 
         descriptionsEle->LinkEndChild(boneDescrEle);
     }
+
+    baseEle->LinkEndChild(ele);
+    doc->LinkEndChild(baseEle);
 
     doc->SaveFile(path.c_str());
 }
