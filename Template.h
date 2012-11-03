@@ -33,6 +33,8 @@ class Template
         void CreateFromAnimation(Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions, KeyFrameTypes types);
         void CreateAnimation(std::map<std::string, std::string> &bonesNames, Animation &baseAnimation);
 
+        const std::vector<std::pair<std::string, std::string> >& GetDescriptions() const {return m_boneDescriptions;};
+
     private:
         float m_period;
         std::map<std::string, BoneAnimation> m_keyFrames;

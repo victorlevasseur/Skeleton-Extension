@@ -100,26 +100,29 @@ void Bone::Draw(sf::RenderTarget &target, sf::Vector2f offset, Bone::DrawType ty
 {
     if(type == Lines)
     {
-        sf::Shape line = sf::Shape::Line(offset.x + m_tmp_position.x,
-                                        offset.y + m_tmp_position.y,
-                                        offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x,
-                                        offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y,
-                                        2,
-                                        sf::Color(255, 0, 0));
+        sf::VertexArray line(sf::Lines);
 
-        target.Draw(line);
+        line.append(sf::Vertex(sf::Vector2f(offset.x + m_tmp_position.x,
+                                            offset.y + m_tmp_position.y),
+                               sf::Color(255, 0, 0)));
+
+        line.append(sf::Vertex(sf::Vector2f(offset.x + m_tmp_position.x + GetEndNodeRelativePosition().x,
+                                            offset.y + m_tmp_position.y + GetEndNodeRelativePosition().y),
+                               sf::Color(255, 0, 0)));
+
+        target.draw(line);
     }
     else if(type == Sprites && m_texture != boost::shared_ptr<SFMLTextureWrapper>())
     {
         sf::Sprite sprite;
 
-        sprite.SetOrigin(m_texture->texture.GetWidth() / 2, m_texture->texture.GetHeight() / 2);
-        sprite.SetTexture(m_texture->texture);
-        sprite.SetPosition(offset.x + m_tmp_position.x + (GetEndNodeRelativePosition().x / 2),
+        sprite.setOrigin(m_texture->texture.getSize().x / 2, m_texture->texture.getSize().y / 2);
+        sprite.setTexture(m_texture->texture);
+        sprite.setPosition(offset.x + m_tmp_position.x + (GetEndNodeRelativePosition().x / 2),
                            offset.y + m_tmp_position.y + (GetEndNodeRelativePosition().y / 2));
-        sprite.SetRotation(m_tmp_totalAngle);
+        sprite.setRotation(m_tmp_totalAngle);
 
-        target.Draw(sprite);
+        target.draw(sprite);
     }
 }
 

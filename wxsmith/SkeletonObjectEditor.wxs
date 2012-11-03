@@ -88,6 +88,7 @@
 														<bitmap>res\bookmark.png</bitmap>
 														<default>1</default>
 														<tooltip>Appliquer un modèle à l&apos;animation courante.</tooltip>
+														<handler function="OntemplateBtClick" entry="EVT_BUTTON" />
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<option>1</option>

@@ -38,6 +38,7 @@ Copyright (C) 2012 Victor Levasseur
 
 #include "SkeletonAnimationSettings.h"
 #include "SkeletonSettings.h"
+#include "TemplateInsertion.h"
 
 #include "GDL/Game.h"
 #include "SkeletonObject.h"
@@ -102,7 +103,7 @@ mode(0)
 	wxFlexGridSizer* FlexGridSizer6;
 	wxFlexGridSizer* FlexGridSizer1;
 	wxFlexGridSizer* FlexGridSizer11;
-	
+
 	Create(parent, wxID_ANY, _("Editeur de squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX, _T("wxID_ANY"));
 	FlexGridSizer3 = new wxFlexGridSizer(1, 1, 0, 0);
 	FlexGridSizer3->AddGrowableCol(0);
@@ -215,12 +216,13 @@ mode(0)
 	FlexGridSizer3->Fit(this);
 	FlexGridSizer3->SetSizeHints(this);
 	Center();
-	
+
 	Connect(ID_TOGGLEBUTTON1,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton1Toggle);
 	Connect(ID_TOGGLEBUTTON2,wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnToggleButton2Toggle);
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&SkeletonObjectEditor::OnAnimationComboboxSelect);
 	Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton2Click);
 	Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton4Click);
+	Connect(ID_BITMAPBUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OntemplateBtClick);
 	Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton1Click);
 	Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnBitmapButton3Click);
 	Connect(ID_BITMAPBUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OncreateTemplateBtClick);
@@ -1224,6 +1226,15 @@ void SkeletonObjectEditor::OnBitmapButton1Click(wxCommandEvent& event)
 
     SkeletonAnimationSettings dialog(this, timeline_currentAnim);
     dialog.ShowModal();
+}
+
+void SkeletonObjectEditor::OntemplateBtClick(wxCommandEvent& event)
+{
+    if(!timeline_currentAnim)
+        return;
+
+    TemplateInsertion templDial(this, timeline_currentAnim, &skeleton);
+    templDial.ShowModal();
 }
 
 void SkeletonObjectEditor::OnBitmapButton3Click(wxCommandEvent& event)

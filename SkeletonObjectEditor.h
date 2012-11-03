@@ -156,6 +156,7 @@ class SkeletonObjectEditor: public wxDialog
 		void OnButton6Click(wxCommandEvent& event);
 		void OnPanel1LeftUp(wxMouseEvent& event);
 		void OncreateTemplateBtClick(wxCommandEvent& event);
+		void OntemplateBtClick(wxCommandEvent& event);
 		//*)
 		void OnGridPropertyChanging(wxPropertyGridEvent& event);
 		void OnGridPropertyChanged(wxPropertyGridEvent& event);

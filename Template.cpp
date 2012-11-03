@@ -27,13 +27,17 @@ Template::~Template()
 
 void Template::CreateFromAnimation(Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions, KeyFrameTypes types)
 {
+    m_keyFrames.clear();
+    m_boneDescriptions.clear();
+
     m_types = types;
+    m_period = animation.GetPeriod();
 
     for(std::map<std::string, BoneAnimation>::iterator it = animation.m_keyFrames.begin(); it != animation.m_keyFrames.end(); it++)
     {
         for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = it->second.keyFrames.begin(); it2 != it->second.keyFrames.end(); it2++)
         {
-            if((types & it2->first) != 0)
+            if((types & (int)it2->first) != 0)
             {
                 m_keyFrames[it->first].keyFrames[it2->first] = it2->second;
             }
@@ -170,6 +174,8 @@ void Template::SaveToFile(const std::string &path)
 
 void Template::CreateAnimation(std::map<std::string, std::string> &bonesNames, Animation &baseAnimation)
 {
+    baseAnimation.SetPeriod(m_period);
+
     for(std::map<std::string, BoneAnimation>::iterator it = m_keyFrames.begin(); it != m_keyFrames.end(); it++)
     {
         std::string boneName = bonesNames[it->first];

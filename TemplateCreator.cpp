@@ -152,8 +152,8 @@ void TemplateCreator::OnsaveButtonClick(wxCommandEvent& event)
 {
     wxFileDialog saveFileDialog(this, _("Enregistrer ce modèle"), "", "", "Skeleton templates (*.skt)|*.skt", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
 
-    if (saveFileDialog.ShowModal() == wxID_CANCEL) ;
-    //    return;     // the user changed idea...
+    if (saveFileDialog.ShowModal() == wxID_CANCEL)
+        return;     // the user changed idea...
 
     std::string filePath = ToString(saveFileDialog.GetPath());
 

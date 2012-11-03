@@ -125,8 +125,13 @@ bool SkeletonObject::Draw( sf::RenderTarget& renderTarget )
  */
 bool SkeletonObject::DrawEdittime( sf::RenderTarget &renderTarget )
 {
-    sf::Shape rectangle = sf::Shape::Rectangle(GetX(), GetY(), GetWidth(), GetHeight(), sf::Color(255, 255, 255, 0), 2, sf::Color(0, 0, 0, 255));
-    renderTarget.Draw(rectangle);
+    sf::RectangleShape rectangle(sf::Vector2f(GetWidth(), GetHeight()));
+    rectangle.setPosition(GetX(), GetY());
+    rectangle.setFillColor(sf::Color(255, 255, 255, 0));
+    rectangle.setOutlineColor(sf::Color(0, 0, 0, 255));
+    rectangle.setOutlineThickness(2);
+
+    renderTarget.draw(rectangle);
 
     skeleton->Draw(renderTarget, sf::Vector2f(GetX(), GetY()), Sk::Bone::Sprites);
     return true;
