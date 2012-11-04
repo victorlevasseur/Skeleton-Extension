@@ -1,6 +1,8 @@
 #ifndef TEMPLATEINSERTION_H
 #define TEMPLATEINSERTION_H
 
+#ifdef GD_IDE_ONLY
+
 //(*Headers(TemplateInsertion)
 #include <wx/sizer.h>
 #include <wx/stattext.h>
@@ -41,14 +43,19 @@ class TemplateInsertion: public wxDialog
 	private:
 
 		//(*Handlers(TemplateInsertion)
+		void OnvalidBtClick(wxCommandEvent& event);
+		void OncancelBtClick(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()
 
 		wxPropertyGrid *m_grid;
+		wxArrayString boneNamesList;
 
 		Sk::Anim::Template m_template;
 		Sk::Anim::Animation *m_animation;
 };
+
+#endif
 
 #endif

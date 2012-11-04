@@ -1,5 +1,7 @@
 #include "TemplateInsertion.h"
 
+#ifdef GD_IDE_ONLY
+
 //(*InternalHeaders(TemplateInsertion)
 #include <wx/intl.h>
 #include <wx/string.h>
@@ -53,6 +55,9 @@ TemplateInsertion::TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *anim
 	FlexGridSizer1->Add(FlexGridSizer3, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(FlexGridSizer1);
 	FlexGridSizer1->SetSizeHints(this);
+
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TemplateInsertion::OnvalidBtClick);
+	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TemplateInsertion::OncancelBtClick);
 	//*)
 
 	wxFileDialog openFileDialog(this, _("Sélectionner un modèle"), "", "", "Skeleton templates (*.skt)|*.skt", wxFD_OPEN);
@@ -78,7 +83,6 @@ TemplateInsertion::TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *anim
 
     //Request the list of all current skeleton's bones
     std::vector<Sk::Bone*> skeletonBoneList = skeleton->GetBones();
-    wxArrayString boneNamesList;
     boneNamesList.Add("");
     for(unsigned int a = 0; a < skeletonBoneList.size(); a++)
     {
@@ -101,3 +105,27 @@ TemplateInsertion::~TemplateInsertion()
 	//*)
 }
 
+
+void TemplateInsertion::OnvalidBtClick(wxCommandEvent& event)
+{
+    std::map<std::string, std::string> bonesNames;
+
+    for(wxPropertyGridIterator property = m_grid->GetIterator(wxPG_ITERATE_NORMAL); !property.AtEnd(); property.Next(false))
+    {
+        std::string boneOriginalName = ToString(property.GetProperty()->GetBaseName());
+        std::string boneAffectedName = ToString(boneNamesList[property.GetProperty()->GetValue().GetLong()]);
+
+        bonesNames[boneOriginalName] = boneAffectedName;
+    }
+
+    m_template.CreateAnimation(bonesNames, *m_animation);
+
+    EndModal(1);
+}
+
+void TemplateInsertion::OncancelBtClick(wxCommandEvent& event)
+{
+    EndModal(0);
+}
+
+#endif

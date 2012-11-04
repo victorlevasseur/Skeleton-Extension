@@ -1,13 +1,10 @@
-#ifdef GD_IDE_ONLY
-#include <wx/log.h>
-#endif
-
 #include "Template.h"
 
 #ifdef GD_IDE_ONLY
 
 #include "Animation.h"
 #include "GDL/tinyxml/tinyxml.h"
+#include "GDL/CommonTools.h"
 
 namespace Sk
 {
@@ -182,7 +179,8 @@ void Template::CreateAnimation(std::map<std::string, std::string> &bonesNames, A
 
         for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = m_keyFrames[it->first].keyFrames.begin(); it2 != m_keyFrames[it->first].keyFrames.end(); it2++)
         {
-            baseAnimation.m_keyFrames[boneName].keyFrames[it2->first] = it2->second;
+            if((m_types & it2->first) != 0)
+                baseAnimation.m_keyFrames[boneName].keyFrames[it2->first] = it2->second;
         }
 
     }

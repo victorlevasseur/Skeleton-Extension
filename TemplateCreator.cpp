@@ -7,7 +7,6 @@
 #include <wx/string.h>
 //*)
 #include <wx/filedlg.h>
-#include <wx/log.h>
 
 #include <string>
 #include <vector>
