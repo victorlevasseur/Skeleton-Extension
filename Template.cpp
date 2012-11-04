@@ -12,7 +12,7 @@ namespace Sk
 namespace Anim
 {
 
-Template::Template()
+Template::Template() : m_description("")
 {
 
 }
@@ -49,8 +49,9 @@ void Template::LoadFromFile(const std::string &path)
     TiXmlDocument *doc = new TiXmlDocument(path.c_str());
     doc->LoadFile(path.c_str());
 
+    TiXmlElement *descEle = doc->RootElement()->FirstChildElement("Description");
     TiXmlElement *ele = doc->RootElement()->FirstChildElement("Keyframes");
-    TiXmlElement *descriptionsEle = doc->RootElement()->FirstChildElement("Descriptions");
+    TiXmlElement *descriptionsEle = doc->RootElement()->FirstChildElement("BonesDescriptions");
 
     m_keyFrames.clear();
     m_boneDescriptions.clear();
@@ -61,6 +62,7 @@ void Template::LoadFromFile(const std::string &path)
     ele->QueryIntAttribute("types", &keyframesTypes);
     m_period = period;
     m_types = keyframesTypes;
+    m_description = descEle != 0 ? std::string(descEle->GetText()) : "";
 
     //Query all BoneAnimation
     TiXmlNode *child;
@@ -106,7 +108,7 @@ void Template::LoadFromFile(const std::string &path)
     }
 
     TiXmlNode *descrBoneEle;
-    for( descrBoneEle = descriptionsEle->FirstChild("Description"); descrBoneEle; descrBoneEle = descrBoneEle->NextSibling("Description") )
+    for( descrBoneEle = descriptionsEle->FirstChild("BoneDescription"); descrBoneEle; descrBoneEle = descrBoneEle->NextSibling("BoneDescription") )
     {
         if(descrBoneEle->ToElement())
         {
@@ -122,6 +124,10 @@ void Template::SaveToFile(const std::string &path)
 {
     TiXmlDocument *doc = new TiXmlDocument();
     TiXmlElement *baseEle = new TiXmlElement("Template");
+
+    TiXmlElement *descEle = new TiXmlElement("Description");
+    descEle->LinkEndChild(new TiXmlText(m_description.c_str()));
+
     TiXmlElement *ele = new TiXmlElement("Keyframes");
 
     ele->SetDoubleAttribute("period", m_period);
@@ -153,16 +159,17 @@ void Template::SaveToFile(const std::string &path)
         ele->LinkEndChild(boneEle);
     }
 
-    TiXmlElement *descriptionsEle = baseEle->LinkEndChild(new TiXmlElement("Descriptions"))->ToElement();
+    TiXmlElement *descriptionsEle = baseEle->LinkEndChild(new TiXmlElement("BonesDescriptions"))->ToElement();
     for(unsigned int a = 0; a < m_boneDescriptions.size(); a++)
     {
-        TiXmlElement *boneDescrEle = new TiXmlElement("Description");
+        TiXmlElement *boneDescrEle = new TiXmlElement("BoneDescription");
         boneDescrEle->SetAttribute("bone", m_boneDescriptions[a].first.c_str());
         boneDescrEle->SetAttribute("description", m_boneDescriptions[a].second.c_str());
 
         descriptionsEle->LinkEndChild(boneDescrEle);
     }
 
+    baseEle->LinkEndChild(descEle);
     baseEle->LinkEndChild(ele);
     doc->LinkEndChild(baseEle);
 

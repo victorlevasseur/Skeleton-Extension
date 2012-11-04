@@ -12,6 +12,8 @@
 #include "GDL/CommonTools.h"
 
 //(*IdInit(TemplateInsertion)
+const long TemplateInsertion::ID_STATICTEXT2 = wxNewId();
+const long TemplateInsertion::ID_STATICLINE1 = wxNewId();
 const long TemplateInsertion::ID_STATICTEXT1 = wxNewId();
 const long TemplateInsertion::ID_PANEL1 = wxNewId();
 const long TemplateInsertion::ID_BUTTON1 = wxNewId();
@@ -37,7 +39,11 @@ TemplateInsertion::TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *anim
 	Move(wxDefaultPosition);
 	FlexGridSizer1 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer1->AddGrowableCol(0);
-	FlexGridSizer1->AddGrowableRow(1);
+	FlexGridSizer1->AddGrowableRow(3);
+	descriptionLabel = new wxStaticText(this, ID_STATICTEXT2, _("DESCRIPTION_LABEL"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+	FlexGridSizer1->Add(descriptionLabel, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticLine1 = new wxStaticLine(this, ID_STATICLINE1, wxDefaultPosition, wxSize(10,-1), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
+	FlexGridSizer1->Add(StaticLine1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Définition du rôle des os du squelette :"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	FlexGridSizer1->Add(StaticText1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	propertyGridPanel = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxSize(274,178), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
@@ -95,6 +101,8 @@ TemplateInsertion::TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *anim
     {
         m_grid->AppendIn("Bones", new wxEnumProperty(bonesDescList.at(a).second, bonesDescList.at(a).first, boneNamesList));
     }
+
+    descriptionLabel->SetLabel(wxString(m_template.GetDescription().c_str()));
 
     SetSize(700,500);
 }

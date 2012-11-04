@@ -6,6 +6,7 @@
 //(*Headers(TemplateInsertion)
 #include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/statline.h>
 #include <wx/panel.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
@@ -26,14 +27,18 @@ class TemplateInsertion: public wxDialog
 		//(*Declarations(TemplateInsertion)
 		wxFlexGridSizer* propertyGridSizer;
 		wxPanel* propertyGridPanel;
+		wxStaticText* descriptionLabel;
 		wxStaticText* StaticText1;
 		wxButton* cancelBt;
+		wxStaticLine* StaticLine1;
 		wxButton* validBt;
 		//*)
 
 	protected:
 
 		//(*Identifiers(TemplateInsertion)
+		static const long ID_STATICTEXT2;
+		static const long ID_STATICLINE1;
 		static const long ID_STATICTEXT1;
 		static const long ID_PANEL1;
 		static const long ID_BUTTON1;

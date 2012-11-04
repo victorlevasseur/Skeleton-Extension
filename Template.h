@@ -35,11 +35,15 @@ class Template
 
         const std::vector<std::pair<std::string, std::string> >& GetDescriptions() const {return m_boneDescriptions;};
 
+        const std::string& GetDescription() const {return m_description;}
+        void SetDescription(const std::string &description) {m_description = description;}
+
     private:
         float m_period;
         std::map<std::string, BoneAnimation> m_keyFrames;
         std::vector<std::pair<std::string, std::string> > m_boneDescriptions;
         KeyFrameTypes m_types;
+        std::string m_description;
 };
 
 }

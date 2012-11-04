@@ -15,7 +15,32 @@
 						<cols>1</cols>
 						<rows>3</rows>
 						<growablecols>0</growablecols>
-						<growablerows>1</growablerows>
+						<growablerows>2</growablerows>
+						<object class="sizeritem">
+							<object class="wxStaticBoxSizer" variable="StaticBoxSizer3" member="no">
+								<label>Description du modèle</label>
+								<object class="sizeritem">
+									<object class="wxFlexGridSizer" variable="FlexGridSizer6" member="no">
+										<cols>3</cols>
+										<growablecols>0</growablecols>
+										<growablerows>0</growablerows>
+										<object class="sizeritem">
+											<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="descriptionTextCtrl" member="yes">
+												<style>wxTE_MULTILINE</style>
+											</object>
+											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<option>1</option>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
 						<object class="sizeritem">
 							<object class="wxStaticBoxSizer" variable="StaticBoxSizer1" member="no">
 								<label>Type de frames clés</label>

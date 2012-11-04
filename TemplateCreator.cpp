@@ -20,6 +20,7 @@
 #include "GDL/CommonTools.h"
 
 //(*IdInit(TemplateCreator)
+const long TemplateCreator::ID_TEXTCTRL1 = wxNewId();
 const long TemplateCreator::ID_STATICTEXT1 = wxNewId();
 const long TemplateCreator::ID_CHECKBOX1 = wxNewId();
 const long TemplateCreator::ID_CHECKBOX2 = wxNewId();
@@ -44,6 +45,8 @@ TemplateCreator::TemplateCreator(Sk::Skeleton *ske, Sk::Anim::Animation *anim, w
 	wxFlexGridSizer* FlexGridSizer3;
 	wxFlexGridSizer* FlexGridSizer5;
 	wxFlexGridSizer* FlexGridSizer2;
+	wxStaticBoxSizer* StaticBoxSizer3;
+	wxFlexGridSizer* FlexGridSizer6;
 	wxStaticBoxSizer* StaticBoxSizer1;
 	wxFlexGridSizer* FlexGridSizer1;
 
@@ -56,7 +59,15 @@ TemplateCreator::TemplateCreator(Sk::Skeleton *ske, Sk::Anim::Animation *anim, w
 	Core = new wxPanel(this, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
 	FlexGridSizer5 = new wxFlexGridSizer(3, 1, 0, 0);
 	FlexGridSizer5->AddGrowableCol(0);
-	FlexGridSizer5->AddGrowableRow(1);
+	FlexGridSizer5->AddGrowableRow(2);
+	StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Description du modèle"));
+	FlexGridSizer6 = new wxFlexGridSizer(0, 3, 0, 0);
+	FlexGridSizer6->AddGrowableCol(0);
+	FlexGridSizer6->AddGrowableRow(0);
+	descriptionTextCtrl = new wxTextCtrl(Core, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+	FlexGridSizer6->Add(descriptionTextCtrl, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizer3->Add(FlexGridSizer6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+	FlexGridSizer5->Add(StaticBoxSizer3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Type de frames clés"));
 	FlexGridSizer2 = new wxFlexGridSizer(6, 1, 0, 0);
 	StaticText1 = new wxStaticText(Core, ID_STATICTEXT1, _("Cochez les types de frame clés qui doivent être sauvegardés dans le modèle."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
@@ -176,6 +187,7 @@ void TemplateCreator::OnsaveButtonClick(wxCommandEvent& event)
 
     Sk::Anim::Template newTemplate;
     newTemplate.CreateFromAnimation(*m_anim, listOfDescriptions, types);
+    newTemplate.SetDescription(ToString(descriptionTextCtrl->GetValue()));
     newTemplate.SaveToFile(filePath);
 
     EndModal(1);
