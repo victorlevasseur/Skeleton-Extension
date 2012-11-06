@@ -64,8 +64,8 @@ class Extension : public ExtensionBase
                                _("Joue l'animation en cours."),
                                _("Jouer l'animation de _PARAM0_"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
@@ -78,8 +78,8 @@ class Extension : public ExtensionBase
                                _("Teste si l'animation se joue."),
                                _("L'animation de _PARAM0_ se joue"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
@@ -92,8 +92,8 @@ class Extension : public ExtensionBase
                                _("Met en pause l'animation en cours."),
                                _("Mettre en pause l'animation de _PARAM0_"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
@@ -106,8 +106,8 @@ class Extension : public ExtensionBase
                                _("Teste si l'animation est en pause."),
                                _("L'animation de _PARAM0_ est en pause"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
@@ -120,8 +120,8 @@ class Extension : public ExtensionBase
                                _("Arrête l'animation en cours."),
                                _("Arrêter l'animation de _PARAM0_"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
@@ -134,8 +134,8 @@ class Extension : public ExtensionBase
                                _(L"Teste si l'animation est arrêtée."),
                                _(L"L'animation de _PARAM0_ est arrêtée"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
@@ -148,8 +148,8 @@ class Extension : public ExtensionBase
                                _(L"Change la vitesse de l'animation.\n1 = Vitesse normale, 1< = Ralentit, >1 = Accéléré"),
                                _(L"Mettre la vitesse de l'animation de _PARAM0_ à _PARAM2__PARAM1_"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("expression", _("Valeur"), "", false);
@@ -164,8 +164,8 @@ class Extension : public ExtensionBase
                                _("Teste la vitesse de l'animation."),
                                _("La vitesse de l'animation de _PARAM0_ est _PARAM2__PARAM1_"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("expression", _("Valeur"), "", false);
@@ -175,7 +175,7 @@ class Extension : public ExtensionBase
 
                 DECLARE_END_OBJECT_CONDITION()
 
-                DECLARE_OBJECT_EXPRESSION("GetSpeedRatio", _("Vitesse de l'animation"), _("Vitesse de l'animation"), _("Lecture"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("GetSpeedRatio", _("Vitesse de l'animation"), _("Vitesse de l'animation"), _("Lecture"), "res/Skeleton16.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetSpeedRatio").SetIncludeFile("SkeletonObject/SkeletonObject.h");
@@ -190,8 +190,8 @@ class Extension : public ExtensionBase
                                _("Aller à une position précise (seconde) dans l'animation."),
                                _("Aller à _PARAM2__PARAM1_s dans l'animation de _PARAM0_"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("expression", _("Valeur"), "", false);
@@ -206,8 +206,8 @@ class Extension : public ExtensionBase
                                _("Teste la position de lecture dans l'animation actuelle."),
                                _("La position dans l'animation est _PARAM2__PARAM1_ dans _PARAM0_"),
                                _("Lecture"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("expression", _("Valeur"), "", false);
@@ -217,7 +217,7 @@ class Extension : public ExtensionBase
 
                 DECLARE_END_OBJECT_CONDITION()
 
-                DECLARE_OBJECT_EXPRESSION("GetPosition", _("Position dans l'animation"), _("Position dans l'animation"), _("Lecture"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("GetPosition", _("Position dans l'animation"), _("Position dans l'animation"), _("Lecture"), "res/Skeleton16.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetPosition").SetIncludeFile("SkeletonObject/SkeletonObject.h");
@@ -232,8 +232,8 @@ class Extension : public ExtensionBase
                                _("Change l'animation en cours."),
                                _(L"Mettre l'animation _PARAM1_ à _PARAM0_"),
                                _("Animation"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom"), "", false);
@@ -247,8 +247,8 @@ class Extension : public ExtensionBase
                                _("Teste le nom de l'animation qui se joue."),
                                _("Le nom de l'animation de _PARAM0_ est _PARAM2__PARAM1_"),
                                _("Animation"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom"), "", false);
@@ -258,7 +258,7 @@ class Extension : public ExtensionBase
 
                 DECLARE_END_OBJECT_CONDITION()
 
-                DECLARE_OBJECT_STR_EXPRESSION("GetCurrentAnimation", _("Animation actuelle"), _("Animation actuelle"), _("Animation"), "res/actions/son.png")
+                DECLARE_OBJECT_STR_EXPRESSION("GetCurrentAnimation", _("Animation actuelle"), _("Animation actuelle"), _("Animation"), "res/Skeleton16.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetAnimation").SetIncludeFile("SkeletonObject/SkeletonObject.h");
@@ -273,8 +273,8 @@ class Extension : public ExtensionBase
                                _(L"Dé/active le système d'animation pour permettre par exemple de bouger manuellement les os."),
                                _(L"Activer le système d'animation de _PARAM0_ ? _PARAM1_"),
                                _(L"Fonctionnalités"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("yesorno", _("Activer ?"), "", false);
@@ -292,8 +292,8 @@ class Extension : public ExtensionBase
                                _(L"Change l'angle d'un os (relatif à l'os parent)."),
                                _(L"Mettre l'angle de l'os _PARAM1_ de _PARAM0_ à _PARAM3__PARAM2_"),
                                _("Os"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
@@ -309,8 +309,8 @@ class Extension : public ExtensionBase
                                _("Teste l'angle d'un os."),
                                _("L'angle (relatif) de _PARAM1_ de _PARAM0_ est _PARAM3__PARAM2_"),
                                _("Os"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
@@ -321,14 +321,14 @@ class Extension : public ExtensionBase
 
                 DECLARE_END_OBJECT_CONDITION()
 
-                DECLARE_OBJECT_EXPRESSION("GetBoneAngle", _("Angle d'un os"), _("Angle d'un os"), _("Os"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("GetBoneAngle", _("Angle d'un os"), _("Angle d'un os"), _("Os"), "res/Skeleton16.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetBoneAngle").SetIncludeFile("SkeletonObject/SkeletonObject.h");
                 DECLARE_END_OBJECT_EXPRESSION()
 
-                DECLARE_OBJECT_EXPRESSION("GetBoneAbsoluteAngle", _("Angle absolu d'un os"), _("Angle absolu d'un os"), _("Os"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("GetBoneAbsoluteAngle", _("Angle absolu d'un os"), _("Angle absolu d'un os"), _("Os"), "res/Skeleton16.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
 
@@ -342,8 +342,8 @@ class Extension : public ExtensionBase
                                _(L"Change la longueur d'un os."),
                                _(L"Mettre la longueur de l'os _PARAM1_ de _PARAM0_ à _PARAM3__PARAM2_"),
                                _("Os"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
@@ -359,8 +359,8 @@ class Extension : public ExtensionBase
                                _("Teste la longueur d'un os."),
                                _("La longueur de _PARAM1_ de _PARAM0_ est _PARAM3__PARAM2_"),
                                _("Os"),
-                               "res/actions/son24.png",
-                               "res/actions/son.png");
+                               "res/Skeleton24.png",
+                               "res/Skeleton16.png");
 
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
@@ -371,7 +371,7 @@ class Extension : public ExtensionBase
 
                 DECLARE_END_OBJECT_CONDITION()
 
-                DECLARE_OBJECT_EXPRESSION("GetBoneLength", _("Longueur d'un os"), _("Longueur d'un os"), _("Os"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("GetBoneLength", _("Longueur d'un os"), _("Longueur d'un os"), _("Os"), "res/Skeleton16.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
 
@@ -380,14 +380,14 @@ class Extension : public ExtensionBase
 
 
 
-                DECLARE_OBJECT_EXPRESSION("GetBoneCenterX", _("Position X du centre d'un os"), _("Position X du centre d'un os"), _("Os"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("GetBoneCenterX", _("Position X du centre d'un os"), _("Position X du centre d'un os"), _("Os"), "res/Skeleton16.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
 
                     instrInfo.cppCallingInformation.SetFunctionName("GetBoneCenterX").SetIncludeFile("SkeletonObject/SkeletonObject.h");
                 DECLARE_END_OBJECT_EXPRESSION()
 
-                DECLARE_OBJECT_EXPRESSION("GetBoneCenterY", _("Position Y du centre d'un os"), _("Position Y du centre d'un os"), _("Os"), "res/actions/son.png")
+                DECLARE_OBJECT_EXPRESSION("GetBoneCenterY", _("Position Y du centre d'un os"), _("Position Y du centre d'un os"), _("Os"), "res/Skeleton16.png")
                     instrInfo.AddParameter("object", _("Objet"), "Skeleton", false);
                     instrInfo.AddParameter("string", _("Nom de l'os"), "", false);
 
