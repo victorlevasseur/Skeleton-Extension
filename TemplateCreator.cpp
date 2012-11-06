@@ -50,17 +50,17 @@ TemplateCreator::TemplateCreator(Sk::Skeleton *ske, Sk::Anim::Animation *anim, w
 	wxStaticBoxSizer* StaticBoxSizer1;
 	wxFlexGridSizer* FlexGridSizer1;
 
-	Create(parent, id, _("Créer un modèle"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+	Create(parent, id, _("CrÃ©er un modÃ¨le"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxDefaultSize);
 	Move(wxDefaultPosition);
 	FlexGridSizer1 = new wxFlexGridSizer(1, 1, 0, 0);
 	FlexGridSizer1->AddGrowableCol(0);
 	FlexGridSizer1->AddGrowableRow(0);
 	Core = new wxPanel(this, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
-	FlexGridSizer5 = new wxFlexGridSizer(3, 1, 0, 0);
+	FlexGridSizer5 = new wxFlexGridSizer(4, 1, 0, 0);
 	FlexGridSizer5->AddGrowableCol(0);
 	FlexGridSizer5->AddGrowableRow(2);
-	StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Description du modèle"));
+	StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Description du modÃ¨le"));
 	FlexGridSizer6 = new wxFlexGridSizer(0, 3, 0, 0);
 	FlexGridSizer6->AddGrowableCol(0);
 	FlexGridSizer6->AddGrowableRow(0);
@@ -68,9 +68,9 @@ TemplateCreator::TemplateCreator(Sk::Skeleton *ske, Sk::Anim::Animation *anim, w
 	FlexGridSizer6->Add(descriptionTextCtrl, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer3->Add(FlexGridSizer6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	FlexGridSizer5->Add(StaticBoxSizer3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Type de frames clés"));
+	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Core, _("Type de frames clÃ©s"));
 	FlexGridSizer2 = new wxFlexGridSizer(6, 1, 0, 0);
-	StaticText1 = new wxStaticText(Core, ID_STATICTEXT1, _("Cochez les types de frame clés qui doivent être sauvegardés dans le modèle."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	StaticText1 = new wxStaticText(Core, ID_STATICTEXT1, _("Cochez les types de frame clÃ©s qui doivent Ãªtre sauvegardÃ©s dans le modÃ¨le."), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	FlexGridSizer2->Add(StaticText1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	saveAngleKeyFrames = new wxCheckBox(Core, ID_CHECKBOX1, _("Angles des os"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
 	saveAngleKeyFrames->SetValue(true);
@@ -78,7 +78,7 @@ TemplateCreator::TemplateCreator(Sk::Skeleton *ske, Sk::Anim::Animation *anim, w
 	saveLengthKeyFrames = new wxCheckBox(Core, ID_CHECKBOX2, _("Longueurs des os"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX2"));
 	saveLengthKeyFrames->SetValue(true);
 	FlexGridSizer2->Add(saveLengthKeyFrames, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	saveOffsetKeyFrames = new wxCheckBox(Core, ID_CHECKBOX3, _("Décalages des os"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
+	saveOffsetKeyFrames = new wxCheckBox(Core, ID_CHECKBOX3, _("DÃ©calages des os"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
 	saveOffsetKeyFrames->SetValue(true);
 	FlexGridSizer2->Add(saveOffsetKeyFrames, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	saveImageKeyFrames = new wxCheckBox(Core, ID_CHECKBOX4, _("Images des os"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
@@ -160,7 +160,7 @@ TemplateCreator::~TemplateCreator()
 
 void TemplateCreator::OnsaveButtonClick(wxCommandEvent& event)
 {
-    wxFileDialog saveFileDialog(this, _("Enregistrer ce modèle"), "", "", "Skeleton templates (*.skt)|*.skt", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+    wxFileDialog saveFileDialog(this, _("Enregistrer ce modÃ¨le"), "", "", "Skeleton templates (*.skt)|*.skt", wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
 
     if (saveFileDialog.ShowModal() == wxID_CANCEL)
         return;     // the user changed idea...
