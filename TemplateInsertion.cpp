@@ -28,7 +28,7 @@ BEGIN_EVENT_TABLE(TemplateInsertion,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-TemplateInsertion::TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *animation, Sk::Skeleton *skeleton, wxWindowID id,const wxPoint& pos,const wxSize& size)
+TemplateInsertion::TemplateInsertion(wxWindow* parent, wxWindowID id,const wxPoint& pos,const wxSize& size)
 {
 	//(*Initialize(TemplateInsertion)
 	wxFlexGridSizer* FlexGridSizer3;
@@ -66,14 +66,6 @@ TemplateInsertion::TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *anim
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&TemplateInsertion::OncancelBtClick);
 	//*)
 
-	wxFileDialog openFileDialog(this, _("Sélectionner un modèle"), "", "", "Skeleton templates (*.skt)|*.skt", wxFD_OPEN);
-
-    if (openFileDialog.ShowModal() == wxID_CANCEL)
-        EndModal(0);     // the user changed idea...
-
-    m_template.LoadFromFile(ToString(openFileDialog.GetPath()));
-    m_animation = animation;
-
     m_grid = new wxPropertyGrid(
         propertyGridPanel, // parent
         wxNewId(), // id
@@ -84,6 +76,25 @@ TemplateInsertion::TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *anim
 
     m_grid->SetExtraStyle( wxPG_EX_HELP_AS_TOOLTIPS );
     propertyGridSizer->Add(m_grid, 1, wxALL|wxEXPAND, 0);
+
+    SetSize(700,500);
+}
+
+TemplateInsertion::~TemplateInsertion()
+{
+	//(*Destroy(TemplateInsertion)
+	//*)
+}
+
+bool TemplateInsertion::Init(Sk::Anim::Animation *animation, Sk::Skeleton *skeleton)
+{
+    wxFileDialog openFileDialog(this, _("Sélectionner un modèle"), "", "", "Skeleton templates (*.skt)|*.skt", wxFD_OPEN);
+
+    if (openFileDialog.ShowModal() == wxID_CANCEL)
+        return false;
+
+    m_template.LoadFromFile(ToString(openFileDialog.GetPath()));
+    m_animation = animation;
 
     m_grid->Append( new wxPropertyCategory(_("Affectation des os"), "Bones") );
 
@@ -96,7 +107,7 @@ TemplateInsertion::TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *anim
     }
 
     //Create properties for each descriptions
-    const std::vector<std::pair<std::string, std::string> > bonesDescList = m_template.GetDescriptions();
+    const std::vector<std::pair<std::string, std::string> > bonesDescList = m_template.GetBoneDescriptions();
     for(unsigned int a = 0; a < bonesDescList.size(); a++)
     {
         m_grid->AppendIn("Bones", new wxEnumProperty(bonesDescList.at(a).second, bonesDescList.at(a).first, boneNamesList));
@@ -104,15 +115,8 @@ TemplateInsertion::TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *anim
 
     descriptionLabel->SetLabel(wxString(m_template.GetDescription().c_str()));
 
-    SetSize(700,500);
+    return true;
 }
-
-TemplateInsertion::~TemplateInsertion()
-{
-	//(*Destroy(TemplateInsertion)
-	//*)
-}
-
 
 void TemplateInsertion::OnvalidBtClick(wxCommandEvent& event)
 {
@@ -126,7 +130,7 @@ void TemplateInsertion::OnvalidBtClick(wxCommandEvent& event)
         bonesNames[boneOriginalName] = boneAffectedName;
     }
 
-    m_template.CreateAnimation(bonesNames, *m_animation);
+    m_template.Apply(bonesNames, *m_animation);
 
     EndModal(1);
 }

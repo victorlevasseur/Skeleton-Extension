@@ -21,8 +21,10 @@ class TemplateInsertion: public wxDialog
 {
 	public:
 
-		TemplateInsertion(wxWindow* parent, Sk::Anim::Animation *animation, Sk::Skeleton *skeleton, wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
+		TemplateInsertion(wxWindow* parent, wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
 		virtual ~TemplateInsertion();
+
+		bool Init(Sk::Anim::Animation *animation, Sk::Skeleton *skeleton);
 
 		//(*Declarations(TemplateInsertion)
 		wxFlexGridSizer* propertyGridSizer;

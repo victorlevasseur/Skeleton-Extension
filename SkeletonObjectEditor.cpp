@@ -44,7 +44,6 @@ Copyright (C) 2012 Victor Levasseur
 #include "SkeletonObject.h"
 #include "TemplateCreator.h"
 #include "InterpolationMethods.h"
-#include "GDL/IDE/MainEditorCommand.h"
 #include "GDCore/IDE/CommonBitmapManager.h"
 #include "GDL/CommonTools.h"
 #include "GDL/IDE/Dialogs/ResourcesEditor.h"
@@ -1233,8 +1232,11 @@ void SkeletonObjectEditor::OntemplateBtClick(wxCommandEvent& event)
     if(!timeline_currentAnim)
         return;
 
-    TemplateInsertion templDial(this, timeline_currentAnim, &skeleton);
-    templDial.ShowModal();
+    TemplateInsertion templDial(this);
+    if(templDial.Init(timeline_currentAnim, &skeleton))
+    {
+        templDial.ShowModal();
+    }
 }
 
 void SkeletonObjectEditor::OnBitmapButton3Click(wxCommandEvent& event)

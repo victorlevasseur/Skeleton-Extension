@@ -176,7 +176,7 @@ void Template::SaveToFile(const std::string &path)
     doc->SaveFile(path.c_str());
 }
 
-void Template::CreateAnimation(std::map<std::string, std::string> &bonesNames, Animation &baseAnimation)
+void Template::Apply(std::map<std::string, std::string> &bonesNames, Animation &baseAnimation)
 {
     baseAnimation.SetPeriod(m_period);
 

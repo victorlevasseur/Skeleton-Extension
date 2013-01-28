@@ -31,9 +31,9 @@ class Template
         void SaveToFile(const std::string &path);
 
         void CreateFromAnimation(Animation &animation, std::vector<std::pair<std::string, std::string> > bonesDescriptions, KeyFrameTypes types);
-        void CreateAnimation(std::map<std::string, std::string> &bonesNames, Animation &baseAnimation);
+        void Apply(std::map<std::string, std::string> &bonesNames, Animation &baseAnimation);
 
-        const std::vector<std::pair<std::string, std::string> >& GetDescriptions() const {return m_boneDescriptions;};
+        const std::vector<std::pair<std::string, std::string> >& GetBoneDescriptions() const {return m_boneDescriptions;};
 
         const std::string& GetDescription() const {return m_description;}
         void SetDescription(const std::string &description) {m_description = description;}

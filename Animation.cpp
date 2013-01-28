@@ -209,6 +209,24 @@ std::vector<float> Animation::GetKeyFramesTimes(const std::string &bone, KeyFram
     return listOfKeys;
 }
 
+void Animation::Merge(Animation &animationToMerge, KeyFrameTypes typesToMerge, std::map<std::string, std::string> namesCorrespondence, bool resetPeriod)
+{
+    if(resetPeriod)
+        SetPeriod(animationToMerge.m_period);
+
+    for(std::map<std::string, BoneAnimation>::iterator it = animationToMerge.m_keyFrames.begin(); it != animationToMerge.m_keyFrames.end(); it++)
+    {
+        std::string boneName = namesCorrespondence.count(it->first) > 0 ? namesCorrespondence[it->first] : it->first;
+
+        for(std::map<KeyFrameType, std::vector<KeyFrame> >::iterator it2 = animationToMerge.m_keyFrames[it->first].keyFrames.begin(); it2 != animationToMerge.m_keyFrames[it->first].keyFrames.end(); it2++)
+        {
+            if((typesToMerge & it2->first) != 0)
+                m_keyFrames[boneName].keyFrames[it2->first] = it2->second;
+        }
+
+    }
+}
+
 void Animation::LoadFromXml(TiXmlElement *ele, int fileVersion)
 {
     m_keyFrames.clear();

@@ -69,6 +69,12 @@ class Animation
 
         std::vector<float> GetKeyFramesTimes(const std::string &bone = "", KeyFrameType type = AllKeyFrame);
 
+        /**
+        Copy keyframes of animationToMerge (only the typesToMerge types) into the animation.
+        Bones' names can be different of the animationToMerge : in that case, just pass namesCorrespondence map representing the couple (nameInAnimationToMerge;nameInCurrentAnimation).
+         */
+        void Merge(Animation &animationToMerge, KeyFrameTypes typesToMerge, std::map<std::string, std::string> namesCorrespondence = std::map<std::string, std::string>(), bool resetPeriod = false);
+
         void NotifyBoneRenamed(const std::string &oldName, const std::string &newName);
 
         void LoadFromXml(TiXmlElement *ele, int fileVersion);
