@@ -24,6 +24,7 @@ Copyright (C) 2012 Victor Levasseur
 #define SkeletonObjectEDITOR_H
 
 //(*Headers(SkeletonObjectEditor)
+#include <wx/treectrl.h>
 #include <wx/sizer.h>
 #include <wx/tglbtn.h>
 #include <wx/panel.h>
@@ -60,29 +61,33 @@ class SkeletonObjectEditor: public wxDialog
 
 		//(*Declarations(SkeletonObjectEditor)
 		wxPanel* Core;
-		wxPanel* timelinePanel;
 		wxToggleButton* ToggleButton2;
+		wxPanel* Timeline;
 		wxButton* ValidateButton;
 		wxButton* Button4;
 		wxFlexGridSizer* propertyGridSizer;
 		wxPanel* propertyGridPanel;
 		wxButton* Button1;
 		wxToggleButton* ToggleButton1;
-		wxPanel* Panel1;
 		wxBitmapButton* BitmapButton2;
+		wxPanel* Panel1;
 		wxFlexGridSizer* FlexGridSizer2;
 		wxBitmapButton* BitmapButton1;
 		wxButton* Button2;
 		wxButton* Button6;
 		wxButton* Button5;
 		wxButton* Button3;
+		wxPanel* Bottom;
+		wxTreeCtrl* TreeCtrl1;
 		wxChoice* AnimationCombobox;
 		wxBitmapButton* BitmapButton4;
 		wxBitmapButton* BitmapButton3;
 		wxBitmapButton* createTemplateBt;
 		wxPanel* Panel2;
+		wxPanel* KeyFrameTree;
 		wxButton* addChildBoneBt;
 		wxButton* deleteBoneBt;
+		wxPanel* BoneProperties;
 		wxBitmapButton* templateBt;
 		//*)
 
@@ -91,6 +96,17 @@ class SkeletonObjectEditor: public wxDialog
 		//(*Identifiers(SkeletonObjectEditor)
 		static const long ID_TOGGLEBUTTON1;
 		static const long ID_TOGGLEBUTTON2;
+		static const long ID_PANEL1;
+		static const long ID_PANEL2;
+		static const long ID_BUTTON6;
+		static const long ID_BUTTON5;
+		static const long ID_BUTTON1;
+		static const long ID_BUTTON3;
+		static const long ID_PANEL6;
+		static const long ID_PANEL4;
+		static const long ID_BUTTON2;
+		static const long ID_BUTTON4;
+		static const long ID_PANEL7;
 		static const long ID_CHOICE1;
 		static const long ID_BITMAPBUTTON2;
 		static const long ID_BITMAPBUTTON4;
@@ -102,16 +118,9 @@ class SkeletonObjectEditor: public wxDialog
 		static const long ID_BUTTON9;
 		static const long ID_BUTTON10;
 		static const long ID_BUTTON7;
+		static const long ID_PANEL8;
+		static const long ID_TREECTRL1;
 		static const long ID_PANEL5;
-		static const long ID_PANEL1;
-		static const long ID_PANEL4;
-		static const long ID_BUTTON2;
-		static const long ID_BUTTON4;
-		static const long ID_BUTTON6;
-		static const long ID_BUTTON5;
-		static const long ID_BUTTON1;
-		static const long ID_BUTTON3;
-		static const long ID_PANEL2;
 		//*)
 		ResourcesEditor * resourcesEditor;
 
@@ -163,6 +172,23 @@ class SkeletonObjectEditor: public wxDialog
 
 		void PreparePropertyGrid();
 
+		Sk::Bone *FindBoneOnPosition(sf::Vector2f position, Sk::Bone *base);
+		void UpdateForSelectedBone();
+		void ToggleMode(char _mode); //0 => Edition, 1 => Animation
+
+		void UpdateAnimationsList();
+		void SelectAnimation(const std::string &name);
+		void Seek(float time);
+
+        void UncolorizeBoneIfNecessary(Sk::Bone &bone);
+
+		int GetPositionFromTimeToPixel(float time) const;
+		float GetPositionFromPixelToTime(int pixel) const;
+
+		float GetGraduationScale(float width, float scale) const;
+
+		void UpdateKeyFrameTree();
+
 		Game & game;
 		gd::MainFrameWrapper & mainEditorCommand;
 		SkeletonObject & object;
@@ -171,24 +197,13 @@ class SkeletonObjectEditor: public wxDialog
 
 		Sk::Skeleton skeleton;
 		Sk::Bone *selectedBone;
-
-		Sk::Bone *FindBoneOnPosition(sf::Vector2f position, Sk::Bone *base);
-		void UpdateForSelectedBone();
-		void ToggleMode(char _mode); //0 => Edition, 1 => Animation
+		Sk::Anim::Animation* timeline_currentAnim;
 
 		sf::Vector2f offset;
 		bool isDragging;
 
 		sf::Vector2f lastPos;
 		char mode;
-
-		void UpdateAnimationsList();
-		void SelectAnimation(const std::string &name);
-		void Seek(float time);
-
-		void UncolorizeBoneIfNecessary(Sk::Bone &bone);
-
-        Sk::Anim::Animation* timeline_currentAnim;
 
         float timeline_current;
 		float timeline_scale; //Size of one second
@@ -197,11 +212,6 @@ class SkeletonObjectEditor: public wxDialog
 
 		DragType isDraggingHandle;
 		sf::Vector2f draggingStartPosition;
-
-		int GetPositionFromTimeToPixel(float time) const;
-		float GetPositionFromPixelToTime(int pixel) const;
-
-		float GetGraduationScale(float width, float scale) const;
 
 		DECLARE_EVENT_TABLE()
 };
