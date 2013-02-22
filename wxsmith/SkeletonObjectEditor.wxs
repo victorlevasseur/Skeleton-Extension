@@ -358,6 +358,8 @@
 									<item2>TreeCtrl1</item2>
 									<item2>&lt;none&gt;</item2>
 								</items_text>
+								<handler function="OnTreeCtrl1ItemRightClick" entry="EVT_TREE_ITEM_RIGHT_CLICK" />
+								<handler function="OnTreeCtrl1SelectionChanged" entry="EVT_TREE_SEL_CHANGED" />
 							</object>
 							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 							<option>1</option>

@@ -35,6 +35,7 @@ Copyright (C) 2012 Victor Levasseur
 //*)
 #include <wx/aui/aui.h>
 #include <wx/propgrid/propgrid.h>
+#include <wx/imaglist.h>
 
 #include "GDCore/IDE/Dialogs/MainFrameWrapper.h"
 
@@ -166,6 +167,8 @@ class SkeletonObjectEditor: public wxDialog
 		void OnPanel1LeftUp(wxMouseEvent& event);
 		void OncreateTemplateBtClick(wxCommandEvent& event);
 		void OntemplateBtClick(wxCommandEvent& event);
+		void OnTreeCtrl1ItemRightClick(wxTreeEvent& event);
+		void OnTreeCtrl1SelectionChanged(wxTreeEvent& event);
 		//*)
 		void OnGridPropertyChanging(wxPropertyGridEvent& event);
 		void OnGridPropertyChanged(wxPropertyGridEvent& event);
@@ -175,6 +178,8 @@ class SkeletonObjectEditor: public wxDialog
 		Sk::Bone *FindBoneOnPosition(sf::Vector2f position, Sk::Bone *base);
 		void UpdateForSelectedBone();
 		void ToggleMode(char _mode); //0 => Edition, 1 => Animation
+
+		void SelectBone(Sk::Bone *bone);
 
 		void UpdateAnimationsList();
 		void SelectAnimation(const std::string &name);
@@ -194,6 +199,7 @@ class SkeletonObjectEditor: public wxDialog
 		SkeletonObject & object;
 		wxAuiManager m_mgr;
 		wxPropertyGrid *m_grid;
+		wxImageList *m_imageList;
 
 		Sk::Skeleton skeleton;
 		Sk::Bone *selectedBone;

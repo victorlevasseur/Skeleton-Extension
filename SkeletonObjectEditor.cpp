@@ -39,6 +39,7 @@ Copyright (C) 2012 Victor Levasseur
 #include "SkeletonAnimationSettings.h"
 #include "SkeletonSettings.h"
 #include "TemplateInsertion.h"
+#include "TreeItemInfos.h"
 
 #include "GDL/Game.h"
 #include "SkeletonObject.h"
@@ -283,6 +284,8 @@ mode(0)
 	Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton4Click);
 	Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton5Click);
 	Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&SkeletonObjectEditor::OnButton6Click);
+	Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&SkeletonObjectEditor::OnTreeCtrl1ItemRightClick);
+	Connect(ID_TREECTRL1,wxEVT_COMMAND_TREE_SEL_CHANGED,(wxObjectEventFunction)&SkeletonObjectEditor::OnTreeCtrl1SelectionChanged);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&SkeletonObjectEditor::OnInit);
 	//*)
 
@@ -299,6 +302,14 @@ mode(0)
     m_mgr.SetFlags( wxAUI_MGR_ALLOW_FLOATING | wxAUI_MGR_ALLOW_ACTIVE_PANE | wxAUI_MGR_TRANSPARENT_HINT
                     | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_HINT_FADE | wxAUI_MGR_NO_VENETIAN_BLINDS_FADE );
     m_mgr.Update();
+
+    m_imageList = new wxImageList(16, 16);
+    wxBitmap iconBone("res/Skeleton16.png", wxBITMAP_TYPE_PNG);
+    wxBitmap iconKey("res/icon-key.png", wxBITMAP_TYPE_PNG);
+    m_imageList->Add(iconBone);
+    m_imageList->Add(iconKey);
+
+    TreeCtrl1->SetImageList(m_imageList);
 
     PreparePropertyGrid();
 
@@ -484,10 +495,10 @@ void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
 {
     if(isDraggingHandle == NotDragging)
     {
-        if(selectedBone && selectedBone->GetParentBone())
+        /*if(selectedBone && selectedBone->GetParentBone())
         {
             selectedBone->GetParentBone()->ShowMathsFrame(false);
-        }
+        }*/
 
         if(selectedBone && selectedBone->IsOnAngleHandle(sf::Vector2f(event.GetPosition().x - offset.x, event.GetPosition().y - offset.y)))
         {
@@ -495,22 +506,42 @@ void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
             isDraggingHandle = DraggingAngle;
         }
 
-        selectedBone = 0;
+        //selectedBone = 0;
 
         sf::Vector2f mousePos(event.GetPosition().x, event.GetPosition().y);
         Sk::Bone *searched = FindBoneOnPosition(mousePos, skeleton.GetRootBone());
 
         if(searched)
         {
-            selectedBone = searched;
+            //selectedBone = searched;
+            SelectBone(searched);
         }
         else
         {
-            selectedBone = 0;
+            //selectedBone = 0;
+            SelectBone(0);
         }
 
         UpdateForSelectedBone();
     }
+
+    /*Panel1->Refresh(); //Refresh
+    Panel1->Update(); //Immediately
+
+    Panel2->Refresh();
+    Panel2->Update();*/
+}
+
+void SkeletonObjectEditor::SelectBone(Sk::Bone *bone)
+{
+    if(selectedBone && selectedBone->GetParentBone())
+    {
+        selectedBone->GetParentBone()->ShowMathsFrame(false);
+    }
+
+    selectedBone = bone;
+
+    UpdateForSelectedBone();
 
     Panel1->Refresh(); //Refresh
     Panel1->Update(); //Immediately
@@ -744,8 +775,6 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxWidth"), 0);
         m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxHeight"), 0);
     }
-
-    UpdateKeyFrameTree();
 }
 
 Sk::Bone* SkeletonObjectEditor::FindBoneOnPosition(sf::Vector2f position, Sk::Bone *base)
@@ -870,6 +899,8 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
     mode = _mode;
 
     skeleton.ApplyAnimationToBones();
+
+    UpdateKeyFrameTree();
 
     Panel1->Refresh();
     Panel1->Update();
@@ -1090,7 +1121,7 @@ void SkeletonObjectEditor::OnPanel2LeftDown(wxMouseEvent& event)
 
 void SkeletonObjectEditor::OnPanel2MouseWheel(wxMouseEvent& event)
 {
-//
+
 }
 
 void SkeletonObjectEditor::OnPanel2RightDown(wxMouseEvent& event)
@@ -1222,6 +1253,8 @@ void SkeletonObjectEditor::Seek(float time)
 
     Panel1->Refresh(); //Refresh
     Panel1->Update();
+
+    UpdateKeyFrameTree();
 }
 
 int SkeletonObjectEditor::GetPositionFromTimeToPixel(float time) const
@@ -1615,15 +1648,161 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
 
     if(mode == 1 && timeline_currentAnim)
     {
-        wxTreeItemId root = TreeCtrl1->AddRoot(wxString(_("Position : ") + wxString(ToString(timeline_current).c_str()) + wxString("s")), -1, -1, 0);
+        wxTreeItemId root = TreeCtrl1->AddRoot(wxString(_("Position : ") + wxString(ToString(timeline_current).c_str()) + wxString("s")),
+                                               -1, -1,
+                                               TreeItemInfo::Get()->SetItemType(TreeItemInfo::Time)
+                                                                  ->SetItemTime(timeline_current)
+                                                                  ->NotEditable()
+                                               );
         for(unsigned int a = 0; a < skeleton.GetBones().size(); a++)
         {
             //Add the bone
-            TreeCtrl1->AppendItem(root, wxString(skeleton.GetBones().at(a)->GetName().c_str()), -1, -1, 0);
+            wxTreeItemId boneItem = TreeCtrl1->AppendItem(root, wxString(skeleton.GetBones().at(a)->GetName().c_str()),
+                                                          0, 0,
+                                                          TreeItemInfo::Get()->SetItemType(TreeItemInfo::Bone)
+                                                                             ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                             ->SetItemTime(timeline_current)
+                                                         );
+
+            //Adding its keyframes
+            {
+                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::AngleKeyFrame);
+                for(unsigned int b = 0; b < frames.size(); b++)
+                {
+                    if(frames.at(b).time == timeline_current)
+                    {
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Angle : ") + wxString(ToString(frames.at(b).value)) + _("°") + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                                                                     1, 1,
+                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                        ->SetItemTime(timeline_current)
+                                                                                        ->SetItemKeyType(Sk::Anim::AngleKeyFrame)
+                                                                     );
+                    }
+                }
+            }
+            {
+                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::LengthKeyFrame);
+                for(unsigned int b = 0; b < frames.size(); b++)
+                {
+                    if(frames.at(b).time == timeline_current)
+                    {
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Taille : ") + wxString(ToString(frames.at(b).value)) + _("px") + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                                                                     1, 1,
+                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                        ->SetItemTime(timeline_current)
+                                                                                        ->SetItemKeyType(Sk::Anim::LengthKeyFrame)
+                                                                     );
+                    }
+                }
+            }
+            {
+                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::PositionXKeyFrame);
+                for(unsigned int b = 0; b < frames.size(); b++)
+                {
+                    if(frames.at(b).time == timeline_current)
+                    {
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Décalage X : ") + wxString(ToString(frames.at(b).value)) + _("px") + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                                                                     1, 1,
+                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                        ->SetItemTime(timeline_current)
+                                                                                        ->SetItemKeyType(Sk::Anim::PositionXKeyFrame)
+                                                                     );
+                    }
+                }
+            }
+            {
+                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::PositionYKeyFrame);
+                for(unsigned int b = 0; b < frames.size(); b++)
+                {
+                    if(frames.at(b).time == timeline_current)
+                    {
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Décalage Y : ") + wxString(ToString(frames.at(b).value)) + _("px") + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                                                                     1, 1,
+                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                        ->SetItemTime(timeline_current)
+                                                                                        ->SetItemKeyType(Sk::Anim::PositionYKeyFrame)
+                                                                     );
+                    }
+                }
+            }
+            {
+                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::ImageKeyFrame);
+                for(unsigned int b = 0; b < frames.size(); b++)
+                {
+                    if(frames.at(b).time == timeline_current)
+                    {
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Image : ") + wxString(frames.at(b).valueStr.c_str()),
+                                                                     1, 1,
+                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                        ->SetItemTime(timeline_current)
+                                                                                        ->SetItemKeyType(Sk::Anim::ImageKeyFrame)
+                                                                                        ->NotInterpolationCapable()
+                                                                     );
+                    }
+                }
+            }
+            {
+                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::ZOrderKeyFrame);
+                for(unsigned int b = 0; b < frames.size(); b++)
+                {
+                    if(frames.at(b).time == timeline_current)
+                    {
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Plan : ") + wxString(ToString(frames.at(b).value)) + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                                                                     1, 1,
+                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                        ->SetItemTime(timeline_current)
+                                                                                        ->SetItemKeyType(Sk::Anim::ZOrderKeyFrame)
+                                                                     );
+                    }
+                }
+            }
         }
     }
 
     TreeCtrl1->ExpandAll();
+}
+
+void SkeletonObjectEditor::OnTreeCtrl1SelectionChanged(wxTreeEvent& event)
+{
+    if(!event.GetItem().IsOk())
+        return;
+
+    TreeItemInfo *info = dynamic_cast<TreeItemInfo*>(TreeCtrl1->GetItemData(event.GetItem()));
+    if(!info)
+        return;
+
+    if(!info->editable)
+        return;
+
+    if(info->type == TreeItemInfo::Bone || info->type == TreeItemInfo::Key)
+    {
+        SelectBone(skeleton.GetBone(ToString(info->boneName)));
+    }
+}
+
+void SkeletonObjectEditor::OnTreeCtrl1ItemRightClick(wxTreeEvent& event)
+{
+    if(!event.GetItem().IsOk())
+        return;
+
+    TreeItemInfo *info = dynamic_cast<TreeItemInfo*>(TreeCtrl1->GetItemData(event.GetItem()));
+    if(!info)
+        return;
+
+    if(!info->editable)
+        return;
+
+    wxMenu menu("Edit");
+    if(info->type == TreeItemInfo::Key)
+    {
+
+    }
 }
 
 #endif

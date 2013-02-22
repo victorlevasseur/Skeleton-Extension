@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../../Runtime/bin/debug/libSkeletonObject.xgdw" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
+				<Option output="../../Runtime/bin/debug/SkeletonObject.xgdw" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Debug/" />
 				<Option type="3" />
 				<Option compiler="mingw_452" />
@@ -37,7 +37,7 @@
 				</Linker>
 			</Target>
 			<Target title="Debug - Edittime">
-				<Option output="../../IDE/bin/debug/CppPlatform/Extensions/libSkeletonObject.xgdwe" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
+				<Option output="../../IDE/bin/debug/CppPlatform/Extensions/SkeletonObject.xgdwe" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Debug Edittime/" />
 				<Option type="3" />
 				<Option compiler="mingw_452" />
@@ -109,7 +109,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="../../Runtime/bin/release/libSkeletonObject.xgdw" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
+				<Option output="../../Runtime/bin/release/SkeletonObject.xgdw" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Release/" />
 				<Option type="3" />
 				<Option compiler="mingw_452" />
@@ -139,7 +139,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release - Edittime">
-				<Option output="../../IDE/bin/release/CppPlatform/Extensions/libSkeletonObject.xgdwe" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
+				<Option output="../../IDE/bin/release/CppPlatform/Extensions/SkeletonObject.xgdwe" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Release Edittime/" />
 				<Option type="3" />
 				<Option compiler="mingw_452" />
@@ -210,7 +210,7 @@
 				</Linker>
 			</Target>
 			<Target title="Development">
-				<Option output="../../Runtime/bin/dev/libSkeletonObject.xgdw" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
+				<Option output="../../Runtime/bin/dev/SkeletonObject.xgdw" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Dev/" />
 				<Option type="3" />
 				<Option compiler="mingw_452" />
@@ -240,7 +240,7 @@
 				</Linker>
 			</Target>
 			<Target title="Development - Edittime">
-				<Option output="../../IDE/bin/dev/CppPlatform/Extensions/libSkeletonObject.xgdwe" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
+				<Option output="../../IDE/bin/dev/CppPlatform/Extensions/SkeletonObject.xgdwe" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Dev Edittime/" />
 				<Option type="3" />
 				<Option compiler="mingw_452" />
@@ -342,9 +342,9 @@
 					<Add option="-lXrender" />
 					<Add option="-lGL" />
 					<Add option="-lpthread" />
-					<Add library="../../ExtLibs/Others/libFLAC.so.8" />
-					<Add library="../../ExtLibs/Others/libopenal.so.1" />
-					<Add library="../../ExtLibs/Others/libsndfile.so.1" />
+					<Add library="..\..\ExtLibs\Others\libFLAC.so.8" />
+					<Add library="..\..\ExtLibs\Others\libopenal.so.1" />
+					<Add library="..\..\ExtLibs\Others\libsndfile.so.1" />
 					<Add directory="../../Runtime/bin/release" />
 					<Add directory="../../ExtLibs/SFML/build-linux/lib" />
 				</Linker>
@@ -386,9 +386,9 @@
 					<Add option="-lXrender" />
 					<Add option="-lGL" />
 					<Add option="-lpthread" />
-					<Add library="../../ExtLibs/Others/libFLAC.so.8" />
-					<Add library="../../ExtLibs/Others/libopenal.so.1" />
-					<Add library="../../ExtLibs/Others/libsndfile.so.1" />
+					<Add library="..\..\ExtLibs\Others\libFLAC.so.8" />
+					<Add library="..\..\ExtLibs\Others\libopenal.so.1" />
+					<Add library="..\..\ExtLibs\Others\libsndfile.so.1" />
 					<Add directory="../../IDE/bin/release" />
 					<Add directory="../../ExtLibs/SFML/build-linux/lib" />
 				</Linker>
@@ -503,9 +503,9 @@
 					<Add option="-lsfml-system" />
 					<Add option="-framework OpenGL" />
 					<Add option="-dynamiclib" />
-					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/Frameworks/sndfile.framework/sndfile" />
-					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/lib/libGLEW.a" />
-					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/lib/libjpeg.a" />
+					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\Frameworks\sndfile.framework\sndfile" />
+					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\lib\libGLEW.a" />
+					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\lib\libjpeg.a" />
 					<Add directory="../../Runtime/bin/release" />
 					<Add directory="../../ExtLibs/SFML/build-mac/lib" />
 				</Linker>
@@ -544,9 +544,9 @@
 					<Add option="-lsfml-system-d" />
 					<Add option="-framework OpenGL" />
 					<Add option="-dynamiclib" />
-					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/Frameworks/sndfile.framework/sndfile" />
-					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/lib/libGLEW.a" />
-					<Add library="../../ExtLibs/SFML/extlibs/libs-osx/lib/libjpeg.a" />
+					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\Frameworks\sndfile.framework\sndfile" />
+					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\lib\libGLEW.a" />
+					<Add library="..\..\ExtLibs\SFML\extlibs\libs-osx\lib\libjpeg.a" />
 					<Add directory="../../Runtime/bin/debug" />
 					<Add directory="../../ExtLibs/SFML/build-mac/lib" />
 				</Linker>
@@ -599,6 +599,8 @@
 		<Unit filename="TemplateCreator.h" />
 		<Unit filename="TemplateInsertion.cpp" />
 		<Unit filename="TemplateInsertion.h" />
+		<Unit filename="TreeItemInfos.cpp" />
+		<Unit filename="TreeItemInfos.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
