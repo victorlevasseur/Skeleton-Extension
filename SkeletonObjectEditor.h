@@ -180,6 +180,7 @@ class SkeletonObjectEditor: public wxDialog
 		void ToggleMode(char _mode); //0 => Edition, 1 => Animation
 
 		void SelectBone(Sk::Bone *bone);
+		void SelectBoneInTree(Sk::Bone *bone, wxTreeItemId parent = wxTreeItemId());
 
 		void UpdateAnimationsList();
 		void SelectAnimation(const std::string &name);
@@ -193,6 +194,13 @@ class SkeletonObjectEditor: public wxDialog
 		float GetGraduationScale(float width, float scale) const;
 
 		void UpdateKeyFrameTree();
+		void UpdateTreeItem(wxTreeItemId id);
+
+        wxTreeItemId FindTreeItem(float time, wxTreeItemId parent = wxTreeItemId());
+        wxTreeItemId FindTreeItem(float time, wxString boneName, wxTreeItemId parent = wxTreeItemId());
+		wxTreeItemId FindTreeItem(float time, wxString boneName, Sk::Anim::KeyFrameType keyType, wxTreeItemId parent = wxTreeItemId());
+
+		void InitTreeMenu();
 
 		Game & game;
 		gd::MainFrameWrapper & mainEditorCommand;
@@ -218,6 +226,14 @@ class SkeletonObjectEditor: public wxDialog
 
 		DragType isDraggingHandle;
 		sf::Vector2f draggingStartPosition;
+
+		wxMenu *treeKeyMenu;
+            wxMenuItem *treeKeyResetItem;
+            long treeKeyResetItem_ID;
+            wxMenuItem *treeKeyInterpItem;
+            long treeKeyInterpItem_ID;
+            wxMenuItem *treeKeyDeleteItem;
+            long treeKeyDeleteItem_ID;
 
 		DECLARE_EVENT_TABLE()
 };

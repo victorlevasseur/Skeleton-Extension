@@ -8,13 +8,14 @@
 		<handler function="OnInit" entry="EVT_INIT_DIALOG" />
 		<object class="wxFlexGridSizer" variable="FlexGridSizer3" member="no">
 			<cols>1</cols>
-			<rows>4</rows>
+			<rows>6</rows>
 			<growablecols>0</growablecols>
 			<growablerows>0</growablerows>
 			<object class="sizeritem">
 				<object class="wxPanel" name="ID_PANEL2" variable="Core" member="yes">
 					<object class="wxFlexGridSizer" variable="FlexGridSizer6" member="no">
 						<cols>1</cols>
+						<rows>2</rows>
 						<growablecols>0</growablecols>
 						<growablerows>1</growablerows>
 						<object class="sizeritem">

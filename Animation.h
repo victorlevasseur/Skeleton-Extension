@@ -52,6 +52,8 @@ class Animation
         float GetPeriod() const {return m_period;};
         void SetPeriod(float value) {m_period = value;};
 
+        KeyFrame& GetKeyFrame(const std::string &boneName, KeyFrameType type, float time);
+
         void SetKeyFrame(const std::string &boneName, KeyFrameType type, KeyFrame &keyframe);
         void SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, float value);
         void SetKeyFrame(const std::string &boneName, KeyFrameType type, float time, std::string value);

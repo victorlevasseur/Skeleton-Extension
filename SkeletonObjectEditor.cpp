@@ -113,11 +113,11 @@ mode(0)
 	wxFlexGridSizer* FlexGridSizer11;
 
 	Create(parent, wxID_ANY, _("Editeur de squelette"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX, _T("wxID_ANY"));
-	FlexGridSizer3 = new wxFlexGridSizer(4, 1, 0, 0);
+	FlexGridSizer3 = new wxFlexGridSizer(6, 1, 0, 0);
 	FlexGridSizer3->AddGrowableCol(0);
 	FlexGridSizer3->AddGrowableRow(0);
 	Core = new wxPanel(this, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
-	FlexGridSizer6 = new wxFlexGridSizer(0, 1, 0, 0);
+	FlexGridSizer6 = new wxFlexGridSizer(2, 1, 0, 0);
 	FlexGridSizer6->AddGrowableCol(0);
 	FlexGridSizer6->AddGrowableRow(1);
 	FlexGridSizer5 = new wxFlexGridSizer(0, 1, 0, 0);
@@ -327,12 +327,16 @@ mode(0)
     ToggleMode(0);
     UpdateAnimationsList();
 
+    InitTreeMenu();
+
     skeleton.GetRootBone()->Update();
     SetSize(900,650); //Set a new default size as the size computed by wxWidgets is too small.
 }
 
 SkeletonObjectEditor::~SkeletonObjectEditor()
 {
+    delete treeKeyMenu;
+
     m_mgr.UnInit();
 	//(*Destroy(SkeletonObjectEditor)
 	//*)
@@ -515,6 +519,7 @@ void SkeletonObjectEditor::OnPanel1LeftDown(wxMouseEvent& event)
         {
             //selectedBone = searched;
             SelectBone(searched);
+            SelectBoneInTree(searched);
         }
         else
         {
@@ -1648,21 +1653,25 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
 
     if(mode == 1 && timeline_currentAnim)
     {
-        wxTreeItemId root = TreeCtrl1->AddRoot(wxString(_("Position : ") + wxString(ToString(timeline_current).c_str()) + wxString("s")),
+        wxTreeItemId root = TreeCtrl1->AddRoot("",
                                                -1, -1,
                                                TreeItemInfo::Get()->SetItemType(TreeItemInfo::Time)
                                                                   ->SetItemTime(timeline_current)
                                                                   ->NotEditable()
                                                );
+
+        UpdateTreeItem(root);
+
         for(unsigned int a = 0; a < skeleton.GetBones().size(); a++)
         {
             //Add the bone
-            wxTreeItemId boneItem = TreeCtrl1->AppendItem(root, wxString(skeleton.GetBones().at(a)->GetName().c_str()),
+            wxTreeItemId boneItem = TreeCtrl1->AppendItem(root, "",
                                                           0, 0,
                                                           TreeItemInfo::Get()->SetItemType(TreeItemInfo::Bone)
                                                                              ->SetItemBone(skeleton.GetBones().at(a)->GetName())
                                                                              ->SetItemTime(timeline_current)
                                                          );
+            UpdateTreeItem(boneItem);
 
             //Adding its keyframes
             {
@@ -1671,13 +1680,15 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
                 {
                     if(frames.at(b).time == timeline_current)
                     {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Angle : ") + wxString(ToString(frames.at(b).value)) + _("°") + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
                                                                      1, 1,
                                                                      TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
                                                                                         ->SetItemBone(skeleton.GetBones().at(a)->GetName())
                                                                                         ->SetItemTime(timeline_current)
                                                                                         ->SetItemKeyType(Sk::Anim::AngleKeyFrame)
                                                                      );
+
+                        UpdateTreeItem(keyItem);
                     }
                 }
             }
@@ -1687,13 +1698,15 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
                 {
                     if(frames.at(b).time == timeline_current)
                     {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Taille : ") + wxString(ToString(frames.at(b).value)) + _("px") + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
                                                                      1, 1,
                                                                      TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
                                                                                         ->SetItemBone(skeleton.GetBones().at(a)->GetName())
                                                                                         ->SetItemTime(timeline_current)
                                                                                         ->SetItemKeyType(Sk::Anim::LengthKeyFrame)
                                                                      );
+
+                        UpdateTreeItem(keyItem);
                     }
                 }
             }
@@ -1703,13 +1716,15 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
                 {
                     if(frames.at(b).time == timeline_current)
                     {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Décalage X : ") + wxString(ToString(frames.at(b).value)) + _("px") + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
                                                                      1, 1,
                                                                      TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
                                                                                         ->SetItemBone(skeleton.GetBones().at(a)->GetName())
                                                                                         ->SetItemTime(timeline_current)
                                                                                         ->SetItemKeyType(Sk::Anim::PositionXKeyFrame)
                                                                      );
+
+                        UpdateTreeItem(keyItem);
                     }
                 }
             }
@@ -1719,13 +1734,15 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
                 {
                     if(frames.at(b).time == timeline_current)
                     {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Décalage Y : ") + wxString(ToString(frames.at(b).value)) + _("px") + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
                                                                      1, 1,
                                                                      TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
                                                                                         ->SetItemBone(skeleton.GetBones().at(a)->GetName())
                                                                                         ->SetItemTime(timeline_current)
                                                                                         ->SetItemKeyType(Sk::Anim::PositionYKeyFrame)
                                                                      );
+
+                        UpdateTreeItem(keyItem);
                     }
                 }
             }
@@ -1735,7 +1752,7 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
                 {
                     if(frames.at(b).time == timeline_current)
                     {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Image : ") + wxString(frames.at(b).valueStr.c_str()),
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
                                                                      1, 1,
                                                                      TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
                                                                                         ->SetItemBone(skeleton.GetBones().at(a)->GetName())
@@ -1743,6 +1760,8 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
                                                                                         ->SetItemKeyType(Sk::Anim::ImageKeyFrame)
                                                                                         ->NotInterpolationCapable()
                                                                      );
+
+                        UpdateTreeItem(keyItem);
                     }
                 }
             }
@@ -1752,13 +1771,15 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
                 {
                     if(frames.at(b).time == timeline_current)
                     {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, _("Plan : ") + wxString(ToString(frames.at(b).value)) + " (" + wxString(ToString(frames.at(b).interpolation)) + ")",
+                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
                                                                      1, 1,
                                                                      TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
                                                                                         ->SetItemBone(skeleton.GetBones().at(a)->GetName())
                                                                                         ->SetItemTime(timeline_current)
                                                                                         ->SetItemKeyType(Sk::Anim::ZOrderKeyFrame)
                                                                      );
+
+                        UpdateTreeItem(keyItem);
                     }
                 }
             }
@@ -1766,6 +1787,72 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
     }
 
     TreeCtrl1->ExpandAll();
+}
+
+void SkeletonObjectEditor::UpdateTreeItem(wxTreeItemId id)
+{
+    if(!id.IsOk())
+        return;
+
+    TreeItemInfo *info = dynamic_cast<TreeItemInfo*>(TreeCtrl1->GetItemData(id));
+    if(!info)
+        return;
+
+    if(info->type == TreeItemInfo::Time)
+    {
+        TreeCtrl1->SetItemText(id, wxString(_("Position : ") + wxString(ToString(info->time).c_str()) + wxString("s")));
+    }
+    else if(info->type == TreeItemInfo::Bone)
+    {
+        TreeCtrl1->SetItemText(id, wxString(info->boneName));
+    }
+    else if(info->type == TreeItemInfo::Key)
+    {
+        wxString name = "";
+        wxString unit = "";
+        bool hasInterpolation = info->hasInterpolation;
+        bool isString = info->keyType == Sk::Anim::ImageKeyFrame;
+
+        if(info->keyType == Sk::Anim::AngleKeyFrame)
+        {
+            name = _("Angle");
+            unit = _("°");
+        }
+        else if(info->keyType == Sk::Anim::LengthKeyFrame)
+        {
+            name = _("Taille");
+            unit = _("px");
+        }
+        else if(info->keyType == Sk::Anim::PositionXKeyFrame)
+        {
+            name = _("Décalage X");
+            unit = _("px");
+        }
+        else if(info->keyType == Sk::Anim::PositionYKeyFrame)
+        {
+            name = _("Décalage Y");
+            unit = _("px");
+        }
+        else if(info->keyType == Sk::Anim::ImageKeyFrame)
+        {
+            name = _("Image");
+        }
+        else if(info->keyType == Sk::Anim::ZOrderKeyFrame)
+        {
+            name = _("Plan");
+        }
+
+        if(!isString)
+        {
+            float value = timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).value;
+            TreeCtrl1->SetItemText(id, name + " : " + wxString(ToString(value).c_str()) + " " + unit + (hasInterpolation ? " (" + wxString(timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).interpolation.c_str()) + ")" : ""));
+        }
+        else
+        {
+            std::string valueStr = timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).valueStr;
+            TreeCtrl1->SetItemText(id, name + " : " + wxString(valueStr.c_str()) + " " + unit + (hasInterpolation ? " (" + wxString(timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).interpolation.c_str()) + ")" : ""));
+        }
+    }
 }
 
 void SkeletonObjectEditor::OnTreeCtrl1SelectionChanged(wxTreeEvent& event)
@@ -1798,11 +1885,159 @@ void SkeletonObjectEditor::OnTreeCtrl1ItemRightClick(wxTreeEvent& event)
     if(!info->editable)
         return;
 
-    wxMenu menu("Edit");
+    TreeCtrl1->SelectItem(event.GetItem());
+
     if(info->type == TreeItemInfo::Key)
     {
+        wxRect boundingRect;
+        TreeCtrl1->GetBoundingRect(event.GetItem(), boundingRect, true);
 
+        wxPoint position;
+        position = boundingRect.GetBottomLeft();
+
+        if(info->hasInterpolation)
+            treeKeyInterpItem->Enable(true);
+        else
+            treeKeyInterpItem->Enable(false);
+
+        int id = TreeCtrl1->GetPopupMenuSelectionFromUser(*treeKeyMenu, position);
+
+        if(id == treeKeyResetItem_ID)
+        {
+            std::string interpMethod = timeline_currentAnim->GetKeyFrameInterpolation(ToString(info->boneName), info->keyType, info->time);
+
+            Sk::Anim::KeyFrame keyFrame;
+            keyFrame.time = info->time;
+            keyFrame.interpolation = interpMethod;
+
+            if(info->keyType == Sk::Anim::AngleKeyFrame)
+                keyFrame.value = selectedBone->GetAngle();
+            else if(info->keyType == Sk::Anim::LengthKeyFrame)
+                keyFrame.value = selectedBone->GetLength();
+            else if(info->keyType == Sk::Anim::PositionXKeyFrame)
+                keyFrame.value = selectedBone->GetOffset().x;
+            else if(info->keyType == Sk::Anim::PositionYKeyFrame)
+                keyFrame.value = selectedBone->GetOffset().y;
+            else if(info->keyType == Sk::Anim::ImageKeyFrame)
+                keyFrame.valueStr = selectedBone->GetTextureName();
+            else if(info->keyType == Sk::Anim::ZOrderKeyFrame)
+                keyFrame.value = selectedBone->GetZOrder();
+
+            timeline_currentAnim->SetKeyFrame(ToString(info->boneName), info->keyType, keyFrame);
+        }
+
+        UpdateTreeItem(event.GetItem());
     }
+}
+
+void SkeletonObjectEditor::SelectBoneInTree(Sk::Bone *bone, wxTreeItemId parent)
+{
+    wxTreeItemIdValue cookie;
+
+    if(!bone)
+        return;
+
+    if(!parent.IsOk())
+        parent = TreeCtrl1->GetRootItem();
+
+    for(wxTreeItemId child = TreeCtrl1->GetFirstChild(parent, cookie); child.IsOk(); child = TreeCtrl1->GetNextChild(parent, cookie))
+    {
+        TreeItemInfo *info = dynamic_cast<TreeItemInfo*>(TreeCtrl1->GetItemData(child));
+
+        if(info && info->type == TreeItemInfo::Bone && ToString(info->boneName) == bone->GetName())
+        {
+            TreeCtrl1->SelectItem(child);
+            break;
+        }
+        else
+        {
+            SelectBoneInTree(bone, child);
+        }
+    }
+}
+
+void SkeletonObjectEditor::InitTreeMenu()
+{
+    treeKeyMenu = new wxMenu();
+
+    treeKeyResetItem_ID = wxNewId();
+    treeKeyResetItem = new wxMenuItem(treeKeyMenu, treeKeyResetItem_ID, _("Mettre à jour"));
+
+    treeKeyInterpItem_ID = wxNewId();
+    treeKeyInterpItem = new wxMenuItem(treeKeyMenu, treeKeyInterpItem_ID, _("Changer l'interpolation"));
+
+    treeKeyDeleteItem_ID = wxNewId();
+    treeKeyDeleteItem = new wxMenuItem(treeKeyMenu, treeKeyInterpItem_ID, _("Supprimer la clé"));
+
+    treeKeyMenu->Append(treeKeyResetItem);
+    treeKeyMenu->Append(treeKeyInterpItem);
+    treeKeyMenu->Append(treeKeyDeleteItem);
+}
+
+wxTreeItemId SkeletonObjectEditor::FindTreeItem(float time, wxTreeItemId parent)
+{
+    wxTreeItemIdValue cookie;
+
+    if(!parent.IsOk())
+        parent = TreeCtrl1->GetRootItem();
+
+    TreeItemInfo *info = dynamic_cast<TreeItemInfo*>(TreeCtrl1->GetItemData(parent));
+    if(info)
+    {
+        if(info->type == TreeItemInfo::Time && info->time == time)
+            return parent;
+    }
+
+    for(wxTreeItemId child = TreeCtrl1->GetFirstChild(parent, cookie); child.IsOk(); child = TreeCtrl1->GetNextChild(parent, cookie))
+    {
+        return FindTreeItem(time, child);
+    }
+
+    return wxTreeItemId();
+}
+
+wxTreeItemId SkeletonObjectEditor::FindTreeItem(float time, wxString boneName, wxTreeItemId parent)
+{
+    wxTreeItemIdValue cookie;
+
+    if(!parent.IsOk())
+        parent = TreeCtrl1->GetRootItem();
+
+    TreeItemInfo *info = dynamic_cast<TreeItemInfo*>(TreeCtrl1->GetItemData(parent));
+    if(info)
+    {
+        if(info->type == TreeItemInfo::Bone && info->time == time && info->boneName == boneName)
+            return parent;
+    }
+
+    for(wxTreeItemId child = TreeCtrl1->GetFirstChild(parent, cookie); child.IsOk(); child = TreeCtrl1->GetNextChild(parent, cookie))
+    {
+        return FindTreeItem(time, boneName, child);
+    }
+
+    return wxTreeItemId();
+}
+
+wxTreeItemId SkeletonObjectEditor::FindTreeItem(float time, wxString boneName, Sk::Anim::KeyFrameType keyType, wxTreeItemId parent)
+{
+    wxTreeItemIdValue cookie;
+
+    if(!parent.IsOk())
+        parent = TreeCtrl1->GetRootItem();
+
+    TreeItemInfo *info = dynamic_cast<TreeItemInfo*>(TreeCtrl1->GetItemData(parent));
+    if(info)
+    {
+        if(info->type == TreeItemInfo::Key && info->time == time && info->boneName == boneName && info->keyType == keyType)
+            return parent;
+    }
+
+    for(wxTreeItemId child = TreeCtrl1->GetFirstChild(parent, cookie); child.IsOk(); child = TreeCtrl1->GetNextChild(parent, cookie))
+    {
+        return FindTreeItem(time, boneName, keyType, child);
+    }
+
+    return wxTreeItemId();
 }
 
 #endif

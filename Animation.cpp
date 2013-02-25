@@ -45,6 +45,17 @@ Animation::~Animation()
 
 }
 
+KeyFrame& Animation::GetKeyFrame(const std::string &boneName, KeyFrameType type, float time)
+{
+    std::vector<KeyFrame> keys = GetBoneKeyFrames(boneName, type);
+
+    for(unsigned int a = 0; a < keys.size(); a++)
+    {
+        if(keys.at(a).time == time)
+            return keys.at(a);
+    }
+}
+
 void Animation::SetKeyFrame(const std::string &boneName, KeyFrameType type, KeyFrame &keyframe)
 {
     for(unsigned int a = 0; a < m_keyFrames[boneName].keyFrames[type].size(); a++)
