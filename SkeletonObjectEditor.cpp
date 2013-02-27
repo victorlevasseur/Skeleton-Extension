@@ -306,8 +306,10 @@ mode(0)
     m_imageList = new wxImageList(16, 16);
     wxBitmap iconBone("res/Skeleton16.png", wxBITMAP_TYPE_PNG);
     wxBitmap iconKey("res/icon-key.png", wxBITMAP_TYPE_PNG);
+    wxBitmap iconKeyInactive("res/icon-key-inactive.png", wxBITMAP_TYPE_PNG);
     m_imageList->Add(iconBone);
     m_imageList->Add(iconKey);
+    m_imageList->Add(iconKeyInactive);
 
     TreeCtrl1->SetImageList(m_imageList);
 
@@ -357,14 +359,6 @@ void SkeletonObjectEditor::PreparePropertyGrid()
     m_grid->SetExtraStyle( wxPG_EX_HELP_AS_TOOLTIPS );
     propertyGridSizer->Add(m_grid, 1, wxALL|wxEXPAND, 0);
 
-    //Create some stuff for property grid
-    std::vector<std::string> listOfMethods = Sk::Anim::Interp::Get::Methods();
-    wxArrayString interMethods;
-    for(unsigned int a = 0; a < listOfMethods.size(); a++)
-    {
-        interMethods.Add(wxString(listOfMethods.at(a).c_str()));
-    }
-
     //Creating all needed items
 
     // Identification
@@ -375,51 +369,26 @@ void SkeletonObjectEditor::PreparePropertyGrid()
     // Properties
     m_grid->Append( new wxPropertyCategory(_("Propriétés"), "Properties") );
     m_grid->Append( new wxFloatProperty(_("Angle"), "BoneAngle", 0.f) );
-    {
-        m_grid->AppendIn("BoneAngle", new wxBoolProperty(_("Frame clée"), "BoneAngleKeyFrame", false));
-        m_grid->AppendIn("BoneAngle", new wxEnumProperty(_("Type d'interpolation"), "BoneAngleInterpolation", interMethods));
-    }
-
     m_grid->Append( new wxBoolProperty(_("Suivre l'angle du parent"), "BoneInheritAngle", true) );
-
     m_grid->Append( new wxFloatProperty(_("Longueur"), "BoneLength", 100.f) );
-    {
-        m_grid->AppendIn("BoneLength", new wxBoolProperty(_("Frame clée"), "BoneLengthKeyFrame", false));
-        m_grid->AppendIn("BoneLength", new wxEnumProperty(_("Type d'interpolation"), "BoneLengthInterpolation", interMethods));
-    }
-
     m_grid->Append( new wxStringProperty(_("Décalage"), "BoneOffset", "") );
     {
         m_grid->AppendIn("BoneOffset", new wxFloatProperty(_("X"), "BoneOffsetX", 0.f));
         m_grid->AppendIn("BoneOffset", new wxFloatProperty(_("Y"), "BoneOffsetY", 0.f));
-        m_grid->AppendIn("BoneOffset", new wxBoolProperty(_("Frame clée"), "BoneOffsetKeyFrame", false));
-        m_grid->AppendIn("BoneOffset", new wxEnumProperty(_("Type d'interpolation"), "BoneOffsetInterpolation", interMethods));
     }
 
     m_grid->Append( new wxStringProperty(_("Image"), "BoneImage", "") );
-    {
-        m_grid->AppendIn("BoneImage", new wxBoolProperty(_("Frame clée"), "BoneImageKeyFrame", false));
-    }
-
     m_grid->Append( new wxIntProperty(_("Plan"), "BoneZOrder", 0) );
-    {
-        m_grid->AppendIn("BoneZOrder", new wxBoolProperty(_("Frame clée"), "BoneZOrderKeyFrame", false));
-        m_grid->AppendIn("BoneZOrder", new wxEnumProperty(_("Type d'interpolation"), "BoneZOrderInterpolation", interMethods));
-    }
 
 
     // Collision mask
     m_grid->Append( new wxPropertyCategory(_("Collision"), "Collision") );
-
     m_grid->Append( new wxBoolProperty(_("Activer le masque"), "HasHitBox", false));
-
     m_grid->Append( new wxStringProperty(_("Taille du masque"), "HitBox", "<composed>"));
     {
         m_grid->AppendIn("HitBox", new wxFloatProperty(_("Largeur"), "HitBoxWidth", 0.f));
         m_grid->AppendIn("HitBox", new wxFloatProperty(_("Hauteur"), "HitBoxHeight", 0.f));
     }
-
-
 
     m_grid->SetPropertyAttributeAll(wxPG_BOOL_USE_CHECKBOX, true);
 
@@ -717,48 +686,6 @@ void SkeletonObjectEditor::UpdateForSelectedBone()
         m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxWidth"), selectedBone->GetHitBoxSize().x);
         m_grid->SetPropertyValue(wxT("Collision.HitBox.HitBoxHeight"), selectedBone->GetHitBoxSize().y);
 
-        if(mode == 1 && timeline_currentAnim)
-        {
-            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current))
-            {
-                m_grid->SetPropertyValue(wxT("Properties.BoneAngle.BoneAngleKeyFrame"), true);
-                m_grid->SetPropertyValue(wxT("Properties.BoneAngle.BoneAngleInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current).c_str()));
-            }
-            else
-            {
-                m_grid->SetPropertyValue(wxT("Properties.BoneAngle.BoneAngleKeyFrame"), false);
-            }
-
-            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current))
-            {
-                m_grid->SetPropertyValue(wxT("Properties.BoneLength.BoneLengthKeyFrame"), true);
-                m_grid->SetPropertyValue(wxT("Properties.BoneLength.BoneLengthInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current).c_str()));
-            }
-            else
-            {
-                m_grid->SetPropertyValue(wxT("Properties.BoneLength.BoneLengthKeyFrame"), false);
-            }
-
-            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current))
-            {
-                m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetKeyFrame"), true);
-                m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetInterpolation"), wxString(timeline_currentAnim->GetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current).c_str()));
-            }
-            else
-            {
-                m_grid->SetPropertyValue(wxT("Properties.BoneOffset.BoneOffsetKeyFrame"), false);
-            }
-
-            if(timeline_currentAnim->HasKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current))
-            {
-                m_grid->SetPropertyValue(wxT("Properties.BoneImage.BoneImageKeyFrame"), true);
-            }
-            else
-            {
-                m_grid->SetPropertyValue(wxT("Properties.BoneImage.BoneImageKeyFrame"), false);
-            }
-        }
-
         if(selectedBone->GetParentBone())
         {
             selectedBone->GetParentBone()->ShowMathsFrame(true);
@@ -832,20 +759,6 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         BitmapButton3->Enable(false);
 
         AnimationCombobox->Enable(false);
-
-        m_grid->GetProperty("Properties.BoneAngle.BoneAngleKeyFrame")->Enable(false);
-        m_grid->GetProperty("Properties.BoneAngle.BoneAngleInterpolation")->Enable(false);
-
-        m_grid->GetProperty("Properties.BoneLength.BoneLengthKeyFrame")->Enable(false);
-        m_grid->GetProperty("Properties.BoneLength.BoneLengthInterpolation")->Enable(false);
-
-        m_grid->GetProperty("Properties.BoneOffset.BoneOffsetKeyFrame")->Enable(false);
-        m_grid->GetProperty("Properties.BoneOffset.BoneOffsetInterpolation")->Enable(false);
-
-        m_grid->GetProperty("Properties.BoneImage.BoneImageKeyFrame")->Enable(false);
-
-        m_grid->GetProperty("Properties.BoneZOrder.BoneZOrderKeyFrame")->Enable(false);
-        m_grid->GetProperty("Properties.BoneZOrder.BoneZOrderInterpolation")->Enable(false);
     }
     else
     {
@@ -883,20 +796,6 @@ void SkeletonObjectEditor::ToggleMode(char _mode)
         m_grid->GetProperty("Collision.HasHitBox")->Enable(false);
         m_grid->GetProperty("Collision.HitBox.HitBoxWidth")->Enable(false);
         m_grid->GetProperty("Collision.HitBox.HitBoxHeight")->Enable(false);
-
-        m_grid->GetProperty("Properties.BoneAngle.BoneAngleKeyFrame")->Enable(true);
-        m_grid->GetProperty("Properties.BoneAngle.BoneAngleInterpolation")->Enable(true);
-
-        m_grid->GetProperty("Properties.BoneLength.BoneLengthKeyFrame")->Enable(true);
-        m_grid->GetProperty("Properties.BoneLength.BoneLengthInterpolation")->Enable(true);
-
-        m_grid->GetProperty("Properties.BoneOffset.BoneOffsetKeyFrame")->Enable(true);
-        m_grid->GetProperty("Properties.BoneOffset.BoneOffsetInterpolation")->Enable(true);
-
-        m_grid->GetProperty("Properties.BoneImage.BoneImageKeyFrame")->Enable(true);
-
-        m_grid->GetProperty("Properties.BoneZOrder.BoneZOrderKeyFrame")->Enable(true);
-        m_grid->GetProperty("Properties.BoneZOrder.BoneZOrderInterpolation")->Enable(true);
 
         UpdateAnimationsList();
         SelectAnimation(ToString(AnimationCombobox->GetString(AnimationCombobox->GetSelection())));
@@ -1456,143 +1355,31 @@ void SkeletonObjectEditor::OnGridPropertyChanged(wxPropertyGridEvent& event)
         if(event.GetProperty()->GetBaseName() == "BoneAngle")
         {
             selectedBone->SetAngle(event.GetPropertyValue().GetDouble());
-
-            //When angle keyframe is already checked, modification applied
-            if(m_grid->GetPropertyValueAsBool("Properties.BoneAngle.BoneAngleKeyFrame"))
-            {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneAngle.BoneAngleInterpolation")));
-            }
         }
-        //When check/uncheck keyframe for angle
-        else if(event.GetProperty()->GetBaseName() == "BoneAngleKeyFrame")
-        {
-            if(event.GetPropertyValue().GetBool())
-            {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
-                                                  m_grid->GetPropertyValueAsDouble("Properties.BoneAngle"));
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneAngle.BoneAngleInterpolation")));
-            }
-            else
-            {
-                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current);
-            }
-        }
-        //When we change keyframe interpolation
-        else if(event.GetProperty()->GetBaseName() == "BoneAngleInterpolation")
-        {
-            timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::AngleKeyFrame, timeline_current,
-                                                           ToString(m_grid->GetPropertyValueAsString("Properties.BoneAngle.BoneAngleInterpolation")));
-        }
-
 
         //When length modified
         if(event.GetProperty()->GetBaseName() == "BoneLength")
         {
             selectedBone->SetLength(event.GetPropertyValue().GetDouble());
-
-            //When offset keyframe is already checked, modification applied
-            if(m_grid->GetPropertyValueAsBool("Properties.BoneLength.BoneLengthKeyFrame"))
-            {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current, event.GetPropertyValue().GetDouble());
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneLength.BoneLengthInterpolation")));
-            }
         }
-        //When check/uncheck keyframe for length
-        else if(event.GetProperty()->GetBaseName() == "BoneLengthKeyFrame")
-        {
-            if(event.GetPropertyValue().GetBool())
-            {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
-                                                  m_grid->GetPropertyValueAsDouble("Properties.BoneLength"));
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneLength.BoneLengthInterpolation")));
-            }
-            else
-            {
-                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current);
-            }
-        }
-        //When we change keyframe interpolation
-        else if(event.GetProperty()->GetBaseName() == "BoneLengthInterpolation")
-        {
-            timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::LengthKeyFrame, timeline_current,
-                                                           ToString(m_grid->GetPropertyValueAsString("Properties.BoneLength.BoneLengthInterpolation")));
-        }
-
 
         //When offset modified
         if(event.GetProperty()->GetBaseName() == "BoneOffsetX" || event.GetProperty()->GetBaseName() == "BoneOffsetY")
         {
             selectedBone->SetOffset(m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetX").GetDouble(),
                                     m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetY").GetDouble());
-
-            //When offset keyframe is already checked, modification applied
-            if(m_grid->GetPropertyValueAsBool("Properties.BoneOffset.BoneOffsetKeyFrame"))
-            {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current, m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetX").GetDouble());
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
-
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current, m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetY").GetDouble());
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
-            }
-        }
-        //When check/uncheck keyframe for offset
-        else if(event.GetProperty()->GetBaseName() == "BoneOffsetKeyFrame")
-        {
-            if(event.GetPropertyValue().GetBool())
-            {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current, m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetX").GetDouble());
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
-
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current, m_grid->GetPropertyValue("Properties.BoneOffset.BoneOffsetY").GetDouble());
-                timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current,
-                                                               ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
-            }
-            else
-            {
-                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current);
-                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current);
-            }
-        }
-        //When we change keyframe interpolation
-        else if(event.GetProperty()->GetBaseName() == "BoneOffsetInterpolation")
-        {
-            timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionXKeyFrame, timeline_current,
-                                                           ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
-            timeline_currentAnim->SetKeyFrameInterpolation(selectedBone->GetName(), Sk::Anim::PositionYKeyFrame, timeline_current,
-                                                           ToString(m_grid->GetPropertyValueAsString("Properties.BoneOffset.BoneOffsetInterpolation")));
         }
 
         //When image modified
         if(event.GetProperty()->GetBaseName() == "BoneImage")
         {
             selectedBone->SetTextureName(ToString(event.GetPropertyValue().GetString()));
-
-            //When angle keyframe is already checked, modification applied
-            if(m_grid->GetPropertyValueAsBool("Properties.BoneImage.BoneImageKeyFrame"))
-            {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current, ToString(event.GetPropertyValue().GetString()));
-            }
         }
-        //When check/uncheck keyframe for image
-        else if(event.GetProperty()->GetBaseName() == "BoneImageKeyFrame")
+
+        //When ZOrder is modified
+        if(event.GetProperty()->GetBaseName() == "BoneZOrder")
         {
-            if(event.GetPropertyValue().GetBool())
-            {
-                timeline_currentAnim->SetKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current,
-                                                  ToString(m_grid->GetPropertyValueAsString("Properties.BoneImage")));
-            }
-            else
-            {
-                timeline_currentAnim->RemoveKeyFrame(selectedBone->GetName(), Sk::Anim::ImageKeyFrame, timeline_current);
-            }
+            selectedBone->SetZOrder(event.GetPropertyValue().GetInteger());
         }
     }
 
@@ -1673,115 +1460,72 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
                                                          );
             UpdateTreeItem(boneItem);
 
-            //Adding its keyframes
+            //Adding corresponding TreeItems
             {
-                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::AngleKeyFrame);
-                for(unsigned int b = 0; b < frames.size(); b++)
-                {
-                    if(frames.at(b).time == timeline_current)
-                    {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
-                                                                     1, 1,
-                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
-                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
-                                                                                        ->SetItemTime(timeline_current)
-                                                                                        ->SetItemKeyType(Sk::Anim::AngleKeyFrame)
-                                                                     );
+                wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
+                                                             1, 1,
+                                                             TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                ->SetItemTime(timeline_current)
+                                                                                ->SetItemKeyType(Sk::Anim::AngleKeyFrame)
+                                                             );
 
-                        UpdateTreeItem(keyItem);
-                    }
-                }
+                UpdateTreeItem(keyItem);
             }
             {
-                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::LengthKeyFrame);
-                for(unsigned int b = 0; b < frames.size(); b++)
-                {
-                    if(frames.at(b).time == timeline_current)
-                    {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
-                                                                     1, 1,
-                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
-                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
-                                                                                        ->SetItemTime(timeline_current)
-                                                                                        ->SetItemKeyType(Sk::Anim::LengthKeyFrame)
-                                                                     );
+                wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
+                                                             1, 1,
+                                                             TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                ->SetItemTime(timeline_current)
+                                                                                ->SetItemKeyType(Sk::Anim::LengthKeyFrame)
+                                                             );
 
-                        UpdateTreeItem(keyItem);
-                    }
-                }
+                UpdateTreeItem(keyItem);
             }
             {
-                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::PositionXKeyFrame);
-                for(unsigned int b = 0; b < frames.size(); b++)
-                {
-                    if(frames.at(b).time == timeline_current)
-                    {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
-                                                                     1, 1,
-                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
-                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
-                                                                                        ->SetItemTime(timeline_current)
-                                                                                        ->SetItemKeyType(Sk::Anim::PositionXKeyFrame)
-                                                                     );
+                wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
+                                                             1, 1,
+                                                             TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                ->SetItemTime(timeline_current)
+                                                                                ->SetItemKeyType(Sk::Anim::PositionXKeyFrame)
+                                                             );
 
-                        UpdateTreeItem(keyItem);
-                    }
-                }
+                UpdateTreeItem(keyItem);
             }
             {
-                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::PositionYKeyFrame);
-                for(unsigned int b = 0; b < frames.size(); b++)
-                {
-                    if(frames.at(b).time == timeline_current)
-                    {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
-                                                                     1, 1,
-                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
-                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
-                                                                                        ->SetItemTime(timeline_current)
-                                                                                        ->SetItemKeyType(Sk::Anim::PositionYKeyFrame)
-                                                                     );
+                wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
+                                                             1, 1,
+                                                             TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                ->SetItemTime(timeline_current)
+                                                                                ->SetItemKeyType(Sk::Anim::PositionYKeyFrame)
+                                                             );
 
-                        UpdateTreeItem(keyItem);
-                    }
-                }
+                UpdateTreeItem(keyItem);
             }
             {
-                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::ImageKeyFrame);
-                for(unsigned int b = 0; b < frames.size(); b++)
-                {
-                    if(frames.at(b).time == timeline_current)
-                    {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
-                                                                     1, 1,
-                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
-                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
-                                                                                        ->SetItemTime(timeline_current)
-                                                                                        ->SetItemKeyType(Sk::Anim::ImageKeyFrame)
-                                                                                        ->NotInterpolationCapable()
-                                                                     );
+                wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
+                                                             1, 1,
+                                                             TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                ->SetItemTime(timeline_current)
+                                                                                ->SetItemKeyType(Sk::Anim::ImageKeyFrame)
+                                                             );
 
-                        UpdateTreeItem(keyItem);
-                    }
-                }
+                UpdateTreeItem(keyItem);
             }
             {
-                std::vector<Sk::Anim::KeyFrame> frames = timeline_currentAnim->GetBoneKeyFrames(skeleton.GetBones().at(a)->GetName(), Sk::Anim::ZOrderKeyFrame);
-                for(unsigned int b = 0; b < frames.size(); b++)
-                {
-                    if(frames.at(b).time == timeline_current)
-                    {
-                        wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
-                                                                     1, 1,
-                                                                     TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
-                                                                                        ->SetItemBone(skeleton.GetBones().at(a)->GetName())
-                                                                                        ->SetItemTime(timeline_current)
-                                                                                        ->SetItemKeyType(Sk::Anim::ZOrderKeyFrame)
-                                                                     );
+                wxTreeItemId keyItem = TreeCtrl1->AppendItem(boneItem, "",
+                                                             1, 1,
+                                                             TreeItemInfo::Get()->SetItemType(TreeItemInfo::Key)
+                                                                                ->SetItemBone(skeleton.GetBones().at(a)->GetName())
+                                                                                ->SetItemTime(timeline_current)
+                                                                                ->SetItemKeyType(Sk::Anim::ZOrderKeyFrame)
+                                                             );
 
-                        UpdateTreeItem(keyItem);
-                    }
-                }
+                UpdateTreeItem(keyItem);
             }
         }
     }
@@ -1813,6 +1557,8 @@ void SkeletonObjectEditor::UpdateTreeItem(wxTreeItemId id)
         bool hasInterpolation = info->hasInterpolation;
         bool isString = info->keyType == Sk::Anim::ImageKeyFrame;
 
+        bool exists = timeline_currentAnim->HasKeyFrame(ToString(info->boneName), info->keyType, info->time);
+
         if(info->keyType == Sk::Anim::AngleKeyFrame)
         {
             name = _("Angle");
@@ -1842,15 +1588,27 @@ void SkeletonObjectEditor::UpdateTreeItem(wxTreeItemId id)
             name = _("Plan");
         }
 
-        if(!isString)
+        if(exists)
         {
-            float value = timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).value;
-            TreeCtrl1->SetItemText(id, name + " : " + wxString(ToString(value).c_str()) + " " + unit + (hasInterpolation ? " (" + wxString(timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).interpolation.c_str()) + ")" : ""));
+            TreeCtrl1->SetItemTextColour(id, wxColour(0, 0, 0, 255));
+            TreeCtrl1->SetItemImage(id, 1);
+
+            if(!isString)
+            {
+                float value = timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).value;
+                TreeCtrl1->SetItemText(id, name + " : " + wxString(ToString(value).c_str()) + " " + unit + (hasInterpolation ? " (" + wxString(timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).interpolation.c_str()) + ")" : ""));
+            }
+            else
+            {
+                std::string valueStr = timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).valueStr;
+                TreeCtrl1->SetItemText(id, name + " : " + wxString(valueStr.c_str()) + " " + unit + (hasInterpolation ? " (" + wxString(timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).interpolation.c_str()) + ")" : ""));
+            }
         }
         else
         {
-            std::string valueStr = timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).valueStr;
-            TreeCtrl1->SetItemText(id, name + " : " + wxString(valueStr.c_str()) + " " + unit + (hasInterpolation ? " (" + wxString(timeline_currentAnim->GetKeyFrame(ToString(info->boneName), info->keyType, info->time).interpolation.c_str()) + ")" : ""));
+            TreeCtrl1->SetItemTextColour(id, wxColour(120, 120, 120, 255));
+            TreeCtrl1->SetItemImage(id, 2);
+            TreeCtrl1->SetItemText(id, name + _(" (inexistante)"));
         }
     }
 }
@@ -1908,6 +1666,10 @@ void SkeletonObjectEditor::OnTreeCtrl1ItemRightClick(wxTreeEvent& event)
 
             Sk::Anim::KeyFrame keyFrame;
             keyFrame.time = info->time;
+
+            if(interpMethod == "")
+                interpMethod = "Linear";
+
             keyFrame.interpolation = interpMethod;
 
             if(info->keyType == Sk::Anim::AngleKeyFrame)
@@ -1925,6 +1687,26 @@ void SkeletonObjectEditor::OnTreeCtrl1ItemRightClick(wxTreeEvent& event)
 
             timeline_currentAnim->SetKeyFrame(ToString(info->boneName), info->keyType, keyFrame);
         }
+        else if(id == treeKeyInterpItem_ID)
+        {
+            std::string interpMethod = timeline_currentAnim->GetKeyFrameInterpolation(ToString(info->boneName), info->keyType, info->time);
+
+            std::vector<std::string> listOfMethods = Sk::Anim::Interp::Get::Methods();
+            wxArrayString interMethods;
+            for(unsigned int a = 0; a < listOfMethods.size(); a++)
+            {
+                interMethods.Add(wxString(listOfMethods.at(a).c_str()));
+            }
+
+            wxSingleChoiceDialog dialog(this, _("Choisissez une méthode d'interpolation"), _("Méthode d'interpolation"), interMethods);
+            dialog.ShowModal();
+
+            timeline_currentAnim->SetKeyFrameInterpolation(ToString(info->boneName), info->keyType, info->time, ToString(dialog.GetStringSelection()));
+        }
+        else if(id == treeKeyDeleteItem_ID)
+        {
+            timeline_currentAnim->RemoveKeyFrame(ToString(info->boneName), info->keyType, info->time);
+        }
 
         UpdateTreeItem(event.GetItem());
     }
@@ -1932,27 +1714,17 @@ void SkeletonObjectEditor::OnTreeCtrl1ItemRightClick(wxTreeEvent& event)
 
 void SkeletonObjectEditor::SelectBoneInTree(Sk::Bone *bone, wxTreeItemId parent)
 {
-    wxTreeItemIdValue cookie;
-
     if(!bone)
         return;
 
-    if(!parent.IsOk())
-        parent = TreeCtrl1->GetRootItem();
+    TreeCtrl1->CollapseAll();
+    TreeCtrl1->Expand(TreeCtrl1->GetRootItem());
+    wxTreeItemId boneItem = FindTreeItem(timeline_current, bone->GetName(), TreeCtrl1->GetRootItem());
 
-    for(wxTreeItemId child = TreeCtrl1->GetFirstChild(parent, cookie); child.IsOk(); child = TreeCtrl1->GetNextChild(parent, cookie))
+    if(boneItem.IsOk())
     {
-        TreeItemInfo *info = dynamic_cast<TreeItemInfo*>(TreeCtrl1->GetItemData(child));
-
-        if(info && info->type == TreeItemInfo::Bone && ToString(info->boneName) == bone->GetName())
-        {
-            TreeCtrl1->SelectItem(child);
-            break;
-        }
-        else
-        {
-            SelectBoneInTree(bone, child);
-        }
+        TreeCtrl1->SelectItem(boneItem);
+        TreeCtrl1->Expand(boneItem);
     }
 }
 
@@ -1990,7 +1762,9 @@ wxTreeItemId SkeletonObjectEditor::FindTreeItem(float time, wxTreeItemId parent)
 
     for(wxTreeItemId child = TreeCtrl1->GetFirstChild(parent, cookie); child.IsOk(); child = TreeCtrl1->GetNextChild(parent, cookie))
     {
-        return FindTreeItem(time, child);
+        wxTreeItemId searchedItem = FindTreeItem(time, child);
+        if(searchedItem.IsOk())
+            return searchedItem;
     }
 
     return wxTreeItemId();
@@ -2012,7 +1786,9 @@ wxTreeItemId SkeletonObjectEditor::FindTreeItem(float time, wxString boneName, w
 
     for(wxTreeItemId child = TreeCtrl1->GetFirstChild(parent, cookie); child.IsOk(); child = TreeCtrl1->GetNextChild(parent, cookie))
     {
-        return FindTreeItem(time, boneName, child);
+        wxTreeItemId searchedItem = FindTreeItem(time, boneName, child);
+        if(searchedItem.IsOk())
+            return searchedItem;
     }
 
     return wxTreeItemId();
@@ -2034,7 +1810,9 @@ wxTreeItemId SkeletonObjectEditor::FindTreeItem(float time, wxString boneName, S
 
     for(wxTreeItemId child = TreeCtrl1->GetFirstChild(parent, cookie); child.IsOk(); child = TreeCtrl1->GetNextChild(parent, cookie))
     {
-        return FindTreeItem(time, boneName, keyType, child);
+        wxTreeItemId searchedItem = FindTreeItem(time, boneName, keyType, child);
+        if(searchedItem.IsOk())
+            return searchedItem;
     }
 
     return wxTreeItemId();
