@@ -22,7 +22,7 @@
 							<object class="wxFlexGridSizer" variable="FlexGridSizer5" member="no">
 								<cols>1</cols>
 								<growablecols>0</growablecols>
-								<growablerows>1</growablerows>
+								<growablerows>0</growablerows>
 								<object class="sizeritem">
 									<object class="wxFlexGridSizer" variable="FlexGridSizer11" member="no">
 										<cols>6</cols>
