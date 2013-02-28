@@ -122,7 +122,7 @@ mode(0)
 	FlexGridSizer6->AddGrowableRow(1);
 	FlexGridSizer5 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer5->AddGrowableCol(0);
-	FlexGridSizer5->AddGrowableRow(1);
+	FlexGridSizer5->AddGrowableRow(0);
 	FlexGridSizer11 = new wxFlexGridSizer(0, 6, 0, 0);
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	ToggleButton1 = new wxToggleButton(Core, ID_TOGGLEBUTTON1, _("Editeur d\'os"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TOGGLEBUTTON1"));
@@ -307,9 +307,11 @@ mode(0)
     wxBitmap iconBone("res/Skeleton16.png", wxBITMAP_TYPE_PNG);
     wxBitmap iconKey("res/icon-key.png", wxBITMAP_TYPE_PNG);
     wxBitmap iconKeyInactive("res/icon-key-inactive.png", wxBITMAP_TYPE_PNG);
+    wxBitmap iconTime("res/actions/time.png", wxBITMAP_TYPE_PNG);
     m_imageList->Add(iconBone);
     m_imageList->Add(iconKey);
     m_imageList->Add(iconKeyInactive);
+    m_imageList->Add(iconTime);
 
     TreeCtrl1->SetImageList(m_imageList);
 
@@ -1441,7 +1443,7 @@ void SkeletonObjectEditor::UpdateKeyFrameTree()
     if(mode == 1 && timeline_currentAnim)
     {
         wxTreeItemId root = TreeCtrl1->AddRoot("",
-                                               -1, -1,
+                                               3, 3,
                                                TreeItemInfo::Get()->SetItemType(TreeItemInfo::Time)
                                                                   ->SetItemTime(timeline_current)
                                                                   ->NotEditable()
@@ -1658,6 +1660,15 @@ void SkeletonObjectEditor::OnTreeCtrl1ItemRightClick(wxTreeEvent& event)
         else
             treeKeyInterpItem->Enable(false);
 
+        if(timeline_currentAnim->HasKeyFrame(ToString(info->boneName), info->keyType, info->time))
+        {
+            treeKeyResetItem->SetItemLabel(_("Mettre à jour"));
+        }
+        else
+        {
+            treeKeyResetItem->SetItemLabel(_("Créer la frame clé"));
+        }
+
         int id = TreeCtrl1->GetPopupMenuSelectionFromUser(*treeKeyMenu, position);
 
         if(id == treeKeyResetItem_ID)
@@ -1739,7 +1750,7 @@ void SkeletonObjectEditor::InitTreeMenu()
     treeKeyInterpItem = new wxMenuItem(treeKeyMenu, treeKeyInterpItem_ID, _("Changer l'interpolation"));
 
     treeKeyDeleteItem_ID = wxNewId();
-    treeKeyDeleteItem = new wxMenuItem(treeKeyMenu, treeKeyInterpItem_ID, _("Supprimer la clé"));
+    treeKeyDeleteItem = new wxMenuItem(treeKeyMenu, treeKeyDeleteItem_ID, _("Supprimer la clé"));
 
     treeKeyMenu->Append(treeKeyResetItem);
     treeKeyMenu->Append(treeKeyInterpItem);
